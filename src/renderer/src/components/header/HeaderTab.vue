@@ -19,6 +19,7 @@
     class="flex justify-center items-center gap-2 w-60 h-20 h-full cursor-pointer overflow-x-auto"
   >
     <img v-if="props.tab.icon" class="pl-4" :src="props.tab.icon" alt="icon from target website" />
+    <IconViewTab v-else class="text-white w-4 h-4" />
     <IconAudioOn
       @click="onMutedSound"
       class="h-5 w-5 cursor-pointer text-white"
