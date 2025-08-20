@@ -92,7 +92,18 @@ const onLoadURL = (target?: string) => {
     NAVIGATOR.views[NAVIGATOR.activeTab].loaded = true
   }
 
-  NAVIGATOR.views[NAVIGATOR.activeTab].icon = ''
+  const cleanUrl = (url: string): string => {
+  // url에서 호스트만 추출한다.
+    let cleanedUrl = url.includes("https")
+      ? url.slice(8)
+      : url.includes("http") && url.slice(7);
+
+    if(!cleanedUrl) return ''
+
+    return cleanedUrl.includes("/") ? cleanedUrl.split("/")[0] : cleanedUrl;
+  };
+
+  NAVIGATOR.views[NAVIGATOR.activeTab].icon = `http://www.google.com/s2/favicons?domain=${cleanUrl(url)}`
   NAVIGATOR.views[NAVIGATOR.activeTab].url = url
 
   NAVIGATOR.stateLink.url = url
