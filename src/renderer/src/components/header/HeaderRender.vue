@@ -121,14 +121,16 @@ const onLoadURL = (target?: string) => {
 
     NAVIGATOR.views[NAVIGATOR.activeTab].loaded = true
 
-    const callback = NAVIGATOR.views[NAVIGATOR.activeTab]
+    render?.addEventListener('will-frame-navigate', () => {
+      const callback = NAVIGATOR.views[NAVIGATOR.activeTab]
 
-    render?.addEventListener('will-frame-navigate', (src) => {
-      if(src.url === callback.url) return
+      setTimeout(() => {
+        const url = render?.getURL()
 
-      if(src.url.includes('recaptcha')) return
+        if(url === callback.url) return
 
-      onRefreshURL(callback.id, src.url)
+        onRefreshURL(callback.id, url)
+      }, 200)
     })
   }
 
@@ -174,6 +176,11 @@ const onCloseTab = (tab: HeaderTabItem) => {
     // TODO: CLose application
     return
   }
+
+  // update activeTab due to a mutation in the current id
+  const actually = NAVIGATOR.views[NAVIGATOR.activeTab]
+  const index = NAVIGATOR.views.indexOf(actually)
+  NAVIGATOR.activeTab = index
 
   const target = NAVIGATOR.views[NAVIGATOR.lastTab]
 
