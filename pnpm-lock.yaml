@@ -29,6 +29,9 @@ importers:
       uuid:
         specifier: ^11.1.0
         version: 11.1.0
+      vue-i18n:
+        specifier: ^11.1.11
+        version: 11.1.11(vue@3.5.18(typescript@5.9.2))
       vue-pubsub:
         specifier: ^0.1.1
         version: 0.1.1(vue@3.5.18(typescript@5.9.2))
@@ -469,6 +472,18 @@ packages:
 
   '@iconify/utils@3.0.1':
     resolution: {integrity: sha512-A78CUEnFGX8I/WlILxJCuIJXloL0j/OJ9PSchPAfCargEIKmUBWvvEMmKWB5oONwiUqlNt+5eRufdkLxeHIWYw==}
+
+  '@intlify/core-base@11.1.11':
+    resolution: {integrity: sha512-1Z0N8jTfkcD2Luq9HNZt+GmjpFe4/4PpZF3AOzoO1u5PTtSuXZcfhwBatywbfE2ieB/B5QHIoOFmCXY2jqVKEQ==}
+    engines: {node: '>= 16'}
+
+  '@intlify/message-compiler@11.1.11':
+    resolution: {integrity: sha512-7PC6neomoc/z7a8JRjPBbu0T2TzR2MQuY5kn2e049MP7+o32Ve7O8husylkA7K9fQRe4iNXZWTPnDJ6vZdtS1Q==}
+    engines: {node: '>= 16'}
+
+  '@intlify/shared@11.1.11':
+    resolution: {integrity: sha512-RIBFTIqxZSsxUqlcyoR7iiC632bq7kkOwYvZlvcVObHfrF4NhuKc4FKvu8iPCrEO+e3XsY7/UVpfgzg+M7ETzA==}
+    engines: {node: '>= 16'}
 
   '@isaacs/balanced-match@4.0.1':
     resolution: {integrity: sha512-yzMTt9lEb8Gv7zRioUilSglI0c0smZ9k5D65677DLWLtWJaXIS3CqcGyUFByYKlnUj6TkjLVs54fBl6+TiGQDQ==}
@@ -2817,6 +2832,12 @@ packages:
   vue-flow-layout@0.2.0:
     resolution: {integrity: sha512-zKgsWWkXq0xrus7H4Mc+uFs1ESrmdTXlO0YNbR6wMdPaFvosL3fMB8N7uTV308UhGy9UvTrGhIY7mVz9eN+L0Q==}
 
+  vue-i18n@11.1.11:
+    resolution: {integrity: sha512-LvyteQoXeQiuILbzqv13LbyBna/TEv2Ha+4ZWK2AwGHUzZ8+IBaZS0TJkCgn5izSPLcgZwXy9yyTrewCb2u/MA==}
+    engines: {node: '>= 16'}
+    peerDependencies:
+      vue: ^3.0.0
+
   vue-pubsub@0.1.1:
     resolution: {integrity: sha512-JQaB1/tcOo/Wm/LfIHMtRUWFgDQzTsIlomkYtkkbhwpYAQu0z2ynjXxhi3vt182M5b31X1neV04ATvbfZsU1Vw==}
     engines: {node: '>= 14'}
@@ -3294,6 +3315,18 @@ snapshots:
       mlly: 1.7.4
     transitivePeerDependencies:
       - supports-color
+
+  '@intlify/core-base@11.1.11':
+    dependencies:
+      '@intlify/message-compiler': 11.1.11
+      '@intlify/shared': 11.1.11
+
+  '@intlify/message-compiler@11.1.11':
+    dependencies:
+      '@intlify/shared': 11.1.11
+      source-map-js: 1.2.1
+
+  '@intlify/shared@11.1.11': {}
 
   '@isaacs/balanced-match@4.0.1': {}
 
@@ -5934,6 +5967,13 @@ snapshots:
       - supports-color
 
   vue-flow-layout@0.2.0: {}
+
+  vue-i18n@11.1.11(vue@3.5.18(typescript@5.9.2)):
+    dependencies:
+      '@intlify/core-base': 11.1.11
+      '@intlify/shared': 11.1.11
+      '@vue/devtools-api': 6.6.4
+      vue: 3.5.18(typescript@5.9.2)
 
   vue-pubsub@0.1.1(vue@3.5.18(typescript@5.9.2)):
     dependencies:
