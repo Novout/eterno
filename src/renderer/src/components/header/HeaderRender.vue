@@ -9,7 +9,7 @@
     <div class="flex w-full items-center gap-2 p-2">
       <IconBack @click="onBackPage" class="text-white w-6 h-6 cursor-pointer" />
       <IconReload @click="onReloadPage" class="text-white w-6 h-6 cursor-pointer" />
-      <input ref="input" @keyup.enter="onSearch" class="bg-secondary rounded-xl text-white border-gray border-solid border-1 border-none h-8 p-2 w-full" type="text" v-model="NAVIGATOR.actuallyLink.url" autocomplete="true" />
+      <input ref="input" @keyup.enter="onSearch()" class="bg-secondary rounded-xl text-white border-gray border-solid border-1 border-none h-8 p-2 w-full" type="text" v-model="NAVIGATOR.actuallyLink.url" autocomplete="true" />
     </div>
   </header>
 </template>
@@ -47,7 +47,7 @@ const getRender = () => {
 }
 
 const onSearch = (url?: string) => {
-  const target = url || NAVIGATOR.actuallyLink.url || ''
+  const target = url ?? NAVIGATOR.actuallyLink.url ?? ''
 
   onLoadURL(target)
 }
