@@ -202,7 +202,9 @@ const onCloseTab = (tab: HeaderTabItem) => {
   const index = NAVIGATOR.views.indexOf(actually)
   NAVIGATOR.activeTab = index
 
-  const target = NAVIGATOR.views[NAVIGATOR.lastTab]
+  let target = NAVIGATOR.views[NAVIGATOR.lastTab]
+
+  if(!target || !target.title) NAVIGATOR.views[0]
 
   onLoadTab(target, true)
 }
