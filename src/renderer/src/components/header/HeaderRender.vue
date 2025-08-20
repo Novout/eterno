@@ -89,7 +89,6 @@ const onAddPage = () => {
 
 const getFavicon = (_url: string) => {
   const cleanUrl = (url: string): string => {
-  // url에서 호스트만 추출한다.
     let cleanedUrl = url.includes("https")
       ? url.slice(8)
       : url.includes("http") && url.slice(7);
