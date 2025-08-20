@@ -22,20 +22,26 @@ import { useOptionsStore } from '../../stores/options';
 import { useNavigatorStore } from '../../stores/navigator';
 import { WebviewTag } from 'electron/renderer';
 import { ref } from 'vue';
+import { usePubsub } from 'vue-pubsub';
 
 const regex = useRegex()
+const pubsub = usePubsub()
 
 const OPTIONS = useOptionsStore()
 const NAVIGATOR = useNavigatorStore()
 
 const input = ref<HTMLInputElement | null>(null)
 
+pubsub.on("load-view-from-url", (url: any) => {
+  onSearch(url)
+})
+
 const getRender = () => {
   return document.querySelector<WebviewTag>(`#__render_${NAVIGATOR.views[NAVIGATOR.activeTab].id}`)
 }
 
-const onSearch = () => {
-  const target = NAVIGATOR.actuallyLink.url
+const onSearch = (url?: string) => {
+  const target = url || NAVIGATOR.actuallyLink.url
 
   onLoadURL(target)
 }

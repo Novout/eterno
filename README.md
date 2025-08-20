@@ -11,7 +11,7 @@ Eterno Browser
 </h1>
 
 <h4 align="center">
-<b>A lightweight browser for your privacy.</b>
+<b>A lightweight browser.</b>
 <h4>
 
 ## Project Setup

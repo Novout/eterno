@@ -3,9 +3,12 @@ import './assets/main.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import { PubsubPlugin } from "vue-pubsub";
 import { router } from './router'
 import App from './App.vue'
 
-const pinia = createPinia()
-
-createApp(App).use(pinia).use(router).mount('#app')
+createApp(App)
+  .use(createPinia())
+  .use(PubsubPlugin())
+  .use(router)
+  .mount('#app')
