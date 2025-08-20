@@ -89,6 +89,8 @@ const getFavicon = (_url: string) => {
 }
 
 const onLoadURL = (target?: string) => {
+  const render = getRender()
+
   if(!target) return
 
   let url = target
@@ -109,8 +111,6 @@ const onLoadURL = (target?: string) => {
   }
 
   if(!view.loaded) {
-    const render = getRender()
-
     setTimeout(() => {
       render?.loadURL(url).catch(({ message }) => {
         if(message.indexOf("GUEST_VIEW_MANAGER_CALL") > -1) {
@@ -121,16 +121,32 @@ const onLoadURL = (target?: string) => {
 
     NAVIGATOR.views[NAVIGATOR.activeTab].loaded = true
 
-    render?.addEventListener('will-frame-navigate', () => {
+    const onUpdateTab = () => {
       const callback = NAVIGATOR.views[NAVIGATOR.activeTab]
 
       setTimeout(() => {
         const url = render?.getURL()
 
-        if(url === callback.url) return
+        if(!url || url === callback.url) return
 
         onRefreshURL(callback.id, url)
       }, 200)
+    }
+
+    render?.addEventListener('did-start-loading', () => {
+      onUpdateTab()
+    })
+
+    render?.addEventListener('did-finish-load', () => {
+      onUpdateTab()
+    })
+
+    render?.addEventListener('will-frame-navigate', () => {
+      onUpdateTab()
+    })
+
+    render?.addEventListener('page-title-updated', ({ title }) => {
+      NAVIGATOR.views[NAVIGATOR.activeTab].title = title
     })
   }
 
@@ -148,7 +164,9 @@ const onRefreshURL = (_id: string, url: string) => {
 
   if(tab) {
     const index = NAVIGATOR.views.indexOf(tab)
+    const render = getRender()
 
+    NAVIGATOR.views[index].title = render?.getTitle() || NAVIGATOR.views[index].title
     NAVIGATOR.views[index].icon = getFavicon(url)
     NAVIGATOR.actuallyLink.url = url
   }
