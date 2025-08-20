@@ -17,6 +17,6 @@ const NAVIGATOR = useNavigatorStore()
 const pubsub = usePubsub()
 
 onMounted(() => {
-  pubsub.to("add-first-page")
+  pubsub.to("add-first-page", '')
 })
 </script>
