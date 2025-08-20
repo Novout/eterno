@@ -189,7 +189,7 @@ const onRefreshURL = (_id: string, url: string) => {
 const onLoadTab = (tab: HeaderTabItem, removed?: boolean) => {
   const target = NAVIGATOR.views.indexOf(tab)
 
-  NAVIGATOR.stateLink.loadedURL = tab.title === 'Eterno' ? 'default' : 'loading'
+  NAVIGATOR.stateLink.loadedURL = tab.title === t('views.default.title') ? 'default' : 'loading'
   NAVIGATOR.lastTab = removed ? 0 : NAVIGATOR.activeTab
 
   const last = NAVIGATOR.views[NAVIGATOR.activeTab]
