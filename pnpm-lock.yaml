@@ -33,8 +33,8 @@ importers:
         specifier: ^11.1.11
         version: 11.1.11(vue@3.5.18(typescript@5.9.2))
       vue-pubsub:
-        specifier: ^0.1.1
-        version: 0.1.1(vue@3.5.18(typescript@5.9.2))
+        specifier: ^0.1.2
+        version: 0.1.2(vue@3.5.18(typescript@5.9.2))
       vue-router:
         specifier: ^4.5.1
         version: 4.5.1(vue@3.5.18(typescript@5.9.2))
@@ -2838,8 +2838,8 @@ packages:
     peerDependencies:
       vue: ^3.0.0
 
-  vue-pubsub@0.1.1:
-    resolution: {integrity: sha512-JQaB1/tcOo/Wm/LfIHMtRUWFgDQzTsIlomkYtkkbhwpYAQu0z2ynjXxhi3vt182M5b31X1neV04ATvbfZsU1Vw==}
+  vue-pubsub@0.1.2:
+    resolution: {integrity: sha512-+Zng6/pbepJN522y0bKOAVMFuQQrEYJyjhBKBMJngFpFzWCJ1T1lM4qPJjBUnJAZqXDTFCeFrGTP2p3E9NkXuA==}
     engines: {node: '>= 14'}
     peerDependencies:
       '@vue/composition-api': ^1.0.0-rc.1
@@ -5975,7 +5975,7 @@ snapshots:
       '@vue/devtools-api': 6.6.4
       vue: 3.5.18(typescript@5.9.2)
 
-  vue-pubsub@0.1.1(vue@3.5.18(typescript@5.9.2)):
+  vue-pubsub@0.1.2(vue@3.5.18(typescript@5.9.2)):
     dependencies:
       vue: 3.5.18(typescript@5.9.2)
       vue-demi: 0.14.10(vue@3.5.18(typescript@5.9.2))
