@@ -9,21 +9,25 @@ export default defineConfig({
   main: {
     resolve: {
       alias: {
-        "@renderer": resolve("src/renderer/src"),
-      },
-  },
+        '@renderer': resolve('src/renderer/src')
+      }
+    },
     plugins: [externalizeDepsPlugin()]
   },
   preload: {
     plugins: [externalizeDepsPlugin()]
   },
   renderer: {
-    plugins: [vue({
-      template: {
-        compilerOptions: {
-          isCustomElement: (tag) => ['webview'].includes(tag),
+    plugins: [
+      vue({
+        template: {
+          compilerOptions: {
+            isCustomElement: (tag) => ['webview'].includes(tag)
+          }
         }
-      }
-    }), unocss(), Components({ dts: true })]
+      }),
+      unocss(),
+      Components({ dts: true })
+    ]
   }
 })

@@ -1,10 +1,10 @@
 {
   "name": "eterno",
-  "version": "1.0.0",
-  "description": "An Electron application with Vue and TypeScript",
+  "version": "0.0.1",
+  "description": "A lightweight browser.",
   "main": "./out/main/index.js",
   "author": "Giovane Cardoso",
-  "homepage": "https://electron-vite.org",
+  "homepage": "https://github.com/Novout/eterno",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint --cache .",
@@ -18,7 +18,10 @@
     "build:unpack": "npm run build && electron-builder --dir",
     "build:win": "npm run build && electron-builder --win",
     "build:mac": "npm run build && electron-builder --mac",
-    "build:linux": "npm run build && electron-builder --linux"
+    "build:linux": "npm run build && electron-builder --linux",
+    "version:patch": "generi log patch",
+    "version:minor": "generi log minor",
+    "version:major": "generi log major"
   },
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.2",

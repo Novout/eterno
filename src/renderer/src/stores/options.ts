@@ -6,5 +6,5 @@ export const useOptionsStore = defineStore('options', {
     return {
       searchProvider: 'google'
     } as OptionsState
-  },
+  }
 })

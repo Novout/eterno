@@ -1,7 +1,7 @@
-export * from 'vue-pubsub';
+export * from 'vue-pubsub'
 
-declare module "vue-pubsub" {
+declare module 'vue-pubsub' {
   export interface Channels {
-    'load-view-from-url': string;
+    'load-view-from-url': string
   }
 }

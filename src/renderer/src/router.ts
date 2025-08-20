@@ -5,10 +5,10 @@ import Options from './pages/Options.vue'
 
 const routes = [
   { path: '/', component: Main },
-  { path: '/options', component: Options },
+  { path: '/options', component: Options }
 ]
 
 export const router = createRouter({
   history: createMemoryHistory(),
-  routes,
+  routes
 })

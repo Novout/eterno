@@ -14,9 +14,9 @@ interface NavigatorLinkItem {
 export interface NavigatorState {
   oldLink: NavigatorLinkItem
   actuallyLink: NavigatorLinkItem
-  stateLink: NavigatorLinkItem & { loadedURL: 'default' | 'loading' | 'webview' },
+  stateLink: NavigatorLinkItem & { loadedURL: 'default' | 'loading' | 'webview' }
   activeTab: number
-  lastTab: number,
+  lastTab: number
   views: HeaderTabItem[]
 }
 

@@ -1,7 +1,17 @@
 <template>
   <header class="flex flex-col justify-start items-center w-full h-30 bg-primary">
     <div class="flex items-center w-full bg-tertiary h-10">
-      <HeaderTab @close="onCloseTab" @load="onLoadTab" :class="[NAVIGATOR.views[NAVIGATOR.activeTab] !== tab ? 'bg-secondary hover:bg-tab-focus' : 'bg-primary']" v-for="tab in NAVIGATOR.views" :tab="tab" />
+      <HeaderTab
+        @close="onCloseTab"
+        @load="onLoadTab"
+        :class="[
+          NAVIGATOR.views[NAVIGATOR.activeTab] !== tab
+            ? 'bg-secondary hover:bg-tab-focus'
+            : 'bg-primary'
+        ]"
+        v-for="tab in NAVIGATOR.views"
+        :tab="tab"
+      />
       <div class="min-w-10 flex items-center justify-center">
         <IconAdd @click="onAddPage" class="h-5 w-5 text-white cursor-pointer" />
       </div>
@@ -9,21 +19,28 @@
     <div class="flex w-full items-center gap-2 p-2">
       <IconBack @click="onBackPage" class="text-white w-6 h-6 cursor-pointer" />
       <IconReload @click="onReloadPage" class="text-white w-6 h-6 cursor-pointer" />
-      <input ref="input" @keyup.enter="onSearch()" class="bg-secondary rounded-xl text-white border-gray border-solid border-1 border-none h-8 p-2 w-full" type="text" v-model="NAVIGATOR.actuallyLink.url" autocomplete="true" />
+      <input
+        ref="input"
+        @keyup.enter="onSearch()"
+        class="bg-secondary rounded-xl text-white border-gray border-solid border-1 border-none h-8 p-2 w-full"
+        type="text"
+        v-model="NAVIGATOR.actuallyLink.url"
+        autocomplete="true"
+      />
     </div>
   </header>
 </template>
 
 <script setup lang="ts">
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid'
 import { useRegex } from '../../use/regex'
-import { HeaderTabItem } from '../../types';
-import { useOptionsStore } from '../../stores/options';
-import { useNavigatorStore } from '../../stores/navigator';
-import { WebviewTag } from 'electron/renderer';
-import { ref } from 'vue';
-import { usePubsub } from 'vue-pubsub';
-import { useI18n } from 'vue-i18n';
+import { HeaderTabItem } from '../../types'
+import { useOptionsStore } from '../../stores/options'
+import { useNavigatorStore } from '../../stores/navigator'
+import { WebviewTag } from 'electron/renderer'
+import { ref } from 'vue'
+import { usePubsub } from 'vue-pubsub'
+import { useI18n } from 'vue-i18n'
 
 const regex = useRegex()
 const pubsub = usePubsub()
@@ -34,11 +51,11 @@ const NAVIGATOR = useNavigatorStore()
 
 const input = ref<HTMLInputElement | null>(null)
 
-pubsub.on("load-view-from-url", (url: any) => {
+pubsub.on('load-view-from-url', (url: any) => {
   onSearch(url)
 })
 
-pubsub.on("add-first-page", () => {
+pubsub.on('add-first-page', () => {
   onAddPage()
 })
 
@@ -63,7 +80,7 @@ const onBackPage = () => {
     const url = getRender()?.getURL()
     const callback = NAVIGATOR.views[NAVIGATOR.activeTab]
 
-    if(url) onRefreshURL(callback.id, url)
+    if (url) onRefreshURL(callback.id, url)
   }, 500)
 }
 
@@ -89,14 +106,12 @@ const onAddPage = () => {
 
 const getFavicon = (_url: string) => {
   const cleanUrl = (url: string): string => {
-    let cleanedUrl = url.includes("https")
-      ? url.slice(8)
-      : url.includes("http") && url.slice(7);
+    let cleanedUrl = url.includes('https') ? url.slice(8) : url.includes('http') && url.slice(7)
 
-    if(!cleanedUrl) return ''
+    if (!cleanedUrl) return ''
 
-    return cleanedUrl.includes("/") ? cleanedUrl.split("/")[0] : cleanedUrl;
-  };
+    return cleanedUrl.includes('/') ? cleanedUrl.split('/')[0] : cleanedUrl
+  }
 
   return `http://www.google.com/s2/favicons?domain=${cleanUrl(_url)}`
 }
@@ -104,29 +119,29 @@ const getFavicon = (_url: string) => {
 const onLoadURL = (target?: string) => {
   const render = getRender()
 
-  if(!target) return
+  if (!target) return
 
   let url = target
 
-  if(!regex.validateUrl(target)) {
-    if(url.endsWith('.com')) {
+  if (!regex.validateUrl(target)) {
+    if (url.endsWith('.com')) {
       url = `https://${url}`
-    } else if(OPTIONS.searchProvider === 'google') {
+    } else if (OPTIONS.searchProvider === 'google') {
       url = `https://www.google.com/search?q=${target}`
     }
   }
 
   let view = NAVIGATOR.views[NAVIGATOR.activeTab]
 
-  if(!view) {
+  if (!view) {
     view = NAVIGATOR.views[0]
     NAVIGATOR.activeTab = 0
   }
 
-  if(!view.loaded) {
+  if (!view.loaded) {
     setTimeout(() => {
       render?.loadURL(url).catch(({ message }) => {
-        if(message.indexOf("GUEST_VIEW_MANAGER_CALL") > -1) {
+        if (message.indexOf('GUEST_VIEW_MANAGER_CALL') > -1) {
           // TODO: Reload page
         }
       })
@@ -140,7 +155,7 @@ const onLoadURL = (target?: string) => {
       setTimeout(() => {
         const url = render?.getURL()
 
-        if(!url || url === callback.url) return
+        if (!url || url === callback.url) return
 
         onRefreshURL(callback.id, url)
       }, 200)
@@ -169,13 +184,12 @@ const onLoadURL = (target?: string) => {
   NAVIGATOR.stateLink.url = url
   NAVIGATOR.actuallyLink.url = url
   NAVIGATOR.stateLink.loadedURL = 'webview'
-
 }
 
 const onRefreshURL = (_id: string, url: string) => {
   const tab = NAVIGATOR.views.find(({ id }) => id === _id)
 
-  if(tab) {
+  if (tab) {
     const index = NAVIGATOR.views.indexOf(tab)
     const render = getRender()
 
@@ -193,7 +207,7 @@ const onLoadTab = (tab: HeaderTabItem, removed?: boolean) => {
 
   const last = NAVIGATOR.views[NAVIGATOR.activeTab]
 
-  if(last) NAVIGATOR.views[NAVIGATOR.activeTab].search = NAVIGATOR.actuallyLink.url
+  if (last) NAVIGATOR.views[NAVIGATOR.activeTab].search = NAVIGATOR.actuallyLink.url
   NAVIGATOR.activeTab = target
   NAVIGATOR.actuallyLink.url = tab.search
 
@@ -201,9 +215,9 @@ const onLoadTab = (tab: HeaderTabItem, removed?: boolean) => {
 }
 
 const onCloseTab = (tab: HeaderTabItem) => {
-  NAVIGATOR.views = NAVIGATOR.views.filter(_tab => tab !== _tab)
+  NAVIGATOR.views = NAVIGATOR.views.filter((_tab) => tab !== _tab)
 
-  if(NAVIGATOR.views.length === 0) {
+  if (NAVIGATOR.views.length === 0) {
     // TODO: CLose application
     return
   }
@@ -215,7 +229,7 @@ const onCloseTab = (tab: HeaderTabItem) => {
 
   let target = NAVIGATOR.views[NAVIGATOR.lastTab]
 
-  if(!target || !target.title) NAVIGATOR.views[0]
+  if (!target || !target.title) NAVIGATOR.views[0]
 
   onLoadTab(target, true)
 }

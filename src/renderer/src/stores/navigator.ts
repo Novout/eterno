@@ -18,5 +18,5 @@ export const useNavigatorStore = defineStore('navigator', {
       lastTab: 0,
       views: []
     } as NavigatorState
-  },
+  }
 })
