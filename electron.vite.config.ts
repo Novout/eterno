@@ -17,6 +17,12 @@ export default defineConfig({
     plugins: [externalizeDepsPlugin()]
   },
   renderer: {
-    plugins: [vue(), unocss(), Components({ dts: true })]
+    plugins: [vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => ['webview'].includes(tag),
+        }
+      }
+    }), unocss(), Components({ dts: true })]
   }
 })

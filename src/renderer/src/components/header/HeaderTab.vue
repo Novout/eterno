@@ -34,14 +34,16 @@ const onCloseTab = () => {
 }
 
 onMounted(() => {
-  setInterval(() => {
-    const reader = getReader()
+  const reader = getReader()
 
-    if(reader?.isCurrentlyAudible() && !asAudio.value) {
-      audio.value = 'on'
-      asAudio.value = true
-    }
-  }, 1000)
+  reader?.addEventListener('dom-ready', () => {
+    setInterval(() => {
+      if(reader?.isCurrentlyAudible() && !asAudio.value) {
+        audio.value = 'on'
+        asAudio.value = true
+      }
+    }, 1000)
+  })
 })
 
 const onActiveSound = () => {
