@@ -2,7 +2,9 @@
   <header class="flex flex-col justify-start items-center w-full h-30 bg-primary">
     <div class="flex items-center w-full bg-tertiary h-10">
       <HeaderTab @close="onCloseTab" @load="onLoadTab" :class="[NAVIGATOR.views[NAVIGATOR.activeTab] !== tab ? 'bg-secondary hover:bg-tab-focus' : 'bg-primary']" v-for="tab in NAVIGATOR.views" :tab="tab" />
-      <IconAdd @click="onAddPage" class="h-6 w-6 text-white cursor-pointer pl-2" />
+      <div class="min-w-10 flex items-center justify-center">
+        <IconAdd @click="onAddPage" class="h-5 w-5 text-white cursor-pointer" />
+      </div>
     </div>
     <div class="flex w-full items-center gap-2 p-2">
       <IconBack @click="onBackPage" class="text-white w-6 h-6 cursor-pointer" />

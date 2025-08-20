@@ -1,10 +1,17 @@
 <template>
-  <div @click="onLoadTab" class="flex justify-center items-center gap-2 w-60 h-20 h-full cursor-pointer">
+  <div :class="[
+    views[NAVIGATION.activeTab] === props.tab && views.length > 20  ? 'min-w-9' :
+    views.length < 4 ? 'w-60' :
+    views.length < 7 ?  'w-34' :
+    views.length < 10 ? 'w-26' :
+    views.length < 12 ?  'w-12' :
+    views.length < 15 ?  'w-10' : 'w-5'
+  ]" @click="onLoadTab" class="flex justify-center items-center gap-2 w-60 h-20 h-full cursor-pointer overflow-x-auto">
     <img :src="props.tab.icon" />
     <IconAudioOn @click="onMutedSound" class="h-5 w-5 cursor-pointer text-white" v-if="audio === 'on'" />
     <IconAudioMuted @click="onActiveSound" class="h-5 w-5 cursor-pointer text-white" v-else-if="audio === 'muted'" />
-    <p class="text-white truncate">{{ props.tab.title }}</p>
-    <IconTabClose v-if="NAVIGATION.views.length !== 1" @click="onCloseTab" class="h-5 w-5 cursor-pointer text-white" />
+    <p :class="[views[NAVIGATION.activeTab] === props.tab && views.length > 20 ? 'hidden' : '']" class="text-white truncate">{{ props.tab.title }}</p>
+    <IconTabClose v-if="NAVIGATION.views.length !== 1" @click="onCloseTab" :class="[views[NAVIGATION.activeTab] === props.tab && views.length > 20 ? 'absolute' : 'flex']" class="h-5 w-5 cursor-pointer text-white" />
   </div>
 </template>
 
@@ -12,12 +19,13 @@
 import { useNavigatorStore } from '../../stores/navigator';
 import { HeaderTabItem } from '../../types';
 import { WebviewTag } from 'electron/renderer';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 const NAVIGATION = useNavigatorStore()
 
 const audio = ref<'muted' | 'on' | false>(false)
 const asAudio = ref<boolean>(false)
+const views = computed(() => NAVIGATION.views)
 
 const props = defineProps<{
   tab: HeaderTabItem
