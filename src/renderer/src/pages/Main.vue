@@ -8,7 +8,15 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from 'vue';
 import { useNavigatorStore } from '../stores/navigator';
+import { usePubsub } from 'vue-pubsub';
 
 const NAVIGATOR = useNavigatorStore()
+
+const pubsub = usePubsub()
+
+onMounted(() => {
+  pubsub.to("add-first-page", '')
+})
 </script>

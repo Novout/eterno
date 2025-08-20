@@ -23,9 +23,11 @@ import { useNavigatorStore } from '../../stores/navigator';
 import { WebviewTag } from 'electron/renderer';
 import { ref } from 'vue';
 import { usePubsub } from 'vue-pubsub';
+import { useI18n } from 'vue-i18n';
 
 const regex = useRegex()
 const pubsub = usePubsub()
+const { t } = useI18n()
 
 const OPTIONS = useOptionsStore()
 const NAVIGATOR = useNavigatorStore()
@@ -34,6 +36,10 @@ const input = ref<HTMLInputElement | null>(null)
 
 pubsub.on("load-view-from-url", (url: any) => {
   onSearch(url)
+})
+
+pubsub.on("add-first-page", () => {
+  onAddPage()
 })
 
 const getRender = () => {
@@ -64,9 +70,9 @@ const onBackPage = () => {
 const onAddPage = () => {
   NAVIGATOR.views.push({
     icon: '',
-    title: 'Eterno',
+    title: t('views.default.title'),
     url: '',
-    search: 'Eterno',
+    search: t('views.default.search'),
     loaded: false,
     id: uuidv4()
   })

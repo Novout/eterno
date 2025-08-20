@@ -5,6 +5,12 @@ export const i18n = createI18n({
   fallbackLocale: 'en-US',
   messages: {
     'en-US': {
+      views: {
+        default: {
+          title: 'New tab',
+          search: 'New tab'
+        }
+      },
       default: {
         title: 'Eterno.',
         description: 'A lightweight browser.',
@@ -12,6 +18,12 @@ export const i18n = createI18n({
       }
     },
     'pt-BR': {
+      views: {
+        default: {
+          title: 'Nova guia',
+          search: 'Nova guia'
+        }
+      },
       default: {
         title: 'Eterno.',
         description: 'Um navegador leve.',

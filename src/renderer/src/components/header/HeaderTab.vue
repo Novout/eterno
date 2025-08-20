@@ -7,7 +7,7 @@
     views.length < 12 ?  'w-12' :
     views.length < 15 ?  'w-10' : 'w-5'
   ]" @click="onLoadTab" class="flex justify-center items-center gap-2 w-60 h-20 h-full cursor-pointer overflow-x-auto">
-    <img :src="props.tab.icon" />
+    <img v-if="props.tab.icon" class="pl-4" :src="props.tab.icon" alt="icon from target website" />
     <IconAudioOn @click="onMutedSound" class="h-5 w-5 cursor-pointer text-white" v-if="audio === 'on'" />
     <IconAudioMuted @click="onActiveSound" class="h-5 w-5 cursor-pointer text-white" v-else-if="audio === 'muted'" />
     <p :class="[views[NAVIGATION.activeTab] === props.tab && views.length > 20 ? 'hidden' : '']" class="text-white truncate">{{ props.tab.title }}</p>
