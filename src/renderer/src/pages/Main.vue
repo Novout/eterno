@@ -1,5 +1,5 @@
 <template>
-  <main class="min-h-100vh overflow-hidden">
+  <main class="overflow-hidden">
     <HeaderRender />
     <RenderWebView />
     <DefaultPage v-if="NAVIGATOR.stateLink.loadedURL === 'default' || NAVIGATOR.views.length === 0" />

@@ -1,5 +1,5 @@
 <template>
-  <webview :id="`__render_${view.id}`" :class="[NAVIGATOR.views[NAVIGATOR.activeTab] === view && NAVIGATOR.stateLink.loadedURL === 'webview' ? 'flex' : 'hidden']" :key="view.id" v-for="view in NAVIGATOR.views" ref="__render" :src="view.url" style="width:100%; height:100vh;" />
+  <webview :id="`__render_${view.id}`" class="webkit" :class="[NAVIGATOR.views[NAVIGATOR.activeTab] === view && NAVIGATOR.stateLink.loadedURL === 'webview' ? 'flex' : 'hidden']" :key="view.id" v-for="view in NAVIGATOR.views" ref="__render" :src="view.url" />
 </template>
 
 <script setup lang="ts">

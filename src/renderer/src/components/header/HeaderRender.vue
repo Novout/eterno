@@ -1,5 +1,5 @@
 <template>
-  <header class="flex flex-col justify-start items-center w-full bg-primary">
+  <header class="flex flex-col justify-start items-center w-full h-30 bg-primary">
     <div class="flex items-center w-full bg-tertiary h-10">
       <HeaderTab @close="onCloseTab" @load="onLoadTab" :class="[NAVIGATOR.views[NAVIGATOR.activeTab] !== tab ? 'bg-secondary hover:bg-tab-focus' : 'bg-primary']" v-for="tab in NAVIGATOR.views" :tab="tab" />
       <IconAdd @click="onAddPage" class="h-6 w-6 text-white cursor-pointer pl-2" />

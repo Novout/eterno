@@ -3,7 +3,7 @@
     <img :src="props.tab.icon" />
     <IconAudioOn @click="onMutedSound" class="h-5 w-5 cursor-pointer text-white" v-if="audio === 'on'" />
     <IconAudioMuted @click="onActiveSound" class="h-5 w-5 cursor-pointer text-white" v-else-if="audio === 'muted'" />
-    <p class="text-white">{{ props.tab.title }}</p>
+    <p class="text-white truncate">{{ props.tab.title }}</p>
     <IconTabClose v-if="NAVIGATION.views.length !== 1" @click="onCloseTab" class="h-5 w-5 cursor-pointer text-white" />
   </div>
 </template>
