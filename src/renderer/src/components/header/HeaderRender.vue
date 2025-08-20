@@ -44,6 +44,13 @@ const onReloadPage = () => {
 
 const onBackPage = () => {
   getRender()?.goBack()
+
+  setTimeout(() => {
+    const url = getRender()?.getURL()
+    const callback = NAVIGATOR.views[NAVIGATOR.activeTab]
+
+    if(url) onRefreshURL(callback.id, url)
+  }, 500)
 }
 
 const onAddPage = () => {
@@ -66,6 +73,21 @@ const onAddPage = () => {
   input.value?.focus()
 }
 
+const getFavicon = (_url: string) => {
+  const cleanUrl = (url: string): string => {
+  // url에서 호스트만 추출한다.
+    let cleanedUrl = url.includes("https")
+      ? url.slice(8)
+      : url.includes("http") && url.slice(7);
+
+    if(!cleanedUrl) return ''
+
+    return cleanedUrl.includes("/") ? cleanedUrl.split("/")[0] : cleanedUrl;
+  };
+
+  return `http://www.google.com/s2/favicons?domain=${cleanUrl(_url)}`
+}
+
 const onLoadURL = (target?: string) => {
   if(!target) return
 
@@ -85,31 +107,47 @@ const onLoadURL = (target?: string) => {
   }
 
   if(!view.loaded) {
+    const render = getRender()
+
     setTimeout(() => {
-      getRender()?.loadURL(url)
+      render?.loadURL(url).catch(({ message }) => {
+        if(message.indexOf("GUEST_VIEW_MANAGER_CALL") > -1) {
+          // TODO: Reload page
+        }
+      })
     }, 200)
 
     NAVIGATOR.views[NAVIGATOR.activeTab].loaded = true
+
+    const callback = NAVIGATOR.views[NAVIGATOR.activeTab]
+
+    render?.addEventListener('will-frame-navigate', (src) => {
+      if(src.url === callback.url) return
+
+      if(src.url.includes('recaptcha')) return
+
+      onRefreshURL(callback.id, src.url)
+    })
   }
 
-  const cleanUrl = (url: string): string => {
-  // url에서 호스트만 추출한다.
-    let cleanedUrl = url.includes("https")
-      ? url.slice(8)
-      : url.includes("http") && url.slice(7);
-
-    if(!cleanedUrl) return ''
-
-    return cleanedUrl.includes("/") ? cleanedUrl.split("/")[0] : cleanedUrl;
-  };
-
-  NAVIGATOR.views[NAVIGATOR.activeTab].icon = `http://www.google.com/s2/favicons?domain=${cleanUrl(url)}`
+  NAVIGATOR.views[NAVIGATOR.activeTab].icon = getFavicon(url)
   NAVIGATOR.views[NAVIGATOR.activeTab].url = url
 
   NAVIGATOR.stateLink.url = url
   NAVIGATOR.actuallyLink.url = url
   NAVIGATOR.stateLink.loadedURL = 'webview'
 
+}
+
+const onRefreshURL = (_id: string, url: string) => {
+  const tab = NAVIGATOR.views.find(({ id }) => id === _id)
+
+  if(tab) {
+    const index = NAVIGATOR.views.indexOf(tab)
+
+    NAVIGATOR.views[index].icon = getFavicon(url)
+    NAVIGATOR.actuallyLink.url = url
+  }
 }
 
 const onLoadTab = (tab: HeaderTabItem, removed?: boolean) => {
