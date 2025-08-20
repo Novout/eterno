@@ -94,7 +94,9 @@ const onLoadURL = (target?: string) => {
   let url = target
 
   if(!regex.validateUrl(target)) {
-    if(OPTIONS.searchProvider === 'google') {
+    if(url.endsWith('.com')) {
+      url = `https://${url}`
+    } else if(OPTIONS.searchProvider === 'google') {
       url = `https://www.google.com/search?q=${target}`
     }
   }
