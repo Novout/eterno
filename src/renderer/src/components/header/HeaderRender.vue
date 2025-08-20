@@ -47,7 +47,7 @@ const getRender = () => {
 }
 
 const onSearch = (url?: string) => {
-  const target = url || NAVIGATOR.actuallyLink.url
+  const target = url || NAVIGATOR.actuallyLink.url || ''
 
   onLoadURL(target)
 }

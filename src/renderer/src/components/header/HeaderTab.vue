@@ -10,7 +10,7 @@
     <img v-if="props.tab.icon" class="pl-4" :src="props.tab.icon" alt="icon from target website" />
     <IconAudioOn @click="onMutedSound" class="h-5 w-5 cursor-pointer text-white" v-if="audio === 'on'" />
     <IconAudioMuted @click="onActiveSound" class="h-5 w-5 cursor-pointer text-white" v-else-if="audio === 'muted'" />
-    <p :class="[views[NAVIGATION.activeTab] === props.tab && views.length > 20 ? 'hidden' : '']" class="text-white truncate">{{ props.tab.title }}</p>
+    <p :class="[views[NAVIGATION.activeTab] === props.tab && views.length > 20 ? 'hidden' : '']" class="text-white truncate raleway">{{ props.tab.title }}</p>
     <IconTabClose v-if="NAVIGATION.views.length !== 1" @click="onCloseTab" :class="[views[NAVIGATION.activeTab] === props.tab && views.length > 20 ? 'absolute' : 'flex']" class="h-5 w-5 cursor-pointer text-white" />
   </div>
 </template>
