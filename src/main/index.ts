@@ -11,9 +11,10 @@ function createWindow(): void {
     show: false,
     fullscreen: false,
     autoHideMenuBar: true,
-    ...(process.platform === 'linux' ? { icon } : {}),
+    icon,
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
+      nodeIntegration: true,
       sandbox: false,
       webviewTag: true
     }
