@@ -44,9 +44,7 @@
 
 <script setup lang="ts">
 import { v4 as uuidv4 } from 'uuid'
-import { useRegex } from '../../use/regex'
 import { HeaderTabItem } from '../../types'
-import { useOptionsStore } from '../../stores/options'
 import { useNavigatorStore } from '../../stores/navigator'
 import { WebviewTag } from 'electron/renderer'
 import { onMounted, ref } from 'vue'
@@ -54,12 +52,12 @@ import { usePubsub } from 'vue-pubsub'
 import { useI18n } from 'vue-i18n'
 import { useEventListener } from '@vueuse/core'
 import draggable from 'vuedraggable'
+import { useSearchProvider } from '../../use/searchProvider'
 
-const regex = useRegex()
 const pubsub = usePubsub()
 const { t } = useI18n()
+const searchProvider = useSearchProvider()
 
-const OPTIONS = useOptionsStore()
 const NAVIGATOR = useNavigatorStore()
 
 const input = ref<HTMLInputElement | null>(null)
@@ -162,16 +160,6 @@ const onLoadURL = (target?: string) => {
 
   if (!target) return
 
-  let url = target
-
-  if (!regex.validateUrl(target)) {
-    if (url.endsWith('.com')) {
-      url = `https://${url}`
-    } else if (OPTIONS.searchProvider === 'google') {
-      url = `https://www.google.com/search?q=${target}`
-    }
-  }
-
   let view = NAVIGATOR.views[NAVIGATOR.activeTab]
 
   if (!view) {
@@ -220,6 +208,8 @@ const onLoadURL = (target?: string) => {
       NAVIGATOR.views[NAVIGATOR.activeTab].title = title
     })
   }
+
+  const url = searchProvider.getCorrectSearchURL(target)
 
   NAVIGATOR.views[NAVIGATOR.activeTab].icon = getFavicon(url)
   NAVIGATOR.views[NAVIGATOR.activeTab].url = url

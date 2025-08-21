@@ -21,5 +21,5 @@ export interface NavigatorState {
 }
 
 export interface OptionsState {
-  searchProvider: 'google'
+  searchProvider: 'google' | 'bing' | 'duckduckgo' | 'empty'
 }
