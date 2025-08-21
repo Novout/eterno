@@ -39,6 +39,23 @@
         autocomplete="true"
       />
     </div>
+    <teleport to="body">
+      <section
+        v-if="showSuggest"
+        class="flex flex-col absolute bg-secondary top-20 left-18 w-70% max-h-45 overflow-y-auto overflow-x-hidden rounded-lg"
+      >
+        <div
+          v-for="item in historyFiltered"
+          class="flex justify-between transition-colors hover:bg-primary border-b-black border-2 py-2 raleway items-center gap-5 w-full p-2"
+        >
+          <div @click="onGoSuggest(item.url)" class="flex items-center cursor-pointer gap-5">
+            <h2 class="text-white max-w-50% truncate text-base">{{ item.title }}</h2>
+            <p class="text-white truncate text-sm">{{ item.url }}</p>
+          </div>
+          <IconTabClose @click="onGoRemove(item)" class="h-5 w-5 text-white cursor-pointer" />
+        </div>
+      </section>
+    </teleport>
   </header>
 </template>
 
@@ -47,20 +64,30 @@ import { v4 as uuidv4 } from 'uuid'
 import { HeaderTabItem } from '../../types'
 import { useNavigatorStore } from '../../stores/navigator'
 import { WebviewTag } from 'electron/renderer'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { usePubsub } from 'vue-pubsub'
 import { useI18n } from 'vue-i18n'
 import { useEventListener } from '@vueuse/core'
 import draggable from 'vuedraggable'
 import { useSearchProvider } from '../../use/searchProvider'
+import { useHistoryStore } from '../../stores/history'
 
 const pubsub = usePubsub()
 const { t } = useI18n()
 const searchProvider = useSearchProvider()
 
 const NAVIGATOR = useNavigatorStore()
+const HISTORY = useHistoryStore()
 
 const input = ref<HTMLInputElement | null>(null)
+
+const showSuggest = ref<boolean>(false)
+
+const historyFiltered = computed(() =>
+  HISTORY.list.filter((item) =>
+    item.url.toLowerCase().includes(NAVIGATOR.actuallyLink.url.toLowerCase())
+  )
+)
 
 const getRender = (id?: number) => {
   return document.querySelector<WebviewTag>(
@@ -90,7 +117,21 @@ onMounted(() => {
       input.value?.select()
     }, 100)
   })
+
+  useEventListener(input, 'input', (e) => {
+    showSuggest.value = true
+  })
 })
+
+const onGoSuggest = (url: string) => {
+  showSuggest.value = false
+
+  onSearch(url)
+}
+
+const onGoRemove = (item: { title: string; url: string }) => {
+  HISTORY.list = HISTORY.list.filter((target) => target.url !== item.url)
+}
 
 const onDragChange = ({ moved }) => {
   if (NAVIGATOR.activeTab === moved.oldIndex) {
@@ -216,6 +257,14 @@ const onLoadURL = (target?: string) => {
   NAVIGATOR.views[NAVIGATOR.activeTab].icon = getFavicon(url)
   NAVIGATOR.views[NAVIGATOR.activeTab].url = url
 
+  try {
+    const title = render?.getTitle() || NAVIGATOR.views[NAVIGATOR.activeTab].title
+
+    if (!HISTORY.list.find((item) => item.url === url)) {
+      HISTORY.list.push({ title, url })
+    }
+  } catch (e) {}
+
   NAVIGATOR.stateLink.url = url
   NAVIGATOR.actuallyLink.url = url
   NAVIGATOR.stateLink.loadedURL = 'webview'
@@ -229,7 +278,13 @@ const onRefreshURL = (_id: string, url: string) => {
     const render = getRender(index)
 
     try {
-      NAVIGATOR.views[index].title = render?.getTitle() || NAVIGATOR.views[index].title
+      const title = render?.getTitle() || NAVIGATOR.views[index].title
+
+      if (!HISTORY.list.find((item) => item.url === url)) {
+        HISTORY.list.push({ title, url })
+      }
+
+      NAVIGATOR.views[index].title = title
       NAVIGATOR.views[index].icon = getFavicon(url)
     } catch (e) {}
     NAVIGATOR.actuallyLink.url = url

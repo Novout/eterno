@@ -23,3 +23,10 @@ export interface NavigatorState {
 export interface OptionsState {
   searchProvider: 'google' | 'bing' | 'duckduckgo' | 'empty'
 }
+
+export interface HistoryState {
+  list: {
+    title: string
+    url: string
+  }[]
+}

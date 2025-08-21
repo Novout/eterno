@@ -10,6 +10,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     DefaultPage: typeof import('./src/components/main/page/DefaultPage.vue')['default']
     HeaderRender: typeof import('./src/components/header/HeaderRender.vue')['default']
+    HeaderSuggest: typeof import('./src/components/header/HeaderSuggest.vue')['default']
     HeaderTab: typeof import('./src/components/header/HeaderTab.vue')['default']
     IconAdd: typeof import('./src/components/icons/IconAdd.vue')['default']
     IconAudioMuted: typeof import('./src/components/icons/IconAudioMuted.vue')['default']
