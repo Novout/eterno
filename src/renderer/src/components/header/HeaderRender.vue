@@ -194,11 +194,13 @@ const onLoadURL = (target?: string) => {
       const callback = NAVIGATOR.views[NAVIGATOR.activeTab]
 
       setTimeout(() => {
-        const url = render?.getURL()
+        try {
+          const url = render?.getURL()
 
-        if (!url || url === callback.url) return
+          if (!url || url === callback.url) return
 
-        onRefreshURL(callback.id, url)
+          onRefreshURL(callback.id, url)
+        } catch (e) {}
       }, 200)
     }
 
@@ -234,8 +236,10 @@ const onRefreshURL = (_id: string, url: string) => {
     const index = NAVIGATOR.views.indexOf(tab)
     const render = getRender()
 
-    NAVIGATOR.views[index].title = render?.getTitle() || NAVIGATOR.views[index].title
-    NAVIGATOR.views[index].icon = getFavicon(url)
+    try {
+      NAVIGATOR.views[index].title = render?.getTitle() || NAVIGATOR.views[index].title
+      NAVIGATOR.views[index].icon = getFavicon(url)
+    } catch (e) {}
     NAVIGATOR.actuallyLink.url = url
   }
 }

@@ -78,10 +78,12 @@ onMounted(() => {
 
   reader?.addEventListener('dom-ready', () => {
     setInterval(() => {
-      if (reader?.isCurrentlyAudible() && !asAudio.value) {
-        audio.value = 'on'
-        asAudio.value = true
-      }
+      try {
+        if (reader?.isCurrentlyAudible() && !asAudio.value) {
+          audio.value = 'on'
+          asAudio.value = true
+        }
+      } catch (e) {}
     }, 1000)
   })
 })
