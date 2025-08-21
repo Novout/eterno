@@ -1,17 +1,28 @@
 <template>
   <header class="flex flex-col justify-start items-center w-full h-30 bg-primary">
-    <div class="flex items-center w-full bg-tertiary h-10">
-      <HeaderTab
-        @close="onCloseTab"
-        @load="onLoadTab"
-        :class="[
-          NAVIGATOR.views[NAVIGATOR.activeTab] !== tab
-            ? 'bg-secondary hover:bg-tab-focus'
-            : 'bg-primary'
-        ]"
-        v-for="tab in NAVIGATOR.views"
-        :tab="tab"
-      />
+    <div class="flex items-center w-full bg-tertiary h-10 p-0">
+      <draggable
+        class="list-group flex p-0"
+        item-key="order"
+        tag="transition-group"
+        :component-data="{ tag: 'ul', name: 'flip-list', type: 'transition' }"
+        v-model="NAVIGATOR.views"
+        @start=""
+        @change="onDragChange"
+      >
+        <template #item="{ element }">
+          <HeaderTab
+            @close="onCloseTab"
+            @load="onLoadTab"
+            :class="[
+              NAVIGATOR.views[NAVIGATOR.activeTab] !== element
+                ? 'bg-secondary hover:bg-tab-focus'
+                : 'bg-primary'
+            ]"
+            :tab="element"
+          />
+        </template>
+      </draggable>
       <div class="min-w-10 flex items-center justify-center">
         <IconAdd @click="onAddPage" class="h-5 w-5 text-white cursor-pointer" />
       </div>
@@ -42,6 +53,7 @@ import { onMounted, ref } from 'vue'
 import { usePubsub } from 'vue-pubsub'
 import { useI18n } from 'vue-i18n'
 import { useEventListener } from '@vueuse/core'
+import draggable from 'vuedraggable'
 
 const regex = useRegex()
 const pubsub = usePubsub()
@@ -80,6 +92,12 @@ onMounted(() => {
   })
 })
 
+const onDragChange = ({ moved }) => {
+  if (NAVIGATOR.activeTab === moved.oldIndex) {
+    NAVIGATOR.activeTab = moved.newIndex
+  }
+}
+
 const onSearch = (url?: string) => {
   const target = url ?? NAVIGATOR.actuallyLink.url ?? ''
 
@@ -93,10 +111,10 @@ const onReloadPage = () => {
 const onSetState = (back: boolean) => {
   const render = getRender()
 
-  if(back) {
-    if(render?.canGoBack()) render?.goBack()
+  if (back) {
+    if (render?.canGoBack()) render?.goBack()
   } else {
-    if(render?.canGoForward()) render?.goForward()
+    if (render?.canGoForward()) render?.goForward()
   }
 
   setTimeout(() => {

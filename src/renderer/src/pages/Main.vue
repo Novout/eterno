@@ -25,16 +25,16 @@ onMounted(() => {
   pubsub.to('add-first-page', '')
 
   useEventListener(main, 'mouseup', ({ button }) => {
-    if(NAVIGATOR.stateLink.loadedURL !== 'webview') return
+    if (NAVIGATOR.stateLink.loadedURL !== 'webview') return
 
     switch (button) {
       case 3:
         pubsub.to('view-back-in-view', '')
-        break;
+        break
       case 4:
         pubsub.to('view-forward-in-view', '')
-        break;
-      }
+        break
+    }
   })
 })
 </script>
