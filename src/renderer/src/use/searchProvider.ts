@@ -1,5 +1,5 @@
-import { useOptionsStore } from "../stores/options"
-import { useRegex } from "./regex"
+import { useOptionsStore } from '../stores/options'
+import { useRegex } from './regex'
 
 export const useSearchProvider = () => {
   const OPTIONS = useOptionsStore()
@@ -14,10 +14,10 @@ export const useSearchProvider = () => {
         target = `https://${url}`
       } else {
         target = {
-          'google': `https://www.google.com/search?q=${url}`,
-          'bing': `https://www.bing.com/search?q=${url}`,
-          'duckduckgo': `https://duckduckgo.com/?q=${url}`,
-          'empty': 'https://'
+          google: `https://www.google.com/search?q=${url}`,
+          bing: `https://www.bing.com/search?q=${url}`,
+          duckduckgo: `https://duckduckgo.com/?q=${url}`,
+          empty: 'https://'
         }[OPTIONS.searchProvider]
       }
     }

@@ -9,5 +9,36 @@ export default defineConfig({
       tertiary: '#555555ff',
       tabFocus: '#272727ff'
     }
-  }
+  },
+  preflights: [
+    {
+      getCSS: ({ theme }) => `
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        font-weight: normal;
+      }
+
+      *:focus {
+        outline: none;
+      }
+
+      textarea:focus,
+      input:focus {
+        outline: none;
+      }
+
+      ul {
+        list-style: none;
+      }
+
+      body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+    `
+    }
+  ]
 })

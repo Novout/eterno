@@ -33,7 +33,7 @@
       <input
         ref="input"
         @keyup.enter="onSearch()"
-        class="bg-secondary rounded-xl text-white border-gray border-solid border-1 border-none h-8 p-2 w-full"
+        class="bg-secondary hover:bg-primary transition-colors rounded-xl text-white border-gray hover:border-white border-solid border-1 border-none h-8 p-2 w-full"
         type="text"
         v-model="NAVIGATOR.actuallyLink.url"
         autocomplete="true"
@@ -63,7 +63,9 @@ const NAVIGATOR = useNavigatorStore()
 const input = ref<HTMLInputElement | null>(null)
 
 const getRender = (id?: number) => {
-  return document.querySelector<WebviewTag>(`#__render_${NAVIGATOR.views[id || NAVIGATOR.activeTab].id}`)
+  return document.querySelector<WebviewTag>(
+    `#__render_${NAVIGATOR.views[id || NAVIGATOR.activeTab].id}`
+  )
 }
 
 pubsub.on('load-view-from-url', (url: any) => {
