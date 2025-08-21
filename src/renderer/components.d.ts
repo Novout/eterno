@@ -16,6 +16,8 @@ declare module 'vue' {
     IconAudioMuted: typeof import('./src/components/icons/IconAudioMuted.vue')['default']
     IconAudioOn: typeof import('./src/components/icons/IconAudioOn.vue')['default']
     IconBack: typeof import('./src/components/icons/IconBack.vue')['default']
+    IconFavoriteOff: typeof import('./src/components/icons/IconFavoriteOff.vue')['default']
+    IconFavoriteOn: typeof import('./src/components/icons/IconFavoriteOn.vue')['default']
     IconReload: typeof import('./src/components/icons/IconReload.vue')['default']
     IconSpinner: typeof import('./src/components/icons/IconSpinner.vue')['default']
     IconTabClose: typeof import('./src/components/icons/IconTabClose.vue')['default']

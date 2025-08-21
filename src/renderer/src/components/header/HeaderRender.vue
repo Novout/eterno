@@ -38,6 +38,12 @@
         v-model="NAVIGATOR.actuallyLink.url"
         autocomplete="true"
       />
+      <IconFavoriteOn
+        @click="onUnfavorite"
+        v-if="HISTORY.fav.find((item) => item.url === NAVIGATOR.actuallyLink.url)"
+        class="w-5 h-5 text-white cursor-pointer"
+      />
+      <IconFavoriteOff v-else @click="onFavorite" class="w-5 h-5 text-white cursor-pointer" />
     </div>
     <teleport to="body">
       <section
@@ -56,6 +62,45 @@
         </div>
       </section>
     </teleport>
+    <div
+      class="flex w-full gap-2 items-center overflow-x-auto overflow-y-hidden"
+      v-if="HISTORY.fav.length > 0"
+    >
+      <draggable
+        class="list-group flex gap-2 max-w-20"
+        item-key="order"
+        tag="transition-group"
+        :component-data="{ tag: 'ul', name: 'flip-list', type: 'transition' }"
+        v-model="HISTORY.fav"
+        @start=""
+        @change=""
+      >
+        <template #item="{ element }">
+          <div
+            :class="[
+              HISTORY.fav.length < 4
+                ? 'max-w-60'
+                : HISTORY.fav.length < 6
+                  ? 'max-w-50'
+                  : HISTORY.fav.length < 8
+                    ? 'max-w-36'
+                    : HISTORY.fav.length < 10
+                      ? 'max-w-28'
+                      : HISTORY.fav.length < 12
+                        ? 'max-w-12'
+                        : HISTORY.fav.length < 15
+                          ? 'max-w-10'
+                          : 'max-w-6'
+            ]"
+            @click="onSearch(element.url)"
+            class="flex cursor-pointer gap-2"
+          >
+            <img class="w-6 h-6" :src="element.icon" alt="site icon" />
+            <h2 class="text-base text-white truncate">{{ element.title }}</h2>
+          </div>
+        </template>
+      </draggable>
+    </div>
   </header>
 </template>
 
@@ -71,6 +116,7 @@ import { useEventListener } from '@vueuse/core'
 import draggable from 'vuedraggable'
 import { useSearchProvider } from '../../use/searchProvider'
 import { useHistoryStore } from '../../stores/history'
+import { format } from 'date-fns'
 
 const pubsub = usePubsub()
 const { t } = useI18n()
@@ -84,7 +130,7 @@ const input = ref<HTMLInputElement | null>(null)
 const showSuggest = ref<boolean>(false)
 
 const historyFiltered = computed(() =>
-  HISTORY.list.filter((item) =>
+  HISTORY.search.filter((item) =>
     item.url.toLowerCase().includes(NAVIGATOR.actuallyLink.url.toLowerCase())
   )
 )
@@ -118,10 +164,28 @@ onMounted(() => {
     }, 100)
   })
 
-  useEventListener(input, 'input', (e) => {
+  useEventListener(input, 'input', () => {
+    if (!input.value?.value) return
+
     showSuggest.value = true
   })
 })
+
+const onUnfavorite = () => {
+  HISTORY.fav = HISTORY.fav.filter((item) => item.url !== NAVIGATOR.actuallyLink.url)
+}
+
+const onFavorite = () => {
+  const url = NAVIGATOR.actuallyLink.url
+
+  try {
+    HISTORY.fav.push({
+      title: getRender()?.getTitle() || NAVIGATOR.views[NAVIGATOR.activeTab].title,
+      icon: getFavicon(url),
+      url
+    })
+  } catch (e) {}
+}
 
 const onGoSuggest = (url: string) => {
   showSuggest.value = false
@@ -130,7 +194,7 @@ const onGoSuggest = (url: string) => {
 }
 
 const onGoRemove = (item: { title: string; url: string }) => {
-  HISTORY.list = HISTORY.list.filter((target) => target.url !== item.url)
+  HISTORY.search = HISTORY.search.filter((target) => target.url !== item.url)
 }
 
 const onDragChange = ({ moved }) => {
@@ -260,8 +324,8 @@ const onLoadURL = (target?: string) => {
   try {
     const title = render?.getTitle() || NAVIGATOR.views[NAVIGATOR.activeTab].title
 
-    if (!HISTORY.list.find((item) => item.url === url)) {
-      HISTORY.list.push({ title, url })
+    if (!HISTORY.search.find((item) => item.url === url)) {
+      HISTORY.search.push({ title, url, date: format(new Date(), 'MM/dd/yyyy h:mm a') })
     }
   } catch (e) {}
 
@@ -280,8 +344,8 @@ const onRefreshURL = (_id: string, url: string) => {
     try {
       const title = render?.getTitle() || NAVIGATOR.views[index].title
 
-      if (!HISTORY.list.find((item) => item.url === url)) {
-        HISTORY.list.push({ title, url })
+      if (!HISTORY.search.find((item) => item.url === url)) {
+        HISTORY.search.push({ title, url, date: format(new Date(), 'MM/dd/yyyy h:mm a') })
       }
 
       NAVIGATOR.views[index].title = title

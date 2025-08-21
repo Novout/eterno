@@ -38,6 +38,22 @@ export default defineConfig({
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
       }
+
+      ::-webkit-scrollbar {
+        width: 3px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: ${theme.colors?.primary};
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: ${theme.colors?.secondary};
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: ${theme.colors?.tertiary};
+      }
     `
     }
   ]

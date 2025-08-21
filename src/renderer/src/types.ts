@@ -24,9 +24,19 @@ export interface OptionsState {
   searchProvider: 'google' | 'bing' | 'duckduckgo' | 'empty'
 }
 
+export interface HistorySearchItem {
+  title: string
+  url: string
+  date: string
+}
+
+export interface HistoryFavItem {
+  title: string
+  url: string
+  icon: string
+}
+
 export interface HistoryState {
-  list: {
-    title: string
-    url: string
-  }[]
+  search: HistorySearchItem[]
+  fav: HistoryFavItem[]
 }
