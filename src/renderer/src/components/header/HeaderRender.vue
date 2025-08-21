@@ -62,8 +62,8 @@ const NAVIGATOR = useNavigatorStore()
 
 const input = ref<HTMLInputElement | null>(null)
 
-const getRender = () => {
-  return document.querySelector<WebviewTag>(`#__render_${NAVIGATOR.views[NAVIGATOR.activeTab].id}`)
+const getRender = (id?: number) => {
+  return document.querySelector<WebviewTag>(`#__render_${NAVIGATOR.views[id || NAVIGATOR.activeTab].id}`)
 }
 
 pubsub.on('load-view-from-url', (url: any) => {
@@ -224,7 +224,7 @@ const onRefreshURL = (_id: string, url: string) => {
 
   if (tab) {
     const index = NAVIGATOR.views.indexOf(tab)
-    const render = getRender()
+    const render = getRender(index)
 
     try {
       NAVIGATOR.views[index].title = render?.getTitle() || NAVIGATOR.views[index].title
