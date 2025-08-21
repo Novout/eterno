@@ -38,9 +38,10 @@ import { HeaderTabItem } from '../../types'
 import { useOptionsStore } from '../../stores/options'
 import { useNavigatorStore } from '../../stores/navigator'
 import { WebviewTag } from 'electron/renderer'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { usePubsub } from 'vue-pubsub'
 import { useI18n } from 'vue-i18n'
+import { useEventListener } from '@vueuse/core'
 
 const regex = useRegex()
 const pubsub = usePubsub()
@@ -69,6 +70,14 @@ pubsub.on('view-back-in-view', () => {
 
 pubsub.on('view-forward-in-view', () => {
   onSetState(false)
+})
+
+onMounted(() => {
+  useEventListener(input, 'focus', () => {
+    setTimeout(() => {
+      input.value?.select()
+    }, 100)
+  })
 })
 
 const onSearch = (url?: string) => {
