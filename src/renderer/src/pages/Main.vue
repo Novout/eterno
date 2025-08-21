@@ -1,5 +1,5 @@
 <template>
-  <main class="overflow-hidden">
+  <main ref="main" class="overflow-hidden">
     <HeaderRender />
     <RenderWebView />
     <DefaultPage
@@ -10,15 +10,31 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useNavigatorStore } from '../stores/navigator'
 import { usePubsub } from 'vue-pubsub'
+import { useEventListener } from '@vueuse/core'
 
 const NAVIGATOR = useNavigatorStore()
 
 const pubsub = usePubsub()
 
+const main = ref<HTMLElement | null>(null)
+
 onMounted(() => {
   pubsub.to('add-first-page', '')
+
+  useEventListener(main, 'mouseup', ({ button }) => {
+    if(NAVIGATOR.stateLink.loadedURL !== 'webview') return
+
+    switch (button) {
+      case 3:
+        pubsub.to('view-back-in-view', '')
+        break;
+      case 4:
+        pubsub.to('view-forward-in-view', '')
+        break;
+      }
+  })
 })
 </script>

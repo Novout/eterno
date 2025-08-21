@@ -17,7 +17,7 @@
       </div>
     </div>
     <div class="flex w-full items-center gap-2 p-2">
-      <IconBack @click="onBackPage" class="text-white w-6 h-6 cursor-pointer" />
+      <IconBack @click="onSetState(true)" class="text-white w-6 h-6 cursor-pointer" />
       <IconReload @click="onReloadPage" class="text-white w-6 h-6 cursor-pointer" />
       <input
         ref="input"
@@ -51,6 +51,10 @@ const NAVIGATOR = useNavigatorStore()
 
 const input = ref<HTMLInputElement | null>(null)
 
+const getRender = () => {
+  return document.querySelector<WebviewTag>(`#__render_${NAVIGATOR.views[NAVIGATOR.activeTab].id}`)
+}
+
 pubsub.on('load-view-from-url', (url: any) => {
   onSearch(url)
 })
@@ -59,9 +63,13 @@ pubsub.on('add-first-page', () => {
   onAddPage()
 })
 
-const getRender = () => {
-  return document.querySelector<WebviewTag>(`#__render_${NAVIGATOR.views[NAVIGATOR.activeTab].id}`)
-}
+pubsub.on('view-back-in-view', () => {
+  onSetState(true)
+})
+
+pubsub.on('view-forward-in-view', () => {
+  onSetState(false)
+})
 
 const onSearch = (url?: string) => {
   const target = url ?? NAVIGATOR.actuallyLink.url ?? ''
@@ -73,15 +81,21 @@ const onReloadPage = () => {
   getRender()?.reload()
 }
 
-const onBackPage = () => {
-  getRender()?.goBack()
+const onSetState = (back: boolean) => {
+  const render = getRender()
+
+  if(back) {
+    if(render?.canGoBack()) render?.goBack()
+  } else {
+    if(render?.canGoForward()) render?.goForward()
+  }
 
   setTimeout(() => {
     const url = getRender()?.getURL()
     const callback = NAVIGATOR.views[NAVIGATOR.activeTab]
 
     if (url) onRefreshURL(callback.id, url)
-  }, 500)
+  }, 200)
 }
 
 const onAddPage = () => {
