@@ -47,79 +47,11 @@
       <IconProfileMin @click="onToggleProfile" class="w-5 h-5 text-white cursor-pointer" />
     </div>
     <teleport to="body">
-      <section
-        v-if="showSuggest"
-        class="flex flex-col absolute bg-secondary top-20 left-18 w-70% max-h-45 overflow-y-auto overflow-x-hidden rounded-lg"
-      >
-        <div
-          v-for="item in historyFiltered"
-          class="flex justify-between transition-colors hover:bg-primary border-b-black border-2 py-2 raleway items-center gap-5 w-full p-2"
-        >
-          <div @click="onGoSuggest(item.url)" class="flex items-center cursor-pointer gap-5">
-            <h2 class="text-white max-w-50% truncate text-base">{{ item.title }}</h2>
-            <p class="text-white truncate text-sm">{{ item.url }}</p>
-          </div>
-          <IconTabClose @click="onGoRemove(item)" class="h-5 w-5 text-white cursor-pointer" />
-        </div>
-      </section>
+      <HeaderSuggest v-if="showSuggest" />
     </teleport>
-    <div
-      class="flex w-full gap-2 items-center overflow-x-auto overflow-y-hidden"
-      v-if="HISTORY.fav.length > 0"
-    >
-      <draggable
-        class="list-group flex gap-2 max-w-20"
-        item-key="order"
-        tag="transition-group"
-        :component-data="{ tag: 'ul', name: 'flip-list', type: 'transition' }"
-        v-model="HISTORY.fav"
-        @start=""
-        @change=""
-      >
-        <template #item="{ element }">
-          <div
-            :class="[
-              HISTORY.fav.length < 4
-                ? 'max-w-60'
-                : HISTORY.fav.length < 6
-                  ? 'max-w-50'
-                  : HISTORY.fav.length < 8
-                    ? 'max-w-36'
-                    : HISTORY.fav.length < 10
-                      ? 'max-w-28'
-                      : HISTORY.fav.length < 12
-                        ? 'max-w-12'
-                        : HISTORY.fav.length < 15
-                          ? 'max-w-10'
-                          : 'max-w-6'
-            ]"
-            @click="onSearch(element.url)"
-            class="flex cursor-pointer gap-2"
-          >
-            <img class="w-6 h-6" :src="element.icon" alt="site icon" />
-            <h2 class="text-base text-white truncate">{{ element.title }}</h2>
-          </div>
-        </template>
-      </draggable>
-    </div>
+    <HeaderFavoriteBar />
     <teleport to="body">
-      <section
-        ref="profile"
-        v-if="showProfile"
-        class="flex flex-col p-5 gap-5 absolute bg-secondary top-20 right-5 w-70 max-h-60 overflow-y-auto overflow-x-hidden rounded-lg"
-      >
-        <div class="flex w-full items-center gap-5">
-          <img v-if="PROFILE.image" :src="PROFILE.image" alt="profile image" />
-          <IconProfile v-else class="text-white h-15 w-15" />
-          <h2 class="raleway-bold text-lg text-white">{{ PROFILE.name || 'Guest' }}</h2>
-        </div>
-        <div class="flex flex-col w-full text-white text-lg raleway">
-          <p>Level {{ PROFILE.xp.level }}</p>
-        </div>
-        <div class="flex flex-col w-full">
-          <p class="text-white raleway">{{ t('profile.conquests') }}</p>
-        </div>
-      </section>
+      <HeaderProfile v-if="showProfile" />
     </teleport>
   </header>
 </template>
@@ -130,14 +62,13 @@ import { HeaderTabItem } from '../../types'
 import { useNavigatorStore } from '../../stores/navigator'
 import { WebviewTag } from 'electron/renderer'
 import { format } from 'date-fns'
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { usePubsub } from 'vue-pubsub'
 import { useI18n } from 'vue-i18n'
 import { useEventListener } from '@vueuse/core'
 import draggable from 'vuedraggable'
 import { useSearchProvider } from '../../use/searchProvider'
 import { useHistoryStore } from '../../stores/history'
-import { useProfileStore } from '../../stores/profile'
 
 const pubsub = usePubsub()
 const { t } = useI18n()
@@ -145,19 +76,11 @@ const searchProvider = useSearchProvider()
 
 const NAVIGATOR = useNavigatorStore()
 const HISTORY = useHistoryStore()
-const PROFILE = useProfileStore()
 
 const input = ref<HTMLInputElement | null>(null)
-const profile = ref<HTMLElement | null>(null)
 
 const showSuggest = ref<boolean>(false)
 const showProfile = ref<boolean>(false)
-
-const historyFiltered = computed(() =>
-  HISTORY.search.filter((item) =>
-    item.url.toLowerCase().includes(NAVIGATOR.actuallyLink.url.toLowerCase())
-  )
-)
 
 const getRender = (id?: number) => {
   return document.querySelector<WebviewTag>(
@@ -213,16 +136,6 @@ const onFavorite = () => {
       url
     })
   } catch (e) {}
-}
-
-const onGoSuggest = (url: string) => {
-  showSuggest.value = false
-
-  onSearch(url)
-}
-
-const onGoRemove = (item: { title: string; url: string }) => {
-  HISTORY.search = HISTORY.search.filter((target) => target.url !== item.url)
 }
 
 const onDragChange = ({ moved }) => {

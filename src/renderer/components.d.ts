@@ -9,6 +9,8 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     DefaultPage: typeof import('./src/components/main/page/DefaultPage.vue')['default']
+    HeaderFavoriteBar: typeof import('./src/components/header/HeaderFavoriteBar.vue')['default']
+    HeaderProfile: typeof import('./src/components/header/HeaderProfile.vue')['default']
     HeaderRender: typeof import('./src/components/header/HeaderRender.vue')['default']
     HeaderSuggest: typeof import('./src/components/header/HeaderSuggest.vue')['default']
     HeaderTab: typeof import('./src/components/header/HeaderTab.vue')['default']
