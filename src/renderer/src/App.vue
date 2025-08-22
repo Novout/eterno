@@ -3,18 +3,24 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, onUnmounted } from 'vue'
+import { useData } from './use/data'
+import { useSharedStore } from './stores/shared'
 
-const { ipcRenderer } = window.require('electron')
+const SHARED = useSharedStore()
 
-const foo = async () => {
-  await ipcRenderer.invoke('store-set', 'foo', 'test')
-  const foo = await ipcRenderer.invoke('store-get', 'foo')
-
-  console.log(foo)
-}
+const data = useData()
 
 onMounted(() => {
-  foo()
+  data
+    .get('initialize')
+    .then((values) => {
+      if (values && typeof values !== 'string') SHARED.start(values)
+    })
+    .catch(() => {})
+})
+
+onUnmounted(() => {
+  SHARED.save()
 })
 </script>

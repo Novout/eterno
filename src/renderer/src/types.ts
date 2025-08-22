@@ -1,3 +1,5 @@
+export type DataKeys = 'initialize'
+
 export interface HeaderTabItem {
   icon: string
   title: string
