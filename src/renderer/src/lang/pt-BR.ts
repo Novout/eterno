@@ -15,5 +15,9 @@ export default {
   },
   profile: {
     conquests: 'Conquistas'
+  },
+  toast: {
+    errorInInitializeData:
+      'Ocorreu algum erro ao carregar os dados locais do navegador. Por favor, considere reiniciar o navegador.'
   }
 }

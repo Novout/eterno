@@ -1,11 +1,13 @@
 <template>
-  <main ref="main" class="overflow-hidden bg-primary px-1 pb-1">
+  <main ref="main" class="overflow-hidden bg-primary">
     <HeaderRender />
-    <RenderWebView />
-    <DefaultPage
-      v-if="NAVIGATOR.stateLink.loadedURL === 'default' || NAVIGATOR.views.length === 0"
-    />
-    <LoadPage v-else-if="NAVIGATOR.stateLink.loadedURL === 'loading'" />
+    <div class="px-1 pb-1">
+      <RenderWebView />
+      <DefaultPage
+        v-if="NAVIGATOR.stateLink.loadedURL === 'default' || NAVIGATOR.views.length === 0"
+      />
+      <LoadPage v-else-if="NAVIGATOR.stateLink.loadedURL === 'loading'" />
+    </div>
   </main>
 </template>
 
@@ -22,8 +24,6 @@ const pubsub = usePubsub()
 const main = ref<HTMLElement | null>(null)
 
 onMounted(() => {
-  pubsub.to('add-first-page', '')
-
   useEventListener(main, 'mouseup', ({ button }) => {
     if (NAVIGATOR.stateLink.loadedURL !== 'webview') return
 

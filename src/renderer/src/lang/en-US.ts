@@ -15,5 +15,9 @@ export default {
   },
   profile: {
     conquests: 'Conquests'
+  },
+  toast: {
+    errorInInitializeData:
+      'An error occurred while loading your browser local data. Please consider restarting your browser.'
   }
 }

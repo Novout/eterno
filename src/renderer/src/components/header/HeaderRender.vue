@@ -43,8 +43,15 @@
         v-if="HISTORY.fav.find((item) => item.url === NAVIGATOR.actuallyLink.url)"
         class="w-5 h-5 text-white cursor-pointer"
       />
-      <IconFavoriteOff v-else @click.prevent.stop="onFavorite" class="w-5 h-5 text-white cursor-pointer" />
-      <IconProfileMin @click.prevent.stop="onToggleProfile" class="w-5 h-5 text-white cursor-pointer" />
+      <IconFavoriteOff
+        v-else
+        @click.prevent.stop="onFavorite"
+        class="w-5 h-5 text-white cursor-pointer"
+      />
+      <IconProfileMin
+        @click.prevent.stop="onToggleProfile"
+        class="w-5 h-5 text-white cursor-pointer"
+      />
       <IconMenu @click.prevent.stop="onToggleMenu" class="w-5 h-5 text-white cursor-pointer" />
     </div>
     <teleport to="body">
