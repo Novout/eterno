@@ -9,5 +9,8 @@ export default {
     title: 'Eterno.',
     description: 'A lightweight browser.',
     placeholder: 'Look for something that interests you...'
+  },
+  profile: {
+    conquests: 'Conquests'
   }
 }

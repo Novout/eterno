@@ -24,6 +24,16 @@ export interface OptionsState {
   searchProvider: 'google' | 'bing' | 'duckduckgo' | 'empty'
 }
 
+export interface ProfileState {
+  name: string
+  image?: string
+  xp: {
+    level: number
+    level_amount: number
+  }
+  conquests: {}
+}
+
 export interface HistorySearchItem {
   title: string
   url: string

@@ -18,6 +18,8 @@ declare module 'vue' {
     IconBack: typeof import('./src/components/icons/IconBack.vue')['default']
     IconFavoriteOff: typeof import('./src/components/icons/IconFavoriteOff.vue')['default']
     IconFavoriteOn: typeof import('./src/components/icons/IconFavoriteOn.vue')['default']
+    IconProfile: typeof import('./src/components/icons/IconProfile.vue')['default']
+    IconProfileMin: typeof import('./src/components/icons/IconProfileMin.vue')['default']
     IconReload: typeof import('./src/components/icons/IconReload.vue')['default']
     IconSpinner: typeof import('./src/components/icons/IconSpinner.vue')['default']
     IconTabClose: typeof import('./src/components/icons/IconTabClose.vue')['default']
