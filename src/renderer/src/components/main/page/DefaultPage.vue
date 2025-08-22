@@ -36,10 +36,10 @@ const onInput = () => {
 }
 
 .logo {
-  transition: transform 0.5s ease-in-out; /* Smooth transition for transform */
+  transition: transform 0.5s ease-in-out;
 }
 
 .logo:hover {
-  transform: rotate(90deg); /* Rotates 90 degrees on hover */
+  transform: rotate(90deg);
 }
 </style>
