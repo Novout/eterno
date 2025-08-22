@@ -6,6 +6,18 @@ export const useSearchProvider = () => {
 
   const regex = useRegex()
 
+  const cleanUrl = (url: string): string => {
+    let cleanedUrl = url.includes('https') ? url.slice(8) : url.includes('http') && url.slice(7)
+
+    if (!cleanedUrl) return ''
+
+    return cleanedUrl.includes('/') ? cleanedUrl.split('/')[0] : cleanedUrl
+  }
+
+  const getFavicon = (url: string) => {
+    return `http://www.google.com/s2/favicons?domain=${cleanUrl(url)}`
+  }
+
   const getCorrectSearchURL = (url: string): string => {
     let target = url
 
@@ -25,5 +37,5 @@ export const useSearchProvider = () => {
     return target
   }
 
-  return { getCorrectSearchURL }
+  return { cleanUrl, getFavicon, getCorrectSearchURL }
 }

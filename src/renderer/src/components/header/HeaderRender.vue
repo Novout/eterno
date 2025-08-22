@@ -132,7 +132,7 @@ const onFavorite = () => {
   try {
     HISTORY.fav.push({
       title: getRender()?.getTitle() || NAVIGATOR.views[NAVIGATOR.activeTab].title,
-      icon: getFavicon(url),
+      icon: searchProvider.getFavicon(url),
       url
     })
   } catch (e) {}
@@ -191,18 +191,6 @@ const onAddPage = () => {
   input.value?.focus()
 }
 
-const getFavicon = (_url: string) => {
-  const cleanUrl = (url: string): string => {
-    let cleanedUrl = url.includes('https') ? url.slice(8) : url.includes('http') && url.slice(7)
-
-    if (!cleanedUrl) return ''
-
-    return cleanedUrl.includes('/') ? cleanedUrl.split('/')[0] : cleanedUrl
-  }
-
-  return `http://www.google.com/s2/favicons?domain=${cleanUrl(_url)}`
-}
-
 const onLoadURL = (target?: string) => {
   const render = getRender()
 
@@ -259,7 +247,7 @@ const onLoadURL = (target?: string) => {
 
   const url = searchProvider.getCorrectSearchURL(target)
 
-  NAVIGATOR.views[NAVIGATOR.activeTab].icon = getFavicon(url)
+  NAVIGATOR.views[NAVIGATOR.activeTab].icon = searchProvider.getFavicon(url)
   NAVIGATOR.views[NAVIGATOR.activeTab].url = url
 
   try {
@@ -290,7 +278,7 @@ const onRefreshURL = (_id: string, url: string) => {
       }
 
       NAVIGATOR.views[index].title = title
-      NAVIGATOR.views[index].icon = getFavicon(url)
+      NAVIGATOR.views[index].icon = searchProvider.getFavicon(url)
     } catch (e) {}
     NAVIGATOR.actuallyLink.url = url
   }
