@@ -28,7 +28,7 @@ export const useSharedStore = defineStore('shared', {
 
       // force webkit.loadUrl() in start browser
       const refreshNavigator = NAVIGATOR.$state
-      refreshNavigator.views = refreshNavigator.views.map(view => {
+      refreshNavigator.views = refreshNavigator.views.map((view) => {
         let _view = view
         _view.loaded = false
         return _view

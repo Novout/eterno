@@ -20,7 +20,7 @@ export default defineConfig({
   },
   renderer: {
     optimizeDeps: {
-      include: ['uuid', 'date-fns', 'vuedraggable'],
+      include: ['uuid', 'date-fns', 'vuedraggable']
     },
     plugins: [
       vue({
@@ -33,7 +33,7 @@ export default defineConfig({
       unocss(),
       Components({ dts: true }),
       FontaineTransform.vite({
-        fallbacks: ['BlinkMacSystemFont', 'Segoe UI', 'Helvetica Neue', 'Arial', 'Noto Sans'],
+        fallbacks: ['BlinkMacSystemFont', 'Segoe UI', 'Helvetica Neue', 'Arial', 'Noto Sans']
       })
     ]
   }

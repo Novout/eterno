@@ -1,4 +1,7 @@
 export default {
+  menu: {
+    historic: 'Histórico'
+  },
   views: {
     default: {
       title: 'Nova guia',

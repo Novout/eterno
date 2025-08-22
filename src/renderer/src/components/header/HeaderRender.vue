@@ -45,14 +45,14 @@
       />
       <IconFavoriteOff v-else @click="onFavorite" class="w-5 h-5 text-white cursor-pointer" />
       <IconProfileMin @click="onToggleProfile" class="w-5 h-5 text-white cursor-pointer" />
+      <IconMenu @click="onToggleMenu" class="w-5 h-5 text-white cursor-pointer" />
     </div>
     <teleport to="body">
       <HeaderSuggest v-if="showSuggest" />
+      <HeaderProfile v-if="showProfile" />
+      <HeaderMenu v-if="showMenu" />
     </teleport>
     <HeaderFavoriteBar />
-    <teleport to="body">
-      <HeaderProfile v-if="showProfile" />
-    </teleport>
   </header>
 </template>
 
@@ -61,7 +61,6 @@ import { v4 as uuidv4 } from 'uuid'
 import { HeaderTabItem } from '../../types'
 import { useNavigatorStore } from '../../stores/navigator'
 import { WebviewTag } from 'electron/renderer'
-import { format } from 'date-fns'
 import { onMounted, ref } from 'vue'
 import { usePubsub } from 'vue-pubsub'
 import { useI18n } from 'vue-i18n'
@@ -69,9 +68,11 @@ import { useEventListener } from '@vueuse/core'
 import draggable from 'vuedraggable'
 import { useSearchProvider } from '../../use/searchProvider'
 import { useHistoryStore } from '../../stores/history'
+import { useDate } from '../../use/date'
 
 const pubsub = usePubsub()
 const { t } = useI18n()
+const date = useDate()
 const searchProvider = useSearchProvider()
 
 const NAVIGATOR = useNavigatorStore()
@@ -81,6 +82,7 @@ const input = ref<HTMLInputElement | null>(null)
 
 const showSuggest = ref<boolean>(false)
 const showProfile = ref<boolean>(false)
+const showMenu = ref<boolean>(false)
 
 const getRender = (id?: number) => {
   return document.querySelector<WebviewTag>(
@@ -89,6 +91,12 @@ const getRender = (id?: number) => {
 }
 
 pubsub.on('load-view-from-url', (url: any) => {
+  onSearch(url)
+})
+
+pubsub.on('load-view-from-historic', (url: any) => {
+  onAddPage()
+
   onSearch(url)
 })
 
@@ -118,6 +126,10 @@ onMounted(() => {
   })
 })
 
+const onToggleMenu = () => {
+  showMenu.value = !showMenu.value
+}
+
 const onToggleProfile = () => {
   showProfile.value = !showProfile.value
 }
@@ -133,7 +145,8 @@ const onFavorite = () => {
     HISTORY.fav.push({
       title: getRender()?.getTitle() || NAVIGATOR.views[NAVIGATOR.activeTab].title,
       icon: searchProvider.getFavicon(url),
-      url
+      url,
+      date: ''
     })
   } catch (e) {}
 }
@@ -233,6 +246,19 @@ const onLoadURL = (target?: string) => {
     })
 
     render?.addEventListener('did-finish-load', () => {
+      try {
+        const title = render?.getTitle() || NAVIGATOR.views[NAVIGATOR.activeTab].title
+
+        if (title !== t('views.default.title') || NAVIGATOR.stateLink.loadedURL !== 'default') {
+          HISTORY.search.unshift({
+            title,
+            url,
+            date: date.getCommonDate(),
+            icon: searchProvider.getFavicon(url)
+          })
+        }
+      } catch (e) {}
+
       onUpdateTab()
     })
 
@@ -246,17 +272,10 @@ const onLoadURL = (target?: string) => {
   }
 
   const url = searchProvider.getCorrectSearchURL(target)
+  const icon = searchProvider.getFavicon(url)
 
-  NAVIGATOR.views[NAVIGATOR.activeTab].icon = searchProvider.getFavicon(url)
+  NAVIGATOR.views[NAVIGATOR.activeTab].icon = icon
   NAVIGATOR.views[NAVIGATOR.activeTab].url = url
-
-  try {
-    const title = render?.getTitle() || NAVIGATOR.views[NAVIGATOR.activeTab].title
-
-    if (!HISTORY.search.find((item) => item.url === url)) {
-      HISTORY.search.push({ title, url, date: format(new Date(), 'MM/dd/yyyy h:mm a') })
-    }
-  } catch (e) {}
 
   NAVIGATOR.stateLink.url = url
   NAVIGATOR.actuallyLink.url = url
@@ -272,10 +291,6 @@ const onRefreshURL = (_id: string, url: string) => {
 
     try {
       const title = render?.getTitle() || NAVIGATOR.views[index].title
-
-      if (!HISTORY.search.find((item) => item.url === url)) {
-        HISTORY.search.push({ title, url, date: format(new Date(), 'MM/dd/yyyy h:mm a') })
-      }
 
       NAVIGATOR.views[index].title = title
       NAVIGATOR.views[index].icon = searchProvider.getFavicon(url)

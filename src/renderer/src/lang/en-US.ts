@@ -1,4 +1,7 @@
 export default {
+  menu: {
+    historic: 'Historic'
+  },
   views: {
     default: {
       title: 'New tab',

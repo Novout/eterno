@@ -36,19 +36,14 @@ export interface ProfileState {
   conquests: {}
 }
 
-export interface HistorySearchItem {
+export interface HistoryItem {
   title: string
   url: string
   date: string
-}
-
-export interface HistoryFavItem {
-  title: string
-  url: string
   icon: string
 }
 
 export interface HistoryState {
-  search: HistorySearchItem[]
-  fav: HistoryFavItem[]
+  search: HistoryItem[]
+  fav: HistoryItem[]
 }

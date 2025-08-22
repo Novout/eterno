@@ -29,9 +29,9 @@ const pubsub = usePubsub()
 const showSuggest = ref<boolean>(false)
 
 const historyFiltered = computed(() =>
-  HISTORY.search.filter((item) =>
-    item.url.toLowerCase().includes(NAVIGATOR.actuallyLink.url.toLowerCase())
-  )
+  [...new Set(HISTORY.search)]
+    .filter((item) => item.url.toLowerCase().includes(NAVIGATOR.actuallyLink.url.toLowerCase()))
+    .filter((value, index, self) => index === self.findIndex((t) => t.url === value.url))
 )
 
 const onGoSuggest = (url: string) => {
