@@ -1,6 +1,7 @@
-import { app, shell, BrowserWindow } from 'electron'
+import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
+import Store from 'electron-store'
 import icon from '../../resources/icon.png?asset'
 
 function createWindow(): void {
@@ -16,7 +17,8 @@ function createWindow(): void {
       preload: join(__dirname, '../preload/index.js'),
       nodeIntegration: true,
       sandbox: false,
-      webviewTag: true
+      webviewTag: true,
+      contextIsolation: false
     }
   })
 
@@ -50,6 +52,20 @@ app.whenReady().then(() => {
   // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)
+  })
+
+  const store = new Store()
+
+  ipcMain.handle('store-get', (event, key: string) => {
+    // @ts-ignore
+    return store.get(key)
+  })
+
+  ipcMain.handle('store-set', (event, key: string, value?: unknown) => {
+    const store = new Store()
+
+    // @ts-ignore
+    return store.set(key, value)
   })
 
   createWindow()
