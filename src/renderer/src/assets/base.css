@@ -71,6 +71,6 @@
 }
 
 .webkit {
-  min-height: calc(100vh - 120px);
+  min-height: calc(100vh - 120px - 4px);
   width: 100%;
 }

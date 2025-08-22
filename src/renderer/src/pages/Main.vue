@@ -1,5 +1,5 @@
 <template>
-  <main ref="main" class="overflow-hidden">
+  <main ref="main" class="overflow-hidden bg-primary px-1 pb-1">
     <HeaderRender />
     <RenderWebView />
     <DefaultPage
