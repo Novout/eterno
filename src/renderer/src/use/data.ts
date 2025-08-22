@@ -1,4 +1,5 @@
 import { DataKeys } from '@renderer/types'
+import { destr } from "destr";
 
 export const useData = () => {
   const { ipcRenderer } = window.require('electron')
@@ -6,7 +7,7 @@ export const useData = () => {
   const get = async (key: DataKeys): Promise<Record<string, any> | undefined> => {
     const data = await ipcRenderer.invoke('store-get', key)
 
-    return JSON.parse(data)
+    return destr(data)
   }
 
   const set = async (key: DataKeys, value: string | Record<string, any>) => {
