@@ -30,7 +30,8 @@
                         : 'max-w-6'
           ]"
           @click="pubsub.to('load-view-from-url', element.url)"
-          class="flex cursor-pointer gap-2"
+          @click.right="HISTORY.fav = HISTORY.fav.filter((item) => item.url !== element.url)"
+          class="flex cursor-pointer gap-2 px-2 transition-colors hover:bg-secondary"
         >
           <img class="w-6 h-6" :src="element.icon" alt="site icon" />
           <h2 class="text-base text-white truncate">{{ element.title }}</h2>
@@ -42,6 +43,7 @@
 
 <script setup lang="ts">
 import { usePubsub } from 'vue-pubsub'
+import draggable from 'vuedraggable'
 import { useHistoryStore } from '../../stores/history'
 
 const HISTORY = useHistoryStore()
