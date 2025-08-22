@@ -1,4 +1,5 @@
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
+import { FontaineTransform } from 'fontaine'
 import { resolve } from 'path'
 import unocss from 'unocss/vite'
 import Components from 'unplugin-vue-components/vite'
@@ -18,6 +19,9 @@ export default defineConfig({
     plugins: [externalizeDepsPlugin()]
   },
   renderer: {
+    optimizeDeps: {
+      include: ['uuid', 'date-fns', 'vuedraggable'],
+    },
     plugins: [
       vue({
         template: {
@@ -27,7 +31,10 @@ export default defineConfig({
         }
       }),
       unocss(),
-      Components({ dts: true })
+      Components({ dts: true }),
+      FontaineTransform.vite({
+        fallbacks: ['BlinkMacSystemFont', 'Segoe UI', 'Helvetica Neue', 'Arial', 'Noto Sans'],
+      })
     ]
   }
 })
