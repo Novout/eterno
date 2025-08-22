@@ -1,6 +1,6 @@
 <template>
   <div class="gradient flex gap-10 flex-col items-center webkit w-full">
-    <img class="w-60 h-60 mt-10" src="../../../assets/logo.svg" alt="Eterno Logo" />
+    <img class="logo w-60 h-60 mt-10" src="../../../assets/logo.svg" alt="Eterno Logo" />
     <h1 class="poppins text-6xl">{{ t('default.title') }}</h1>
     <p class="poppins-light">{{ t('default.description') }}</p>
     <input
@@ -33,5 +33,13 @@ const onInput = () => {
 .gradient {
   background: #d5d8e8;
   background: linear-gradient(148deg, rgba(213, 216, 232, 1) 0%, rgba(255, 230, 230, 1) 100%);
+}
+
+.logo {
+  transition: transform 0.5s ease-in-out; /* Smooth transition for transform */
+}
+
+.logo:hover {
+  transform: rotate(90deg); /* Rotates 90 degrees on hover */
 }
 </style>
