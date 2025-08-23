@@ -2,6 +2,7 @@ import { useI18n } from 'vue-i18n'
 import { useSharedStore } from '@/stores/shared'
 import { useOptionsStore } from '@/stores/options'
 import { usePubsub } from 'vue-pubsub'
+import { useEnv } from './env'
 
 export const useController = () => {
   const SHARED = useSharedStore()
@@ -9,9 +10,10 @@ export const useController = () => {
 
   const { locale } = useI18n()
   const pubsub = usePubsub()
+  const env = useEnv()
 
   const init = (values) => {
-    if (!import.meta.env.DEV) {
+    if (!env.isDev()) {
       SHARED.start(values)
 
       locale.value = OPTIONS.$state.preferences.language

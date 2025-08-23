@@ -3,6 +3,9 @@ import { FontaineTransform } from 'fontaine'
 import { resolve } from 'path'
 import unocss from 'unocss/vite'
 import Components from 'unplugin-vue-components/vite'
+import version from 'vite-plugin-package-version'
+//import optimize from 'vite-plugin-optimize-persist'
+//import config from 'vite-plugin-package-config'
 // @ts-ignore
 import vue from '@vitejs/plugin-vue'
 
@@ -36,6 +39,9 @@ export default defineConfig({
         }
       }),
       unocss(),
+      version(),
+      //optimize(),
+      //config(),
       Components({ dts: true }),
       FontaineTransform.vite({
         fallbacks: ['BlinkMacSystemFont', 'Segoe UI', 'Helvetica Neue', 'Arial', 'Noto Sans']
