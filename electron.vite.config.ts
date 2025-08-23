@@ -4,6 +4,8 @@ import { resolve } from 'path'
 import unocss from 'unocss/vite'
 import Components from 'unplugin-vue-components/vite'
 import version from 'vite-plugin-package-version'
+import autoImport from 'unplugin-auto-import/vite'
+import checker from 'vite-plugin-checker'
 //import optimize from 'vite-plugin-optimize-persist'
 //import config from 'vite-plugin-package-config'
 // @ts-ignore
@@ -40,6 +42,13 @@ export default defineConfig({
       }),
       unocss(),
       version(),
+      autoImport({
+        include: [/\.[tj]sx?$/, /\.vue$/, /\.vue\?vue/],
+        imports: ['vue', 'vue-router']
+      }),
+      checker({
+        vueTsc: true
+      }),
       //optimize(),
       //config(),
       Components({ dts: true }),
