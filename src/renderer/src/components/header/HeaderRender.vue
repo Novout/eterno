@@ -127,7 +127,11 @@ onMounted(() => {
   })
 
   useEventListener(input, 'input', () => {
-    if (!input.value?.value) return
+    if (!NAVIGATOR.actuallyLink.url) {
+      showSuggest.value = false
+
+      return
+    }
 
     showSuggest.value = true
   })
