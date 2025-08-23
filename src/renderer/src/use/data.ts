@@ -1,5 +1,5 @@
 import { DataKeys } from '@renderer/types'
-import { destr } from "destr";
+import { destr } from 'destr'
 
 export const useData = () => {
   const { ipcRenderer } = window.require('electron')
