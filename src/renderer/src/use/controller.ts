@@ -21,6 +21,9 @@ export const useController = () => {
   }
 
   const close = () => {
+    // @ts-ignore
+    OPTIONS.$state.preferences.language = locale.value
+
     SHARED.save()
   }
 

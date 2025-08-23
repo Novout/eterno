@@ -35,10 +35,6 @@ export const useSharedStore = defineStore('shared', {
         return _view
       })
 
-      const { locale } = useI18n()
-      // @ts-ignore
-      OPTIONS.$state.preferences.language = locale.value
-
       data.set('initialize', {
         HISTORY: HISTORY.$state,
         NAVIGATOR: refreshNavigator,
