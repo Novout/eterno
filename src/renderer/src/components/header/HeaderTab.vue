@@ -19,7 +19,12 @@
     class="flex justify-center items-center gap-2 w-60 min-h-10 h-full cursor-pointer overflow-x-auto"
   >
     <IconSpinner v-if="!props.tab.loadedFavicon" class="h-4 w-4 text-white" />
-    <img v-else-if="props.tab.icon" class="pl-4" :src="props.tab.icon" alt="icon from target website" />
+    <img
+      v-else-if="props.tab.icon"
+      class="pl-4"
+      :src="props.tab.icon"
+      alt="icon from target website"
+    />
     <IconViewTab v-else class="text-white w-4 h-4" />
     <IconAudioOn
       @click="onMutedSound"

@@ -21,7 +21,7 @@ onMounted(() => {
     .then((values) => {
       if (values && typeof values !== 'string') CONTROLLER.init(values)
     })
-    .catch((e) => {
+    .catch(() => {
       toast.error(t('toast.errorInInitializeData'))
     })
 })

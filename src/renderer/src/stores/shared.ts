@@ -4,7 +4,6 @@ import { useNavigatorStore } from './navigator'
 import { useOptionsStore } from './options'
 import { useProfileStore } from './profile'
 import { useData } from '../use/data'
-import { useI18n } from 'vue-i18n'
 
 export const useSharedStore = defineStore('shared', {
   actions: {

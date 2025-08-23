@@ -63,12 +63,12 @@ app.whenReady().then(() => {
 
   const store = new Store()
 
-  ipcMain.handle('store-get', (event, key: string) => {
+  ipcMain.handle('store-get', (_, key: string) => {
     // @ts-ignore
     return store.get(key)
   })
 
-  ipcMain.handle('store-set', (event, key: string, value?: unknown) => {
+  ipcMain.handle('store-set', (_, key: string, value?: unknown) => {
     const store = new Store()
 
     // @ts-ignore
