@@ -6,6 +6,7 @@ export interface HeaderTabItem {
   url: string
   search: string
   loaded: boolean
+  loadedFavicon: boolean
   id: string
 }
 

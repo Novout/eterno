@@ -204,6 +204,7 @@ const onAddPage = () => {
     url: '',
     search: t('views.default.search'),
     loaded: false,
+    loadedFavicon: true,
     id: uuidv4()
   })
 
@@ -239,6 +240,7 @@ const onLoadURL = (target?: string) => {
     }, 200)
 
     NAVIGATOR.views[NAVIGATOR.activeTab].loaded = true
+    NAVIGATOR.views[NAVIGATOR.activeTab].loadedFavicon = false
 
     const onUpdateTab = () => {
       const callback = NAVIGATOR.views[NAVIGATOR.activeTab]
@@ -271,6 +273,8 @@ const onLoadURL = (target?: string) => {
           })
         }
       } catch (e) {}
+
+      NAVIGATOR.views[NAVIGATOR.activeTab].loadedFavicon = true
 
       onUpdateTab()
     })
