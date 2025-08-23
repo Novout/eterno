@@ -10,15 +10,15 @@
     "lint": "eslint --cache .",
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
     "typecheck:web": "vue-tsc --noEmit -p tsconfig.web.json --composite false",
-    "typecheck": "npm run typecheck:node && npm run typecheck:web",
+    "typecheck": "pnpm run typecheck:node && pnpm run typecheck:web",
     "start": "electron-vite preview",
     "dev": "electron-vite dev",
-    "build": "npm run typecheck && electron-vite build",
+    "build": "pnpm run typecheck && electron-vite build",
     "postinstall": "electron-builder install-app-deps",
-    "build:unpack": "npm run build && electron-builder --dir",
-    "build:win": "npm run build && electron-builder --win",
-    "build:mac": "npm run build && electron-builder --mac",
-    "build:linux": "npm run build && electron-builder --linux",
+    "build:unpack": "pnpm run build && electron-builder --dir",
+    "build:win": "pnpm run build && electron-builder --win",
+    "build:mac": "pnpm run build && electron-builder --mac",
+    "build:linux": "pnpm run build && electron-builder --linux",
     "version:patch": "generi log patch",
     "version:minor": "generi log minor",
     "version:major": "generi log major"
@@ -30,6 +30,8 @@
     "date-fns": "^4.1.0",
     "destr": "^2.0.5",
     "electron-updater": "^6.3.9",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.5",
     "nprogress": "^0.2.0",
     "pinia": "^3.0.3",
     "uuid": "^11.1.0",
@@ -67,5 +69,13 @@
       "electron",
       "esbuild"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*": "prettier --write"
   }
 }
