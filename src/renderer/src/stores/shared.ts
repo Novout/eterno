@@ -18,9 +18,6 @@ export const useSharedStore = defineStore('shared', {
       NAVIGATOR.$state = values.NAVIGATOR
       OPTIONS.$state = values.OPTIONS
       PROFILE.$state = values.PROFILE
-
-      const { locale } = useI18n()
-      locale.value = OPTIONS.$state.preferences.language
     },
     save() {
       const HISTORY = useHistoryStore()

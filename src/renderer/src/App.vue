@@ -5,32 +5,28 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue'
 import { useData } from './use/data'
-import { useSharedStore } from './stores/shared'
 import { useToast } from 'vue-toastification'
 import { useI18n } from 'vue-i18n'
-import { usePubsub } from 'vue-pubsub'
+import { useController } from './use/controller'
 
-const SHARED = useSharedStore()
+const CONTROLLER = useController()
 
 const data = useData()
 const toast = useToast()
-const pubsub = usePubsub()
 const { t } = useI18n()
 
 onMounted(() => {
   data
     .get('initialize')
     .then((values) => {
-      if (values && typeof values !== 'string') SHARED.start(values)
-
-      pubsub.to('add-first-page', '')
+      if (values && typeof values !== 'string') CONTROLLER.init(values)
     })
-    .catch(() => {
+    .catch((e) => {
       toast.error(t('toast.errorInInitializeData'))
     })
 })
 
 onUnmounted(() => {
-  SHARED.save()
+  CONTROLLER.close()
 })
 </script>
