@@ -1,6 +1,6 @@
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
 import { FontaineTransform } from 'fontaine'
-import { resolve } from 'path'
+import { resolve } from 'pathe'
 import unocss from 'unocss/vite'
 import Components from 'unplugin-vue-components/vite'
 import version from 'vite-plugin-package-version'
