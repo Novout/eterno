@@ -171,6 +171,8 @@ const onDragChange = ({ moved }) => {
 }
 
 const onSearch = (url?: string) => {
+  showSuggest.value = false
+
   const target = url ?? NAVIGATOR.actuallyLink.url ?? ''
 
   onLoadURL(target)
