@@ -1,4 +1,4 @@
-import { HistoryState } from '@renderer/types'
+import { HistoryState } from '@/types'
 import { defineStore } from 'pinia'
 
 export const useHistoryStore = defineStore('history', {

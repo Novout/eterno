@@ -1,4 +1,4 @@
-import { OptionsState } from '@renderer/types'
+import { OptionsState } from '@/types'
 import { defineStore } from 'pinia'
 
 export const useOptionsStore = defineStore('options', {

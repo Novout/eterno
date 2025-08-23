@@ -1,4 +1,4 @@
-import { ProfileState } from '@renderer/types'
+import { ProfileState } from '@/types'
 import { defineStore } from 'pinia'
 
 export const useProfileStore = defineStore('profile', {

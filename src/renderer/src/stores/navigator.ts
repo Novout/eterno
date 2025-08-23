@@ -1,4 +1,4 @@
-import { NavigatorState } from '@renderer/types'
+import { NavigatorState } from '@/types'
 import { defineStore } from 'pinia'
 
 export const useNavigatorStore = defineStore('navigator', {
