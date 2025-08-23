@@ -4,7 +4,10 @@ import { defineStore } from 'pinia'
 export const useOptionsStore = defineStore('options', {
   state: () => {
     return {
-      searchProvider: 'google'
+      searchProvider: 'google',
+      preferences: {
+        language: 'English'
+      }
     } as OptionsState
   }
 })

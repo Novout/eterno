@@ -5,10 +5,10 @@ import * as ptBR from './pt-BR'
 
 export const i18n = createI18n({
   legacy: false,
-  locale: 'en-US',
-  fallbackLocale: 'en-US',
+  locale: 'English',
+  fallbackLocale: 'English',
   messages: {
-    'en-US': enUS.default,
-    'pt-BR': ptBR.default
+    English: enUS.default,
+    'Português do Brasil': ptBR.default
   }
 })

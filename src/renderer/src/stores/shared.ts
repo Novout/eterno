@@ -4,6 +4,7 @@ import { useNavigatorStore } from './navigator'
 import { useOptionsStore } from './options'
 import { useProfileStore } from './profile'
 import { useData } from '../use/data'
+import { useI18n } from 'vue-i18n'
 
 export const useSharedStore = defineStore('shared', {
   actions: {
@@ -17,6 +18,9 @@ export const useSharedStore = defineStore('shared', {
       NAVIGATOR.$state = values.NAVIGATOR
       OPTIONS.$state = values.OPTIONS
       PROFILE.$state = values.PROFILE
+
+      const { locale } = useI18n()
+      locale.value = OPTIONS.$state.preferences.language
     },
     save() {
       const HISTORY = useHistoryStore()
@@ -33,6 +37,10 @@ export const useSharedStore = defineStore('shared', {
         _view.loaded = false
         return _view
       })
+
+      const { locale } = useI18n()
+      // @ts-ignore
+      OPTIONS.$state.preferences.language = locale.value
 
       data.set('initialize', {
         HISTORY: HISTORY.$state,

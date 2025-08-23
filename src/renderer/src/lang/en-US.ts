@@ -1,6 +1,14 @@
 export default {
   menu: {
-    historic: 'Historic'
+    historic: 'Historic',
+    configuration: {
+      title: 'Configuration',
+      preferences: {
+        title: 'Preferences',
+        language: 'Language',
+        searchProvider: 'Search Provider'
+      }
+    }
   },
   views: {
     default: {
