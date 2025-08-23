@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { useNavigatorStore } from '../../../stores/navigator'
+import { useNavigatorStore } from '@/stores/navigator'
 
 const NAVIGATOR = useNavigatorStore()
 </script>

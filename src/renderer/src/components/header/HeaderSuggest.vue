@@ -16,10 +16,10 @@
 </template>
 
 <script setup lang="ts">
-import { useNavigatorStore } from '../../stores/navigator'
+import { useNavigatorStore } from '@/stores/navigator'
 import { computed, ref } from 'vue'
 import { usePubsub } from 'vue-pubsub'
-import { useHistoryStore } from '../../stores/history'
+import { useHistoryStore } from '@/stores/history'
 
 const NAVIGATOR = useNavigatorStore()
 const HISTORY = useHistoryStore()

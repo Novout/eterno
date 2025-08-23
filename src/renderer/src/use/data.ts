@@ -1,4 +1,4 @@
-import { DataKeys } from '@renderer/types'
+import { DataKeys } from '@/types'
 import { destr } from 'destr'
 
 export const useData = () => {

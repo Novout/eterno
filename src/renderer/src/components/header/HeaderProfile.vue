@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { useProfileStore } from '../../stores/profile'
+import { useProfileStore } from '@/stores/profile'
 
 const PROFILE = useProfileStore()
 

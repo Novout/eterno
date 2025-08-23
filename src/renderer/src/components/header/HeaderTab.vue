@@ -49,8 +49,8 @@
 </template>
 
 <script setup lang="ts">
-import { useNavigatorStore } from '../../stores/navigator'
-import { HeaderTabItem } from '../../types'
+import { useNavigatorStore } from '@/stores/navigator'
+import { HeaderTabItem } from '@/types'
 import { WebviewTag } from 'electron/renderer'
 import { computed, onMounted, ref } from 'vue'
 

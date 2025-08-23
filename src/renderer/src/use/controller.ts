@@ -1,6 +1,6 @@
 import { useI18n } from 'vue-i18n'
-import { useSharedStore } from '../stores/shared'
-import { useOptionsStore } from '../stores/options'
+import { useSharedStore } from '@/stores/shared'
+import { useOptionsStore } from '@/stores/options'
 import { usePubsub } from 'vue-pubsub'
 
 export const useController = () => {

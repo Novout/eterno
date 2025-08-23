@@ -1,4 +1,4 @@
-import { useOptionsStore } from '../stores/options'
+import { useOptionsStore } from '@/stores/options'
 import { useRegex } from './regex'
 
 export const useSearchProvider = () => {

@@ -1,11 +1,9 @@
 import { createMemoryHistory, createRouter } from 'vue-router'
 
 import Main from './pages/Main.vue'
-import Options from './pages/Options.vue'
 
 const routes = [
-  { path: '/', component: Main },
-  { path: '/options', component: Options }
+  { path: '/', component: Main }
 ]
 
 export const router = createRouter({

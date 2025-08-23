@@ -65,17 +65,17 @@
 
 <script setup lang="ts">
 import { v4 as uuidv4 } from 'uuid'
-import { HeaderTabItem } from '../../types'
-import { useNavigatorStore } from '../../stores/navigator'
+import { HeaderTabItem } from '@/types'
+import { useNavigatorStore } from '@/stores/navigator'
 import { WebviewTag } from 'electron/renderer'
 import { onMounted, ref } from 'vue'
 import { usePubsub } from 'vue-pubsub'
 import { useI18n } from 'vue-i18n'
 import { useEventListener } from '@vueuse/core'
 import draggable from 'vuedraggable'
-import { useSearchProvider } from '../../use/searchProvider'
-import { useHistoryStore } from '../../stores/history'
-import { useDate } from '../../use/date'
+import { useSearchProvider } from '@/use/searchProvider'
+import { useHistoryStore } from '@/stores/history'
+import { useDate } from '@/use/date'
 
 const pubsub = usePubsub()
 const { t } = useI18n()

@@ -44,7 +44,7 @@
 <script setup lang="ts">
 import { usePubsub } from 'vue-pubsub'
 import draggable from 'vuedraggable'
-import { useHistoryStore } from '../../stores/history'
+import { useHistoryStore } from '@/stores/history'
 
 const HISTORY = useHistoryStore()
 

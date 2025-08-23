@@ -19,6 +19,11 @@ export default defineConfig({
     plugins: [externalizeDepsPlugin()]
   },
   renderer: {
+    resolve: {
+      alias: {
+        '@': resolve('src/renderer/src')
+      }
+    },
     optimizeDeps: {
       include: ['uuid', 'date-fns', 'vuedraggable']
     },

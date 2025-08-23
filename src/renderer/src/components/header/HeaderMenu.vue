@@ -87,8 +87,8 @@
 </template>
 
 <script setup lang="ts">
-import { useOptionsStore } from '../../stores/options'
-import { useHistoryStore } from '../../stores/history'
+import { useOptionsStore } from '@/stores/options'
+import { useHistoryStore } from '@/stores/history'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { usePubsub } from 'vue-pubsub'
