@@ -14,5 +14,9 @@ export const useData = () => {
     await ipcRenderer.invoke('store-set', key, JSON.stringify(value))
   }
 
-  return { get, set }
+  const remove = async (key: DataKeys) => {
+    await ipcRenderer.invoke('store-set', key)
+  }
+
+  return { get, set, remove }
 }

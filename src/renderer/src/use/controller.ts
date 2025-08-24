@@ -1,7 +1,6 @@
 import { useI18n } from 'vue-i18n'
 import { useSharedStore } from '@/stores/shared'
 import { useOptionsStore } from '@/stores/options'
-import { usePubsub } from 'vue-pubsub'
 import { useEnv } from './env'
 
 export const useController = () => {
@@ -9,7 +8,6 @@ export const useController = () => {
   const OPTIONS = useOptionsStore()
 
   const { locale } = useI18n()
-  const pubsub = usePubsub()
   const env = useEnv()
 
   const init = (values) => {
@@ -17,16 +15,16 @@ export const useController = () => {
       SHARED.start(values)
 
       locale.value = OPTIONS.$state.preferences.language
-    } else {
-      pubsub.to('add-first-page', '')
     }
   }
 
   const close = () => {
-    // @ts-ignore
-    OPTIONS.$state.preferences.language = locale.value
+    if (!env.isDev()) {
+      // @ts-ignore
+      OPTIONS.$state.preferences.language = locale.value
 
-    SHARED.save()
+      SHARED.save()
+    }
   }
 
   return { init, close }

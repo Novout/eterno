@@ -1,4 +1,4 @@
-export type DataKeys = 'initialize'
+export type DataKeys = 'main'
 
 export interface HeaderTabItem {
   icon: string

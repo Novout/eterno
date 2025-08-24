@@ -34,7 +34,7 @@ export const useSharedStore = defineStore('shared', {
         return _view
       })
 
-      data.set('initialize', {
+      data.set('main', {
         HISTORY: HISTORY.$state,
         NAVIGATOR: refreshNavigator,
         OPTIONS: OPTIONS.$state,

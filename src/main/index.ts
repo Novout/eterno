@@ -68,6 +68,11 @@ app.whenReady().then(() => {
     return store.get(key)
   })
 
+  ipcMain.handle('store-remove', (_, key: string) => {
+    // @ts-ignore
+    return store.remove(key)
+  })
+
   ipcMain.handle('store-set', (_, key: string, value?: unknown) => {
     // @ts-ignore
     return store.set(key, value)
