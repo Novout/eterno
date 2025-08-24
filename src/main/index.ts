@@ -69,8 +69,6 @@ app.whenReady().then(() => {
   })
 
   ipcMain.handle('store-set', (_, key: string, value?: unknown) => {
-    const store = new Store()
-
     // @ts-ignore
     return store.set(key, value)
   })
