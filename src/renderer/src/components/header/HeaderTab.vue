@@ -1,22 +1,10 @@
 <template>
   <div
-    :class="[
-      views[NAVIGATION.activeTab] === props.tab && views.length > 20
-        ? 'min-w-9'
-        : views.length < 4
-          ? 'w-60'
-          : views.length < 7
-            ? 'w-34'
-            : views.length < 10
-              ? 'w-26'
-              : views.length < 12
-                ? 'w-12'
-                : views.length < 15
-                  ? 'w-10'
-                  : 'w-5'
-    ]"
+    :style="{
+      width: `${width / 4}px`
+    }"
     @click="onLoadTab"
-    class="flex justify-center items-center gap-2 w-60 min-h-10 h-full cursor-pointer overflow-x-auto"
+    class="flex justify-center items-center gap-2 min-h-10 h-full cursor-pointer overflow-x-auto"
   >
     <IconSpinner v-if="!props.tab.loadedFavicon" class="h-4 w-4 text-white" />
     <img
@@ -58,6 +46,9 @@ import { useNavigatorStore } from '@/stores/navigator'
 import { HeaderTabItem } from '@/types'
 import { WebviewTag } from 'electron/renderer'
 import { computed, onMounted, ref } from 'vue'
+import { useWindowSize } from '@vueuse/core'
+
+const { width } = useWindowSize()
 
 const NAVIGATION = useNavigatorStore()
 

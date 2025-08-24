@@ -2,7 +2,7 @@
   <header class="flex flex-col justify-start items-center w-full h-30 bg-primary">
     <div class="flex items-center w-full bg-tertiary h-10 p-0">
       <draggable
-        class="list-group flex p-0"
+        class="list-group flex p-0 max-w-96%"
         item-key="order"
         tag="transition-group"
         :component-data="{ tag: 'ul', name: 'flip-list', type: 'transition' }"
