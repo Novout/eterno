@@ -101,10 +101,14 @@ pubsub.on('load-view-from-url', (url: any) => {
   onSearch(url)
 })
 
-pubsub.on('load-view-from-historic', (url: any) => {
-  onAddPage()
+pubsub.on('load-view-from-historic', () => {
+  const url = NAVIGATOR.views[NAVIGATOR.activeTab].url
 
   onSearch(url)
+})
+
+pubsub.on('load-view-from-start-browser', () => {
+  onSetState(false)
 })
 
 pubsub.on('add-first-page', () => {
@@ -335,7 +339,7 @@ const onLoadTab = (
 ) => {
   const target = NAVIGATOR.views.indexOf(tab)
 
-  NAVIGATOR.stateLink.loadedURL = tab.title === t('views.default.title') ? 'default' : 'loading'
+  NAVIGATOR.stateLink.loadedURL = tab.title === t('views.default.title') ? 'default' : 'webview'
   NAVIGATOR.lastTab = options.removed ? NAVIGATOR.lastTab : NAVIGATOR.activeTab
 
   const last = NAVIGATOR.views[NAVIGATOR.activeTab]
@@ -343,7 +347,6 @@ const onLoadTab = (
   if (last) NAVIGATOR.views[NAVIGATOR.activeTab].search = NAVIGATOR.actuallyLink.url
   NAVIGATOR.activeTab = target
   NAVIGATOR.actuallyLink.url = tab.search
-  NAVIGATOR.stateLink.loadedURL = 'webview'
 
   if (options.force) onLoadURL(tab.url)
 }

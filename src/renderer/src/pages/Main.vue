@@ -6,7 +6,6 @@
       <DefaultPage
         v-if="NAVIGATOR.stateLink.loadedURL === 'default' || NAVIGATOR.views.length === 0"
       />
-      <LoadPage v-else-if="NAVIGATOR.stateLink.loadedURL === 'loading'" />
     </div>
   </main>
 </template>
