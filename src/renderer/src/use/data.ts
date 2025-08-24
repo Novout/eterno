@@ -15,7 +15,7 @@ export const useData = () => {
   }
 
   const remove = async (key: DataKeys) => {
-    await ipcRenderer.invoke('store-set', key)
+    await ipcRenderer.invoke('store-delete', key)
   }
 
   return { get, set, remove }

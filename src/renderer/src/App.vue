@@ -9,21 +9,26 @@ import { useToast } from 'vue-toastification'
 import { useI18n } from 'vue-i18n'
 import { useController } from './use/controller'
 import { usePubsub } from 'vue-pubsub'
+import { useEnv } from './use/env'
 
 const CONTROLLER = useController()
 
 const data = useData()
 const toast = useToast()
 const pubsub = usePubsub()
+const env = useEnv()
 const { t } = useI18n()
 
 onMounted(() => {
   data
     .get('main')
     .then((values) => {
-      if (values && typeof values !== 'string') CONTROLLER.init(values)
+      if (!env.isDev() && values && typeof values !== 'string') CONTROLLER.init(values)
       else {
         pubsub.to('add-first-page', '')
+
+        // because for deploy build
+        data.remove('main').catch(() => {})
       }
     })
     .catch(() => {
