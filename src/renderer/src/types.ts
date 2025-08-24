@@ -24,8 +24,8 @@ export interface NavigatorState {
 }
 
 export interface OptionsState {
-  searchProvider: 'google' | 'bing' | 'duckduckgo' | 'empty'
   preferences: {
+    searchProvider: 'google' | 'bing' | 'duckduckgo' | 'empty'
     language: 'Português do Brasil' | 'English'
   }
 }

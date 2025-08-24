@@ -30,7 +30,7 @@ export const useSearchProvider = () => {
           bing: `https://www.bing.com/search?q=${url}`,
           duckduckgo: `https://duckduckgo.com/?q=${url}`,
           empty: 'https://'
-        }[OPTIONS.searchProvider]
+        }[OPTIONS.preferences.searchProvider]
       }
     }
 

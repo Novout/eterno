@@ -56,7 +56,7 @@
               <div class="bg-gray w-60">
                 <v-select
                   class="text-black"
-                  v-model="OPTIONS.searchProvider"
+                  v-model="OPTIONS.preferences.searchProvider"
                   :options="['google', 'duckduckgo', 'bing']"
                 />
               </div>

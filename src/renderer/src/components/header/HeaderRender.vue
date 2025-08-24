@@ -348,7 +348,7 @@ const onCloseTab = (tab: HeaderTabItem) => {
 
   const isActiveTabRemoved = NAVIGATOR.activeTab === index
 
-  if(isActiveTabRemoved) {
+  if (isActiveTabRemoved) {
     onLoadTab(target, true)
   }
 }
