@@ -29,9 +29,14 @@ onMounted(() => {
     .catch(() => {
       toast.error(t('toast.errorInInitializeData'))
     })
+
+  // TODO: temporary auto-save data
+  setTimeout(() => {
+    CONTROLLER.save()
+  }, 1000 * 10)
 })
 
 onUnmounted(() => {
-  CONTROLLER.close()
+  CONTROLLER.save()
 })
 </script>

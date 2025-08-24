@@ -22,7 +22,7 @@ export const useController = () => {
     }
   }
 
-  const close = () => {
+  const save = () => {
     if (!env.isDev()) {
       // @ts-ignore
       OPTIONS.$state.preferences.language = locale.value
@@ -31,5 +31,5 @@ export const useController = () => {
     }
   }
 
-  return { init, close }
+  return { init, save }
 }
