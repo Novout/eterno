@@ -72,7 +72,7 @@ const props = defineProps<{
 const emit = defineEmits(['load', 'close'])
 
 const onLoadTab = () => {
-  emit('load', props.tab)
+  emit('load', props.tab, { force: false, removed: false })
 }
 
 const onCloseTab = () => {

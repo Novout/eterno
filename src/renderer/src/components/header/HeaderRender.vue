@@ -221,8 +221,6 @@ const onAddPage = () => {
 }
 
 const onLoadURL = (target?: string) => {
-  const render = getRender()
-
   if (!target) return
 
   let view = NAVIGATOR.views[NAVIGATOR.activeTab]
@@ -230,6 +228,16 @@ const onLoadURL = (target?: string) => {
   if (!view) {
     view = NAVIGATOR.views[0]
     NAVIGATOR.activeTab = 0
+  }
+
+  const render = getRender()
+
+  const getActuallyIndex = () => {
+    const item = NAVIGATOR.views.find((item) => item.id === view.id)
+
+    if (!item) return -1
+
+    return NAVIGATOR.views.indexOf(item)
   }
 
   if (!view.loaded) {
@@ -241,19 +249,19 @@ const onLoadURL = (target?: string) => {
       })
     }, 200)
 
-    NAVIGATOR.views[NAVIGATOR.activeTab].loaded = true
-    NAVIGATOR.views[NAVIGATOR.activeTab].loadedFavicon = false
+    NAVIGATOR.views[getActuallyIndex()].loaded = true
+    NAVIGATOR.views[getActuallyIndex()].loadedFavicon = false
 
-    const onUpdateTab = () => {
-      const callback = NAVIGATOR.views[NAVIGATOR.activeTab]
+    const onUpdateTab = (url?: string) => {
+      const callback = NAVIGATOR.views[getActuallyIndex()]
 
       setTimeout(() => {
         try {
-          const url = render?.getURL()
+          const target = url || render?.getURL()
 
-          if (!url || url === callback.url) return
+          if (!target || target === callback.url) return
 
-          onRefreshURL(callback.id, url)
+          onRefreshURL(callback.id, target)
         } catch (e) {}
       }, 200)
     }
@@ -264,37 +272,37 @@ const onLoadURL = (target?: string) => {
 
     render?.addEventListener('did-finish-load', () => {
       try {
-        const title = render?.getTitle() || NAVIGATOR.views[NAVIGATOR.activeTab].title
+        const activeTitle = render?.getTitle() || NAVIGATOR.views[getActuallyIndex()].title
+        const activeUrl = render?.getURL() || url
 
-        if (title !== t('views.default.title') || NAVIGATOR.stateLink.loadedURL !== 'default') {
+        if (
+          activeTitle !== t('views.default.title') ||
+          NAVIGATOR.stateLink.loadedURL !== 'default'
+        ) {
           HISTORY.search.unshift({
-            title,
-            url,
+            title: activeTitle,
+            url: activeUrl,
             date: date.getCommonDate(),
             icon: searchProvider.getFavicon(url)
           })
         }
+
+        NAVIGATOR.views[getActuallyIndex()].loadedFavicon = true
+
+        onUpdateTab(activeUrl)
       } catch (e) {}
-
-      NAVIGATOR.views[NAVIGATOR.activeTab].loadedFavicon = true
-
-      onUpdateTab()
-    })
-
-    render?.addEventListener('will-frame-navigate', () => {
-      onUpdateTab()
     })
 
     render?.addEventListener('page-title-updated', ({ title }) => {
-      NAVIGATOR.views[NAVIGATOR.activeTab].title = title
+      NAVIGATOR.views[getActuallyIndex()].title = title
     })
   }
 
   const url = searchProvider.getCorrectSearchURL(target)
   const icon = searchProvider.getFavicon(url)
 
-  NAVIGATOR.views[NAVIGATOR.activeTab].icon = icon
-  NAVIGATOR.views[NAVIGATOR.activeTab].url = url
+  NAVIGATOR.views[getActuallyIndex()].icon = icon
+  NAVIGATOR.views[getActuallyIndex()].url = url
 
   NAVIGATOR.stateLink.url = url
   NAVIGATOR.actuallyLink.url = url
@@ -318,19 +326,26 @@ const onRefreshURL = (_id: string, url: string) => {
   }
 }
 
-const onLoadTab = (tab: HeaderTabItem, removed?: boolean) => {
+const onLoadTab = (
+  tab: HeaderTabItem,
+  options: {
+    removed?: boolean
+    force?: boolean
+  }
+) => {
   const target = NAVIGATOR.views.indexOf(tab)
 
   NAVIGATOR.stateLink.loadedURL = tab.title === t('views.default.title') ? 'default' : 'loading'
-  NAVIGATOR.lastTab = removed ? NAVIGATOR.lastTab : NAVIGATOR.activeTab
+  NAVIGATOR.lastTab = options.removed ? NAVIGATOR.lastTab : NAVIGATOR.activeTab
 
   const last = NAVIGATOR.views[NAVIGATOR.activeTab]
 
   if (last) NAVIGATOR.views[NAVIGATOR.activeTab].search = NAVIGATOR.actuallyLink.url
   NAVIGATOR.activeTab = target
   NAVIGATOR.actuallyLink.url = tab.search
+  NAVIGATOR.stateLink.loadedURL = 'webview'
 
-  onLoadURL(tab.url)
+  if (options.force) onLoadURL(tab.url)
 }
 
 const onCloseTab = (tab: HeaderTabItem) => {
@@ -349,7 +364,10 @@ const onCloseTab = (tab: HeaderTabItem) => {
   const isActiveTabRemoved = NAVIGATOR.activeTab === index
 
   if (isActiveTabRemoved) {
-    onLoadTab(target, true)
+    onLoadTab(target, {
+      removed: true,
+      force: true
+    })
   }
 }
 </script>
