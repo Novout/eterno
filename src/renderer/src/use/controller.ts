@@ -17,9 +17,9 @@ export const useController = () => {
       SHARED.start(values)
 
       locale.value = OPTIONS.$state.preferences.language
+    } else {
+      pubsub.to('add-first-page', '')
     }
-
-    pubsub.to('add-first-page', '')
   }
 
   const close = () => {
