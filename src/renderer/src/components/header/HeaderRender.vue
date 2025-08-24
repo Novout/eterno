@@ -322,7 +322,7 @@ const onLoadTab = (tab: HeaderTabItem, removed?: boolean) => {
   const target = NAVIGATOR.views.indexOf(tab)
 
   NAVIGATOR.stateLink.loadedURL = tab.title === t('views.default.title') ? 'default' : 'loading'
-  NAVIGATOR.lastTab = removed ? 0 : NAVIGATOR.activeTab
+  NAVIGATOR.lastTab = removed ? NAVIGATOR.lastTab : NAVIGATOR.activeTab
 
   const last = NAVIGATOR.views[NAVIGATOR.activeTab]
 
@@ -334,6 +334,7 @@ const onLoadTab = (tab: HeaderTabItem, removed?: boolean) => {
 }
 
 const onCloseTab = (tab: HeaderTabItem) => {
+  const index = NAVIGATOR.views.indexOf(tab)
   NAVIGATOR.views = NAVIGATOR.views.filter((_tab) => tab !== _tab)
 
   if (NAVIGATOR.views.length === 0) {
@@ -341,15 +342,14 @@ const onCloseTab = (tab: HeaderTabItem) => {
     return
   }
 
-  // update activeTab due to a mutation in the current id
-  const actually = NAVIGATOR.views[NAVIGATOR.activeTab]
-  const index = NAVIGATOR.views.indexOf(actually)
-  NAVIGATOR.activeTab = index
-
   let target = NAVIGATOR.views[NAVIGATOR.lastTab]
 
-  if (!target || !target.title) NAVIGATOR.views[0]
+  if (!target || !target.title) target = NAVIGATOR.views[0]
 
-  onLoadTab(target, true)
+  const isActiveTabRemoved = NAVIGATOR.activeTab === index
+
+  if(isActiveTabRemoved) {
+    onLoadTab(target, true)
+  }
 }
 </script>
