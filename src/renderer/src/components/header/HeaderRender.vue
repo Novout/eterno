@@ -101,14 +101,16 @@ pubsub.on('load-view-from-url', (url: any) => {
   onSearch(url)
 })
 
-pubsub.on('load-view-from-historic', () => {
-  const url = NAVIGATOR.views[NAVIGATOR.activeTab].url
+pubsub.on('load-view-from-historic', (url: any) => {
+  onAddPage()
 
   onSearch(url)
 })
 
 pubsub.on('load-view-from-start-browser', () => {
-  onSetState(false)
+  const url = NAVIGATOR.views[NAVIGATOR.activeTab].url
+
+  onSearch(url)
 })
 
 pubsub.on('add-first-page', () => {
