@@ -13,3 +13,12 @@ Eterno Browser
 <h4 align="center">
 <b>A lightweight browser.</b>
 <h4>
+
+<p align="center">
+  <a href="https://github.com/eterno-browser/eterno"><img src="https://img.shields.io/github/license/eterno-browser/eterno?style=for-the-badge&color=DAE8F3&label="></a>
+  <a href="https://github.com/eterno-browser/eterno"><img src="https://img.shields.io/github/package-json/v/eterno-browser/eterno?style=for-the-badge&color=DAE8F3&label="></a>
+<p>
+
+<h1 align="center">
+UNDER CONSTRUCTION!!!!!!!!!!!!!!
+</h1>
