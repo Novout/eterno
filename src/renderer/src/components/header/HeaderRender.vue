@@ -40,7 +40,7 @@
       />
       <IconFavoriteOn
         @click="onUnfavorite"
-        v-if="HISTORY.fav.find((item) => item.url === NAVIGATOR.actuallyLink.url)"
+        v-if="HISTORY.favorites.find((item) => item.url === NAVIGATOR.actuallyLink.url)"
         class="w-6 h-6 text-white cursor-pointer"
       />
       <IconFavoriteOff
@@ -176,18 +176,21 @@ const onToggleDownloads = () => {
 }
 
 const onUnfavorite = () => {
-  HISTORY.fav = HISTORY.fav.filter((item) => item.url !== NAVIGATOR.actuallyLink.url)
+  HISTORY.favorites = HISTORY.favorites.filter(
+    (item) => item.url && item.url !== NAVIGATOR.actuallyLink.url
+  )
 }
 
 const onFavorite = () => {
   const url = NAVIGATOR.actuallyLink.url
 
   try {
-    HISTORY.fav.push({
+    HISTORY.favorites.push({
       title: getRender()?.getTitle() || NAVIGATOR.views[NAVIGATOR.activeTab].title,
       icon: searchProvider.getFavicon(url),
       url,
-      date: ''
+      date: '',
+      folder: []
     })
   } catch (e) {}
 }
@@ -311,7 +314,8 @@ const onLoadURL = (target?: string) => {
             title: activeTitle,
             url: activeUrl,
             date: date.getCommonDate(),
-            icon: searchProvider.getFavicon(url)
+            icon: searchProvider.getFavicon(url),
+            folder: []
           })
         }
 

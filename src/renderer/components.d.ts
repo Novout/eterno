@@ -36,7 +36,6 @@ declare module 'vue' {
     IconSpinner: typeof import('./src/components/icons/IconSpinner.vue')['default']
     IconTabClose: typeof import('./src/components/icons/IconTabClose.vue')['default']
     IconViewTab: typeof import('./src/components/icons/IconViewTab.vue')['default']
-    LoadPage: typeof import('./src/components/main/page/LoadPage.vue')['default']
     RenderWebView: typeof import('./src/components/main/page/RenderWebView.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

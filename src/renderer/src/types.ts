@@ -40,13 +40,6 @@ export interface ProfileState {
   conquests: {}
 }
 
-export interface HistoryItem {
-  title: string
-  url: string
-  date: string
-  icon: string
-}
-
 export interface HistoryDownloadsMain {
   filename: string
   icon: string | false
@@ -61,9 +54,19 @@ export type HistoryDownloads = HistoryDownloadsMain & {
 
 export type HistoryDownloadsProgress = HistoryDownloads & {}
 
+export interface HistorySearchItem {
+  title: string
+  url: string
+  date: string
+  icon: string
+  folder: HistorySearchItem[]
+}
+
+export type HistoryFavoriteItem = HistorySearchItem
+
 export interface HistoryState {
-  search: HistoryItem[]
-  fav: HistoryItem[]
+  search: HistorySearchItem[]
+  favorites: HistoryFavoriteItem[]
   downloads: HistoryDownloads[]
   downloadInProgress?: HistoryDownloadsProgress
 }
