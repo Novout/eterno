@@ -19,6 +19,8 @@ Eterno Browser
   <a href="https://github.com/eterno-browser/eterno"><img src="https://img.shields.io/github/package-json/v/eterno-browser/eterno?style=for-the-badge&color=DAE8F3&label="></a>
 <p>
 
+> For alpha builds, [click here](https://github.com/eterno-browser/eterno/releases)
+
 <h1 align="center">
 UNDER CONSTRUCTION!!!!!!!!!!!!!!
 </h1>
