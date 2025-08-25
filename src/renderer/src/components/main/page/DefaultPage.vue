@@ -33,11 +33,6 @@ const onInput = () => {
 </script>
 
 <style scoped>
-.gradient {
-  background: #d5d8e8;
-  background: linear-gradient(148deg, rgba(213, 216, 232, 1) 0%, rgba(255, 230, 230, 1) 100%);
-}
-
 .logo {
   transition: transform 0.5s ease-in-out;
 }

@@ -16,8 +16,8 @@
             @load="onLoadTab"
             :class="[
               NAVIGATOR.views[NAVIGATOR.activeTab] !== element
-                ? 'bg-secondary hover:bg-tab-focus'
-                : 'bg-primary'
+                ? 'bg-secondary hover:bg-tab-focus text-white'
+                : 'gradient text-black'
             ]"
             :tab="element"
           />

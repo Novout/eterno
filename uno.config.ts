@@ -7,7 +7,8 @@ export default defineConfig({
       primary: '#727272ff',
       secondary: '#444444ff',
       tertiary: '#555555ff',
-      tabFocus: '#272727ff'
+      tabFocus: '#272727ff',
+      primaryColored: '#DAE8F3'
     }
   },
   preflights: [
