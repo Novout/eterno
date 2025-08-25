@@ -24,8 +24,12 @@ export default {
   profile: {
     conquests: 'Conquistas'
   },
+  download: {
+    title: 'Download'
+  },
   toast: {
     errorInInitializeData:
-      'Ocorreu algum erro ao carregar os dados locais do navegador. Por favor, considere reiniciar o navegador.'
+      'Ocorreu algum erro ao carregar os dados locais do navegador. Por favor, considere reiniciar o navegador.',
+    successInDowload: 'O arquivo foi baixado com sucesso!'
   }
 }

@@ -24,8 +24,12 @@ export default {
   profile: {
     conquests: 'Conquests'
   },
+  download: {
+    title: 'Download'
+  },
   toast: {
     errorInInitializeData:
-      'An error occurred while loading your browser local data. Please consider restarting your browser.'
+      'An error occurred while loading your browser local data. Please consider restarting your browser.',
+    successInDowload: 'The file was downloaded successfully!'
   }
 }

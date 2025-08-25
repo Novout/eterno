@@ -31,6 +31,7 @@
     "date-fns": "^4.1.0",
     "destr": "^2.0.5",
     "electron-updater": "^6.6.2",
+    "ext-name": "^5.0.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.5",
     "nprogress": "^0.2.0",

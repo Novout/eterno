@@ -9,6 +9,8 @@ function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 1100,
+    minWidth: 600,
+    minHeight: 400,
     height: 800,
     show: false,
     fullscreen: false,
@@ -35,10 +37,34 @@ function createWindow(): void {
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-    mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
+    mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL']).catch(() => {})
   } else {
-    mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
+    mainWindow.loadFile(join(__dirname, '../renderer/index.html')).catch(() => {})
   }
+
+  mainWindow.webContents.session.on('will-download', (_, item) => {
+    // item.setSavePath('/tmp/save.pdf')
+
+    mainWindow.webContents.send('download-item-start', {
+      filename: item.getFilename()
+    })
+
+    item.on('updated', (_, state) => {
+      if (state === 'interrupted') {
+      } else if (state === 'progressing') {
+        if (item.isPaused()) {
+        } else {
+        }
+      }
+    })
+
+    item.once('done', (_, state) => {
+      mainWindow.webContents.send('download-item-done', {
+        state,
+        path: item.getSavePath()
+      })
+    })
+  })
 }
 
 // This method will be called when Electron has finished
@@ -76,6 +102,11 @@ app.whenReady().then(() => {
   ipcMain.handle('store-set', (_, key: string, value?: unknown) => {
     // @ts-ignore
     return store.set(key, value)
+  })
+
+  ipcMain.handle('open-folder', (_) => {
+    // TODO: use localSavePath
+    shell.openPath(join(app.getPath('downloads'), ''))
   })
 
   createWindow()

@@ -41,16 +41,20 @@
       <IconFavoriteOn
         @click="onUnfavorite"
         v-if="HISTORY.fav.find((item) => item.url === NAVIGATOR.actuallyLink.url)"
-        class="w-5 h-5 text-white cursor-pointer"
+        class="w-6 h-6 text-white cursor-pointer"
       />
       <IconFavoriteOff
         v-else
         @click.prevent.stop="onFavorite"
-        class="w-5 h-5 text-white cursor-pointer"
+        class="w-6 h-6 text-white cursor-pointer"
+      />
+      <IconProfileDownload
+        @click.prevent.stop="onToggleDownloads"
+        class="w-6 h-6 text-white cursor-pointer"
       />
       <IconProfileMin
         @click.prevent.stop="onToggleProfile"
-        class="w-5 h-5 text-white cursor-pointer"
+        class="w-6 h-6 text-white cursor-pointer"
       />
       <IconMenu @click.prevent.stop="onToggleMenu" class="w-5 h-5 text-white cursor-pointer" />
     </div>
@@ -58,6 +62,7 @@
       <HeaderSuggest v-if="showSuggest" />
       <HeaderProfile v-if="showProfile" />
       <HeaderMenu v-if="showMenu" />
+      <HeaderDownloads v-if="showDownloads" />
     </teleport>
     <HeaderFavoriteBar />
   </header>
@@ -90,6 +95,7 @@ const input = ref<HTMLInputElement | null>(null)
 const showSuggest = ref<boolean>(false)
 const showProfile = ref<boolean>(false)
 const showMenu = ref<boolean>(false)
+const showDownloads = ref<boolean>(false)
 
 const getRender = (id?: number) => {
   return document.querySelector<WebviewTag>(
@@ -125,6 +131,14 @@ pubsub.on('view-forward-in-view', () => {
   onSetState(false)
 })
 
+pubsub.on('download-started', () => {
+  showDownloads.value = true
+})
+
+pubsub.on('download-finished', () => {
+  showDownloads.value = false
+})
+
 onMounted(() => {
   useEventListener(input, 'focus', () => {
     setTimeout(() => {
@@ -146,10 +160,18 @@ onMounted(() => {
 const onToggleMenu = () => {
   showMenu.value = !showMenu.value
   showProfile.value = false
+  showDownloads.value = false
 }
 
 const onToggleProfile = () => {
   showProfile.value = !showProfile.value
+  showMenu.value = false
+  showDownloads.value = false
+}
+
+const onToggleDownloads = () => {
+  showDownloads.value = !showDownloads.value
+  showProfile.value = false
   showMenu.value = false
 }
 

@@ -47,7 +47,23 @@ export interface HistoryItem {
   icon: string
 }
 
+export interface HistoryDownloadsMain {
+  filename: string
+  icon: string | false
+}
+
+export type HistoryDownloads = HistoryDownloadsMain & {
+  ext: string
+  mime: string
+  date: string
+  savePath: string
+}
+
+export type HistoryDownloadsProgress = HistoryDownloads & {}
+
 export interface HistoryState {
   search: HistoryItem[]
   fav: HistoryItem[]
+  downloads: HistoryDownloads[]
+  downloadInProgress?: HistoryDownloadsProgress
 }
