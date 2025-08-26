@@ -4,28 +4,30 @@
       width: `${width / 4}px`
     }"
     @click="onLoadTab"
-    class="flex justify-center items-center gap-2 min-h-10 h-full cursor-pointer overflow-x-auto"
+    class="flex items-center gap-2 min-h-10 h-full cursor-pointer overflow-x-auto"
   >
-    <IconSpinner v-if="!props.tab.loadedFavicon" class="h-4 w-4" />
-    <img
-      v-else-if="props.tab.icon"
-      class="pl-4"
-      :src="props.tab.icon"
-      alt="icon from target website"
-    />
-    <IconViewTab v-else class="w-4 h-4" />
-    <IconAudioOn @click="onMutedSound" class="h-5 w-5 cursor-pointer" v-if="audio === 'on'" />
-    <IconAudioMuted
-      @click="onActiveSound"
-      class="h-5 w-5 cursor-pointer"
-      v-else-if="audio === 'muted'"
-    />
-    <p
-      :class="[views[NAVIGATION.activeTab] === props.tab && views.length > 20 ? 'hidden' : '']"
-      class="truncate raleway text-sm"
-    >
-      {{ props.tab.title }}
-    </p>
+    <div class="flex justify-center items-center gap-2 w-85% h-full cursor-pointer overflow-x-auto">
+      <IconSpinner v-if="!props.tab.loadedFavicon" class="h-4 w-4" />
+      <img
+        v-else-if="props.tab.icon"
+        class="pl-4"
+        :src="props.tab.icon"
+        alt="icon from target website"
+      />
+      <IconViewTab v-else class="w-4 h-4" />
+      <IconAudioOn @click="onMutedSound" class="h-5 w-5 cursor-pointer" v-if="audio === 'on'" />
+      <IconAudioMuted
+        @click="onActiveSound"
+        class="h-5 w-5 cursor-pointer"
+        v-else-if="audio === 'muted'"
+      />
+      <p
+        :class="[views[NAVIGATION.activeTab] === props.tab && views.length > 20 ? 'hidden' : '']"
+        class="truncate raleway text-sm"
+      >
+        {{ props.tab.title }}
+      </p>
+    </div>
     <IconTabClose
       v-if="NAVIGATION.views.length !== 1"
       @click="onCloseTab"
