@@ -23,6 +23,8 @@ declare module 'vue' {
     IconBack: typeof import('./src/components/icons/IconBack.vue')['default']
     IconDirectory: typeof import('./src/components/icons/IconDirectory.vue')['default']
     IconDownloadDefault: typeof import('./src/components/icons/IconDownloadDefault.vue')['default']
+    IconDownloadDOCX: typeof import('./src/components/icons/IconDownloadDOCX.vue')['default']
+    IconDownloadEXE: typeof import('./src/components/icons/IconDownloadEXE.vue')['default']
     IconDownloadPDF: typeof import('./src/components/icons/IconDownloadPDF.vue')['default']
     IconFavoriteOff: typeof import('./src/components/icons/IconFavoriteOff.vue')['default']
     IconFavoriteOn: typeof import('./src/components/icons/IconFavoriteOn.vue')['default']
