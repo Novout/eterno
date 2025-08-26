@@ -50,13 +50,11 @@ onMounted(() => {
   window.api.onDownloadItemStart((data) => {
     pubsub.to('download-started', '')
 
-    const extract = utils.getExtensionFromFilename(data.filename)
-
-    console.log(data.filename, extract)
+    const [extract] = utils.getExtensionFromFilename(data.filename)
 
     HISTORY.downloadInProgress = {
       ...data,
-      ...extract[0],
+      ...extract,
       id: uuidv4(),
       date: date.getCommonDate(),
       savePath: '',
