@@ -66,6 +66,7 @@ function createWindow(): void {
 
     downloads.push(item)
 
+    // TODO: unique id for duplicate itens
     mainWindow.webContents.send('download-item-start', {
       id,
       filename: item.getFilename()

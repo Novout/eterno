@@ -13,7 +13,6 @@ import { useEnv } from './use/env'
 import { useHistoryStore } from './stores/history'
 import { useUtils } from './use/utils'
 import { useDate } from './use/date'
-import { useDownload } from './use/download'
 
 const CONTROLLER = useController()
 const HISTORY = useHistoryStore()
@@ -25,7 +24,6 @@ const pubsub = usePubsub()
 const env = useEnv()
 const { t } = useI18n()
 const utils = useUtils()
-const download = useDownload()
 
 onMounted(() => {
   data
@@ -49,17 +47,6 @@ onMounted(() => {
   }, 1000 * 3)
 
   window.api.onDownloadItemStart((data) => {
-    if (HISTORY.downloadsInProgress.find((item) => item.id === data.id)) {
-      download
-        .cancel(data.id)
-        .then(() => {
-          toast.warning(t('toast.warningInDuplicateDownload'))
-        })
-        .catch(() => {})
-
-      return
-    }
-
     pubsub.to('download-started', '')
 
     const [extensions] = utils.getExtensionFromFilename(data.filename)
@@ -76,37 +63,41 @@ onMounted(() => {
   })
 
   window.api.onDownloadItemUpdated((data) => {
-    if (HISTORY.downloadsInProgress) {
-      const index = HISTORY.downloadsInProgress.find((item) => item.id === data.id)
+    const item = HISTORY.downloadsInProgress.find((item) => item.id === data.id)
 
-      if (index) {
-        const target = HISTORY.downloadsInProgress.indexOf(index)
+    if (item) {
+      const target = HISTORY.downloadsInProgress.indexOf(item)
 
-        HISTORY.downloadsInProgress[target].receivedBytes = data.receivedBytes
-        HISTORY.downloadsInProgress[target].totalBytes = data.totalBytes
-      }
+      HISTORY.downloadsInProgress[target].receivedBytes = data.receivedBytes
+      HISTORY.downloadsInProgress[target].totalBytes = data.totalBytes
     }
   })
 
   window.api.onDownloadItemDone(({ state, path, id }) => {
-    if (HISTORY.downloadsInProgress && state === 'completed') {
-      HISTORY.downloads.unshift({
-        id: HISTORY[id].downloadInProgress.id,
-        filename: HISTORY[id].downloadInProgress.filename,
-        icon: HISTORY[id].downloadInProgress.icon,
-        ext: HISTORY[id].downloadInProgress.ext,
-        mime: HISTORY[id].downloadInProgress.mime,
-        date: HISTORY[id].downloadInProgress.date,
-        savePath: path
-      })
+    if (state === 'completed') {
+      const item = HISTORY.downloadsInProgress.find((item) => item.id === id)
 
-      HISTORY.downloadsInProgress = HISTORY.downloadsInProgress.filter(
-        (download) => download.id !== id
-      )
+      if (item) {
+        const target = HISTORY.downloadsInProgress.indexOf(item)
 
-      toast.success(t('toast.successInDownload'))
+        HISTORY.downloads.unshift({
+          id: HISTORY.downloadsInProgress[target].id,
+          filename: HISTORY.downloadsInProgress[target].filename,
+          icon: HISTORY.downloadsInProgress[target].icon,
+          ext: HISTORY.downloadsInProgress[target].ext,
+          mime: HISTORY.downloadsInProgress[target].mime,
+          date: HISTORY.downloadsInProgress[target].date,
+          savePath: path
+        })
 
-      return
+        HISTORY.downloadsInProgress = HISTORY.downloadsInProgress.filter(
+          (download) => download.id !== id
+        )
+
+        toast.success(t('toast.successInDownload'))
+
+        return
+      }
     }
 
     pubsub.to('download-finished', '')
