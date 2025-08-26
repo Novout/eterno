@@ -10,6 +10,15 @@ const api = {
     cb: (data: { state: 'interrupted' | 'completed' | 'cancelled' }) => void
   ) => {
     ipcRenderer.on('download-item-done', (_, data) => cb(data))
+  },
+  onDownloadItemUpdated: (
+    cb: (data: {
+      state: 'progressing' | 'interrupted'
+      totalBytes: number
+      receivedBytes: number
+    }) => void
+  ) => {
+    ipcRenderer.on('download-item-updated', (_, data) => cb(data))
   }
 }
 

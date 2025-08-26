@@ -45,17 +45,28 @@ function createWindow(): void {
   mainWindow.webContents.session.on('will-download', (_, item) => {
     // item.setSavePath('/tmp/save.pdf')
 
+    ipcMain.handle('download-cancel', (_) => {
+      item.cancel()
+    })
+
+    ipcMain.handle('download-pause', (_) => {
+      item.pause()
+    })
+
+    ipcMain.handle('download-resume', (_) => {
+      if (item.canResume()) item.resume()
+    })
+
     mainWindow.webContents.send('download-item-start', {
       filename: item.getFilename()
     })
 
     item.on('updated', (_, state) => {
-      if (state === 'interrupted') {
-      } else if (state === 'progressing') {
-        if (item.isPaused()) {
-        } else {
-        }
-      }
+      mainWindow.webContents.send('download-item-updated', {
+        state,
+        totalBytes: item.getTotalBytes(),
+        receivedBytes: item.getReceivedBytes()
+      })
     })
 
     item.once('done', (_, state) => {

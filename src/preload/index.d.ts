@@ -9,6 +9,13 @@ declare global {
       onDownloadItemDone(
         cb: (data: { state: 'interrupted' | 'completed' | 'cancelled'; path: 'string' }) => void
       ): void
+      onDownloadItemUpdated(
+        cb: (data: {
+          state: 'progressing' | 'interrupted'
+          totalBytes: number
+          receivedBytes: number
+        }) => void
+      ): void
     }
   }
 }

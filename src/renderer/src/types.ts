@@ -46,13 +46,17 @@ export interface HistoryDownloadsMain {
 }
 
 export type HistoryDownloads = HistoryDownloadsMain & {
+  id: string
   ext: string
   mime: string
   date: string
   savePath: string
 }
 
-export type HistoryDownloadsProgress = HistoryDownloads & {}
+export type HistoryDownloadsProgress = HistoryDownloads & {
+  receivedBytes: number
+  totalBytes: number
+}
 
 export interface HistorySearchItem {
   title: string

@@ -3,6 +3,7 @@
 </template>
 
 <script setup lang="ts">
+import { v4 as uuidv4 } from 'uuid'
 import { onMounted } from 'vue'
 import { useData } from './use/data'
 import { useToast } from 'vue-toastification'
@@ -49,19 +50,32 @@ onMounted(() => {
   window.api.onDownloadItemStart((data) => {
     pubsub.to('download-started', '')
 
-    const [extract] = utils.getExtensionFromFilename(data.filename)
+    const extract = utils.getExtensionFromFilename(data.filename)
+
+    console.log(data.filename, extract)
 
     HISTORY.downloadInProgress = {
       ...data,
-      ...extract,
+      ...extract[0],
+      id: uuidv4(),
       date: date.getCommonDate(),
-      savePath: ''
+      savePath: '',
+      receivedBytes: 0,
+      totalBytes: 0
+    }
+  })
+
+  window.api.onDownloadItemUpdated((data) => {
+    if (HISTORY.downloadInProgress) {
+      HISTORY.downloadInProgress.receivedBytes = data.receivedBytes
+      HISTORY.downloadInProgress.totalBytes = data.totalBytes
     }
   })
 
   window.api.onDownloadItemDone(({ state, path }) => {
     if (HISTORY.downloadInProgress && state === 'completed') {
       HISTORY.downloads.unshift({
+        id: HISTORY.downloadInProgress.id,
         filename: HISTORY.downloadInProgress.filename,
         icon: HISTORY.downloadInProgress.icon,
         ext: HISTORY.downloadInProgress.ext,

@@ -30,6 +30,8 @@ export default {
   toast: {
     errorInInitializeData:
       'Ocorreu algum erro ao carregar os dados locais do navegador. Por favor, considere reiniciar o navegador.',
-    successInDowload: 'O arquivo foi baixado com sucesso!'
+    successInDowload: 'O arquivo foi baixado com sucesso!',
+    cancelInDowload: 'O download foi cancelado!',
+    errorInOpenFolder: 'Erro ao abrir o arquivo!'
   }
 }
