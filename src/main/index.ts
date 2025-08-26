@@ -1,7 +1,6 @@
 import { app, shell, BrowserWindow, ipcMain, DownloadItem } from 'electron'
 import electronUpdater from 'electron-updater'
 import { join } from 'pathe'
-import { v4 as uuid } from 'uuid'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import Store from 'electron-store'
 import icon from '../../resources/icon.png?asset'
