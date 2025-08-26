@@ -4,43 +4,45 @@
   >
     <p class="text-white p-3 text-lg">Downloads</p>
     <div
-      v-if="HISTORY.downloadInProgress"
-      class="flex flex-col gap-3 items-center p-3 justify-between border border-b-2 border-gray gap-2 w-full pb-10"
+      v-if="HISTORY.downloadsInProgress.length !== 0"
+      v-for="(download, index) in HISTORY.downloadsInProgress"
+      :key="index"
+      class="flex flex-col gap-5 w-full"
     >
-      <div class="flex w-full justify-between items-center">
-        <div class="flex items-center gap-2">
-          <img
-            v-if="HISTORY.downloadInProgress.icon"
-            :src="HISTORY.downloadInProgress.icon"
-            alt="download icon"
-          />
-          <HeaderDownloadsExtIcon v-else :extension="HISTORY.downloadInProgress.ext" />
-          <p class="text-white truncate">{{ HISTORY.downloadInProgress.filename }}</p>
+      <div
+        class="flex flex-col gap-3 items-center p-3 justify-between border border-b-2 border-gray gap-2 w-full"
+      >
+        <div class="flex w-full justify-between items-center">
+          <div class="flex items-center gap-2">
+            <img v-if="download.icon" :src="download.icon" alt="download icon" />
+            <HeaderDownloadsExtIcon v-else :extension="download.ext" />
+            <p class="text-white truncate">{{ download.filename }}</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <IconPause
+              v-if="!download.isPaused"
+              class="w-5 h-5 text-gray hover:text-white transition-colors cursor-pointer"
+              @click="onPauseDownload(download)"
+            />
+            <IconResume
+              v-else
+              class="w-5 h-5 text-gray hover:text-white transition-colors cursor-pointer"
+              @click="onResumeDownload(download)"
+            />
+            <IconTabClose
+              class="w-5 h-5 text-gray hover:text-white transition-colors cursor-pointer"
+              @click="onCancelDownload(download)"
+            />
+          </div>
         </div>
-        <div class="flex items-center gap-2">
-          <IconPause
-            v-if="!isPaused"
-            class="w-5 h-5 text-gray hover:text-white transition-colors cursor-pointer"
-            @click="onPauseDownload"
-          />
-          <IconResume
-            v-else
-            class="w-5 h-5 text-gray hover:text-white transition-colors cursor-pointer"
-            @click="onResumeDownload"
-          />
-          <IconTabClose
-            class="w-5 h-5 text-gray hover:text-white transition-colors cursor-pointer"
-            @click="onCancelDownload"
+        <div class="w-full h-3 bg-primary rounded-full shadow-lg">
+          <div
+            class="h-3 bg-primary-colored rounded-full"
+            :style="{
+              width: `${((download.receivedBytes / download.totalBytes) * 100).toFixed(2)}%`
+            }"
           />
         </div>
-      </div>
-      <div class="w-full h-3 bg-primary rounded-full shadow-lg">
-        <div
-          class="h-3 bg-primary-colored rounded-full"
-          :style="{
-            width: `${((HISTORY.downloadInProgress.receivedBytes / HISTORY.downloadInProgress.totalBytes) * 100).toFixed(2)}%`
-          }"
-        />
       </div>
     </div>
     <div class="flex flex-col gap-3 w-full">
@@ -67,9 +69,9 @@ import { useDownload } from '@/use/download'
 import { usePath } from '@/use/path'
 import { usePubsub } from 'vue-pubsub'
 import IconTabClose from '../icons/IconTabClose.vue'
-import { ref } from 'vue'
 import { useToast } from 'vue-toastification'
 import { useI18n } from 'vue-i18n'
+import { HistoryDownloadsProgress } from '@/types'
 
 const HISTORY = useHistoryStore()
 
@@ -79,8 +81,6 @@ const download = useDownload()
 const toast = useToast()
 const { t } = useI18n()
 
-const isPaused = ref<boolean>(false)
-
 const onOpen = (filepath: string) => {
   pubsub.to('download-finished', '')
 
@@ -89,27 +89,31 @@ const onOpen = (filepath: string) => {
   })
 }
 
-const onResumeDownload = () => {
-  isPaused.value = false
+const onResumeDownload = (item: HistoryDownloadsProgress) => {
+  item.isPaused = false
 
-  download.resume()
+  download.resume(item.id)
 }
 
-const onPauseDownload = () => {
-  isPaused.value = true
+const onPauseDownload = (item: HistoryDownloadsProgress) => {
+  item.isPaused = true
 
-  download.pause()
+  download.pause(item.id)
 }
 
-const onCancelDownload = () => {
-  HISTORY.downloadInProgress = undefined
+const onCancelDownload = (item: HistoryDownloadsProgress) => {
+  HISTORY.downloadsInProgress = HISTORY.downloadsInProgress.filter(
+    (download) => download.id !== item.id
+  )
 
-  isPaused.value = false
+  if (HISTORY.downloadsInProgress.length === 0) {
+    pubsub.to('download-finished', '')
+  }
 
-  pubsub.to('download-finished', '')
+  item.isPaused = false
 
-  download.cancel().then(() => {
-    toast.error(t('toast.cancelInDowload'))
+  download.cancel(item.id).then(() => {
+    toast.error(t('toast.cancelInDownload'))
   })
 }
 </script>

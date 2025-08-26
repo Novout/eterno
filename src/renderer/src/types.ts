@@ -56,6 +56,7 @@ export type HistoryDownloads = HistoryDownloadsMain & {
 export type HistoryDownloadsProgress = HistoryDownloads & {
   receivedBytes: number
   totalBytes: number
+  isPaused: boolean
 }
 
 export interface HistorySearchItem {
@@ -72,5 +73,5 @@ export interface HistoryState {
   search: HistorySearchItem[]
   favorites: HistoryFavoriteItem[]
   downloads: HistoryDownloads[]
-  downloadInProgress?: HistoryDownloadsProgress
+  downloadsInProgress: HistoryDownloadsProgress[]
 }

@@ -3,7 +3,6 @@
 </template>
 
 <script setup lang="ts">
-import { v4 as uuidv4 } from 'uuid'
 import { onMounted } from 'vue'
 import { useData } from './use/data'
 import { useToast } from 'vue-toastification'
@@ -14,6 +13,7 @@ import { useEnv } from './use/env'
 import { useHistoryStore } from './stores/history'
 import { useUtils } from './use/utils'
 import { useDate } from './use/date'
+import { useDownload } from './use/download'
 
 const CONTROLLER = useController()
 const HISTORY = useHistoryStore()
@@ -25,6 +25,7 @@ const pubsub = usePubsub()
 const env = useEnv()
 const { t } = useI18n()
 const utils = useUtils()
+const download = useDownload()
 
 onMounted(() => {
   data
@@ -48,43 +49,62 @@ onMounted(() => {
   }, 1000 * 3)
 
   window.api.onDownloadItemStart((data) => {
+    if (HISTORY.downloadsInProgress.find((item) => item.id === data.id)) {
+      download
+        .cancel(data.id)
+        .then(() => {
+          toast.warning(t('toast.warningInDuplicateDownload'))
+        })
+        .catch(() => {})
+
+      return
+    }
+
     pubsub.to('download-started', '')
 
-    const [extract] = utils.getExtensionFromFilename(data.filename)
+    const [extensions] = utils.getExtensionFromFilename(data.filename)
 
-    HISTORY.downloadInProgress = {
+    HISTORY.downloadsInProgress?.unshift({
       ...data,
-      ...extract,
-      id: uuidv4(),
+      ...extensions,
       date: date.getCommonDate(),
       savePath: '',
       receivedBytes: 0,
-      totalBytes: 0
-    }
+      totalBytes: 0,
+      isPaused: false
+    })
   })
 
   window.api.onDownloadItemUpdated((data) => {
-    if (HISTORY.downloadInProgress) {
-      HISTORY.downloadInProgress.receivedBytes = data.receivedBytes
-      HISTORY.downloadInProgress.totalBytes = data.totalBytes
+    if (HISTORY.downloadsInProgress) {
+      const index = HISTORY.downloadsInProgress.find((item) => item.id === data.id)
+
+      if (index) {
+        const target = HISTORY.downloadsInProgress.indexOf(index)
+
+        HISTORY.downloadsInProgress[target].receivedBytes = data.receivedBytes
+        HISTORY.downloadsInProgress[target].totalBytes = data.totalBytes
+      }
     }
   })
 
-  window.api.onDownloadItemDone(({ state, path }) => {
-    if (HISTORY.downloadInProgress && state === 'completed') {
+  window.api.onDownloadItemDone(({ state, path, id }) => {
+    if (HISTORY.downloadsInProgress && state === 'completed') {
       HISTORY.downloads.unshift({
-        id: HISTORY.downloadInProgress.id,
-        filename: HISTORY.downloadInProgress.filename,
-        icon: HISTORY.downloadInProgress.icon,
-        ext: HISTORY.downloadInProgress.ext,
-        mime: HISTORY.downloadInProgress.mime,
-        date: HISTORY.downloadInProgress.date,
+        id: HISTORY[id].downloadInProgress.id,
+        filename: HISTORY[id].downloadInProgress.filename,
+        icon: HISTORY[id].downloadInProgress.icon,
+        ext: HISTORY[id].downloadInProgress.ext,
+        mime: HISTORY[id].downloadInProgress.mime,
+        date: HISTORY[id].downloadInProgress.date,
         savePath: path
       })
 
-      HISTORY.downloadInProgress = undefined
+      HISTORY.downloadsInProgress = HISTORY.downloadsInProgress.filter(
+        (download) => download.id !== id
+      )
 
-      toast.success(t('toast.successInDowload'))
+      toast.success(t('toast.successInDownload'))
 
       return
     }

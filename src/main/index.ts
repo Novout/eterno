@@ -1,6 +1,7 @@
 import { app, shell, BrowserWindow, ipcMain, DownloadItem } from 'electron'
 import electronUpdater from 'electron-updater'
 import { join } from 'pathe'
+import { v4 as uuid } from 'uuid'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import Store from 'electron-store'
 import icon from '../../resources/icon.png?asset'
@@ -42,33 +43,38 @@ function createWindow(): void {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html')).catch(() => {})
   }
 
-  let _item: DownloadItem | undefined = undefined
+  let downloads: DownloadItem[] = []
 
-  ipcMain.handle('download-cancel', (_) => {
-    _item?.cancel()
+  const getDownload = (id: string) => downloads.find((download) => download.getURL() === id)
+
+  ipcMain.handle('download-cancel', (_, id: string) => {
+    downloads = downloads.filter((download) => download.getURL() !== id)
+
+    getDownload(id)?.cancel()
   })
 
-  ipcMain.handle('download-pause', (_) => {
-    _item?.pause()
+  ipcMain.handle('download-pause', (_, id: string) => {
+    getDownload(id)?.pause()
   })
 
-  ipcMain.handle('download-resume', (_) => {
-    if (_item?.canResume()) _item?.resume()
+  ipcMain.handle('download-resume', (_, id: string) => {
+    if (getDownload(id)?.canResume()) getDownload(id)?.resume()
   })
 
   mainWindow.webContents.session.on('will-download', (_, item) => {
-    // item.setSavePath('/tmp/save.pdf')
+    const id = item.getURL()
 
-    // for duplicate ipcMain.handle in multiple downloads
-    _item = item
+    downloads.push(item)
 
     mainWindow.webContents.send('download-item-start', {
+      id,
       filename: item.getFilename()
     })
 
     item.on('updated', (_, state) => {
       mainWindow.webContents.send('download-item-updated', {
         state,
+        id,
         totalBytes: item.getTotalBytes(),
         receivedBytes: item.getReceivedBytes()
       })
@@ -77,6 +83,7 @@ function createWindow(): void {
     item.once('done', (_, state) => {
       mainWindow.webContents.send('download-item-done', {
         state,
+        id,
         path: item.getSavePath()
       })
     })

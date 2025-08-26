@@ -31,7 +31,9 @@ export default {
     errorInInitializeData:
       'An error occurred while loading your browser local data. Please consider restarting your browser.',
     successInDowload: 'The file was downloaded successfully!',
-    cancelInDowload: 'Download has been canceled!',
-    errorInOpenFolder: 'Error in Open Folder!'
+    cancelInDownload: 'Download has been canceled!',
+    errorInOpenFolder: 'Error in Open Folder!',
+    warningInDuplicateDownload:
+      'The selected file is already being downloaded. The operation has been canceled.'
   }
 }

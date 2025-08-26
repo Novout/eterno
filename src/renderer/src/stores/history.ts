@@ -7,7 +7,7 @@ export const useHistoryStore = defineStore('history', {
       search: [],
       favorites: [],
       downloads: [],
-      downloadInProgress: undefined
+      downloadsInProgress: []
     } as HistoryState
   }
 })
