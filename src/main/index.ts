@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, DownloadItem } from 'electron'
 import electronUpdater from 'electron-updater'
 import { join } from 'pathe'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
@@ -42,20 +42,25 @@ function createWindow(): void {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html')).catch(() => {})
   }
 
+  let _item: DownloadItem | undefined = undefined
+
+  ipcMain.handle('download-cancel', (_) => {
+    _item?.cancel()
+  })
+
+  ipcMain.handle('download-pause', (_) => {
+    _item?.pause()
+  })
+
+  ipcMain.handle('download-resume', (_) => {
+    if (_item?.canResume()) _item?.resume()
+  })
+
   mainWindow.webContents.session.on('will-download', (_, item) => {
     // item.setSavePath('/tmp/save.pdf')
 
-    ipcMain.handle('download-cancel', (_) => {
-      item.cancel()
-    })
-
-    ipcMain.handle('download-pause', (_) => {
-      item.pause()
-    })
-
-    ipcMain.handle('download-resume', (_) => {
-      if (item.canResume()) item.resume()
-    })
+    // for duplicate ipcMain.handle in multiple downloads
+    _item = item
 
     mainWindow.webContents.send('download-item-start', {
       filename: item.getFilename()
