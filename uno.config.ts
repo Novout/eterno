@@ -41,7 +41,7 @@ export default defineConfig({
       }
 
       ::-webkit-scrollbar {
-        width: 3px;
+        width: 8px;
       }
 
       ::-webkit-scrollbar-track {
@@ -53,7 +53,7 @@ export default defineConfig({
       }
 
       ::-webkit-scrollbar-thumb:hover {
-        background: ${theme.colors?.tertiary};
+        background: ${theme.colors?.primaryColored};
       }
     `
     }
