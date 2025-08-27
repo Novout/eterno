@@ -42,6 +42,7 @@ declare module 'vue' {
     IconTabClose: typeof import('./src/components/icons/IconTabClose.vue')['default']
     IconViewTab: typeof import('./src/components/icons/IconViewTab.vue')['default']
     MaterialButton: typeof import('./src/components/material/MaterialButton.vue')['default']
+    MaterialList: typeof import('./src/components/material/MaterialList.vue')['default']
     RenderWebView: typeof import('./src/components/main/page/RenderWebView.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

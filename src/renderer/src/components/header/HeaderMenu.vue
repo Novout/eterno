@@ -41,22 +41,18 @@
             </div>
           </div>
           <div v-if="showConfigurationItems === 0" class="flex gap-8 flex-col w-full">
-            <div class="flex justify-between w-100 gap-2 items-center text-white">
+            <div class="flex justify-between w-130 gap-2 items-center text-white">
               <div class="flex flex-col gap-1 w-full">
                 <h2 class="text-white">{{ t('menu.configuration.preferences.language.title') }}</h2>
                 <p class="text-gray text-xs">
                   {{ t('menu.configuration.preferences.language.description') }}
                 </p>
               </div>
-              <div class="bg-gray w-60">
-                <v-select
-                  class="text-black"
-                  v-model="$i18n.locale"
-                  :options="$i18n.availableLocales"
-                />
+              <div>
+                <MaterialList v-model="$i18n.locale" :list="$i18n.availableLocales" />
               </div>
             </div>
-            <div class="flex justify-between w-100 gap-2 items-center text-white">
+            <div class="flex justify-between w-130 gap-2 items-center text-white">
               <div class="flex flex-col gap-1 w-full">
                 <h2 class="text-white">
                   {{ t('menu.configuration.preferences.searchProvider.title') }}
@@ -65,11 +61,10 @@
                   {{ t('menu.configuration.preferences.searchProvider.description') }}
                 </p>
               </div>
-              <div class="bg-gray w-60">
-                <v-select
-                  class="text-black"
+              <div>
+                <MaterialList
                   v-model="OPTIONS.preferences.searchProvider"
-                  :options="['google', 'duckduckgo', 'bing']"
+                  :list="['google', 'duckduckgo', 'bing']"
                 />
               </div>
             </div>
