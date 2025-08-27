@@ -12,10 +12,10 @@
         <img v-else-if="props.tab.icon" :src="props.tab.icon" alt="icon from target website" />
         <IconViewTab v-else class="w-5 h-5" />
       </div>
-      <IconAudioOn @click="onMutedSound" class="h-5 w-5 cursor-pointer" v-if="audio === 'on'" />
+      <IconAudioOn @click="onMutedSound" class="h-6 w-6 cursor-pointer" v-if="audio === 'on'" />
       <IconAudioMuted
         @click="onActiveSound"
-        class="h-5 w-5 cursor-pointer"
+        class="h-6 w-6 cursor-pointer"
         v-else-if="audio === 'muted'"
       />
       <p
