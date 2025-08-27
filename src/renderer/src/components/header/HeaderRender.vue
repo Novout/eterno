@@ -81,6 +81,7 @@ import draggable from 'vuedraggable'
 import { useSearchProvider } from '@/use/searchProvider'
 import { useHistoryStore } from '@/stores/history'
 import { useDate } from '@/use/date'
+import { useOptionsStore } from '@/stores/options'
 
 const pubsub = usePubsub()
 const { t } = useI18n()
@@ -89,6 +90,7 @@ const searchProvider = useSearchProvider()
 
 const NAVIGATOR = useNavigatorStore()
 const HISTORY = useHistoryStore()
+const OPTIONS = useOptionsStore()
 
 const input = ref<HTMLInputElement | null>(null)
 
@@ -240,7 +242,10 @@ const onAddPage = (search?: string) => {
   NAVIGATOR.views.push({
     icon: '',
     title: t('views.default.title'),
-    url: '',
+    url:
+      OPTIONS.preferences.noticesInHomePage && !search
+        ? OPTIONS.preferences.noticesInHomePageLink
+        : '',
     search: t('views.default.search'),
     loaded: false,
     loadedFavicon: true,
@@ -253,6 +258,12 @@ const onAddPage = (search?: string) => {
   NAVIGATOR.activeTab = NAVIGATOR.views.length - 1
   NAVIGATOR.stateLink.url = ''
   NAVIGATOR.stateLink.loadedURL = 'default'
+
+  if (OPTIONS.preferences.noticesInHomePage && !search) {
+    onSearch(NAVIGATOR.views[NAVIGATOR.activeTab].url)
+
+    return
+  }
 
   input.value?.focus()
 }
@@ -314,6 +325,8 @@ const onLoadURL = (target?: string, blank?: boolean) => {
     })
 
     render?.addEventListener('did-finish-load', () => {
+      // TODO: resolve this listener in _blank or notices loaded render
+
       try {
         const activeTitle = render?.getTitle() || NAVIGATOR.views[getActuallyIndex()].title
         const activeUrl = render?.getURL() || url
@@ -331,10 +344,10 @@ const onLoadURL = (target?: string, blank?: boolean) => {
           })
         }
 
-        NAVIGATOR.views[getActuallyIndex()].loadedFavicon = true
-
         onUpdateTab(activeUrl)
       } catch (e) {}
+
+      NAVIGATOR.views[getActuallyIndex()].loadedFavicon = true
     })
 
     render?.addEventListener('page-title-updated', ({ title }) => {
@@ -379,7 +392,10 @@ const onLoadTab = (
 ) => {
   const target = NAVIGATOR.views.indexOf(tab)
 
-  NAVIGATOR.stateLink.loadedURL = tab.title === t('views.default.title') ? 'default' : 'webview'
+  NAVIGATOR.stateLink.loadedURL =
+    tab.title === t('views.default.title') && !OPTIONS.preferences.noticesInHomePage
+      ? 'default'
+      : 'webview'
   NAVIGATOR.lastTab = options.removed ? NAVIGATOR.lastTab : NAVIGATOR.activeTab
 
   const last = NAVIGATOR.views[NAVIGATOR.activeTab]

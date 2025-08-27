@@ -16,7 +16,11 @@ export default {
         },
         noticesInHomePage: {
           title: 'Notices in Home Page',
-          description: 'Enable Microsoft Bing news feeds to load at the start of a new tab.'
+          description: 'Enable Google news feeds to load at the start of a new tab.',
+          link: {
+            title: '',
+            description: ''
+          }
         }
       }
     }

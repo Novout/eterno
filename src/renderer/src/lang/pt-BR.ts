@@ -17,7 +17,11 @@ export default {
         noticesInHomePage: {
           title: 'Notícias na pagina principal',
           description:
-            'Habilitar os carregamentos de notícias do microsoft bing no início de uma nova aba.'
+            'Habilitar os carregamentos de notícias do Google no início de uma nova aba.',
+          link: {
+            title: '',
+            description: ''
+          }
         }
       }
     }

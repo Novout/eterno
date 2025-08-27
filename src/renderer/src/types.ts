@@ -28,6 +28,7 @@ export interface OptionsState {
     searchProvider: 'google' | 'bing' | 'duckduckgo' | 'empty'
     language: 'Português do Brasil' | 'English'
     noticesInHomePage: boolean
+    noticesInHomePageLink: string
   }
 }
 
