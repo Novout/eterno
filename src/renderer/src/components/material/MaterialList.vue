@@ -49,7 +49,7 @@ import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headless
 const props = defineProps({
   modelValue: {
     required: true,
-    type: Boolean
+    type: String
   },
   list: {
     required: true,

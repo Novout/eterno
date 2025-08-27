@@ -18,9 +18,16 @@ export default {
           title: 'Notices in Home Page',
           description: 'Enable Google news feeds to load at the start of a new tab.',
           link: {
-            title: '',
-            description: ''
+            title: 'Save local data',
+            description: 'Save your browsing data and initialize it when you open the browser.'
           }
+        }
+      },
+      defines: {
+        title: 'Defines',
+        saveLocalData: {
+          title: 'Salvar dados localmente',
+          description: 'Guardar seus dados de navegação e inicializá-los quando abrir o browser.'
         }
       }
     }

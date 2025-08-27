@@ -13,9 +13,11 @@ import { useEnv } from './use/env'
 import { useHistoryStore } from './stores/history'
 import { useUtils } from './use/utils'
 import { useDate } from './use/date'
+import { useOptionsStore } from './stores/options'
 
 const CONTROLLER = useController()
 const HISTORY = useHistoryStore()
+const OPTIONS = useOptionsStore()
 
 const data = useData()
 const date = useDate()
@@ -29,11 +31,12 @@ onMounted(() => {
   data
     .get('main')
     .then((values) => {
-      if (!env.isDev() && values && typeof values !== 'string') CONTROLLER.init(values)
+      if (!env.isDev() && values && typeof values !== 'string' && OPTIONS.defines.saveLocalData)
+        CONTROLLER.init(values)
       else {
         pubsub.to('add-first-page', '')
 
-        // because for deploy build
+        // for deploy build
         data.remove('main').catch(() => {})
       }
     })
@@ -43,7 +46,7 @@ onMounted(() => {
 
   // TODO: temporary auto-save data
   setTimeout(() => {
-    CONTROLLER.save()
+    if (OPTIONS.defines.saveLocalData) CONTROLLER.save()
   }, 1000 * 3)
 
   window.api.onOpenNewView((url) => {

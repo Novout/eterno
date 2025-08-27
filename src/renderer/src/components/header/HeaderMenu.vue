@@ -14,7 +14,7 @@
         @click="onConfiguration"
         class="cursor-pointer w-full flex gap-2 items-center hover:bg-secondary transition-colors"
       >
-        <IconMenuConfiguration class="w-4 h-4 text-white" />
+        <IconMenuDefines class="w-4 h-4 text-white" />
         <p class="text-base text-white text-sm">{{ t('menu.configuration.title') }}</p>
       </div>
     </div>
@@ -31,13 +31,20 @@
           />
         </div>
         <div class="flex raleway w-full mt-20">
-          <div class="flex text-white flex-col gap-2 w-20% pr-10">
+          <div class="flex text-white flex-col gap-3 w-20% pr-10">
             <div
               @click="showConfigurationItems = 0"
               class="flex items-center gap-2 cursor-pointer hover:bg-primary transition-colors"
             >
               <IconMenuConfiguration class="w-5 h-5" />
               <p>{{ t('menu.configuration.preferences.title') }}</p>
+            </div>
+            <div
+              @click="showConfigurationItems = 1"
+              class="flex items-center gap-2 cursor-pointer hover:bg-primary transition-colors"
+            >
+              <IconMenuDefines class="w-5 h-5" />
+              <p>{{ t('menu.configuration.defines.title') }}</p>
             </div>
           </div>
           <div v-if="showConfigurationItems === 0" class="flex gap-8 flex-col w-full">
@@ -79,6 +86,21 @@
               </div>
               <div class="w-60">
                 <MaterialButton v-model="OPTIONS.preferences.noticesInHomePage" />
+              </div>
+            </div>
+          </div>
+          <div v-if="showConfigurationItems === 1" class="flex gap-8 flex-col w-full">
+            <div class="flex justify-between w-130 gap-2 items-center text-white">
+              <div class="flex flex-col gap-1 w-full">
+                <h2 class="text-white">
+                  {{ t('menu.configuration.defines.saveLocalData.title') }}
+                </h2>
+                <p class="text-gray text-xs">
+                  {{ t('menu.configuration.defines.saveLocalData.description') }}
+                </p>
+              </div>
+              <div>
+                <MaterialButton v-model="OPTIONS.defines.saveLocalData" />
               </div>
             </div>
           </div>

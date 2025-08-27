@@ -31,6 +31,7 @@ declare module 'vue' {
     IconFavoriteOn: typeof import('./src/components/icons/IconFavoriteOn.vue')['default']
     IconMenu: typeof import('./src/components/icons/IconMenu.vue')['default']
     IconMenuConfiguration: typeof import('./src/components/icons/IconMenuConfiguration.vue')['default']
+    IconMenuDefines: typeof import('./src/components/icons/IconMenuDefines.vue')['default']
     IconMenuHistoric: typeof import('./src/components/icons/IconMenuHistoric.vue')['default']
     IconPause: typeof import('./src/components/icons/IconPause.vue')['default']
     IconProfile: typeof import('./src/components/icons/IconProfile.vue')['default']

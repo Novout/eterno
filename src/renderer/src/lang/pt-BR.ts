@@ -23,6 +23,13 @@ export default {
             description: ''
           }
         }
+      },
+      defines: {
+        title: 'Defines',
+        saveLocalData: {
+          title: 'Salvar dados localmente',
+          description: 'Guardar seus dados de navegação e inicializá-los quando abrir o browser.'
+        }
       }
     }
   },

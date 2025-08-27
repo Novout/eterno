@@ -10,7 +10,7 @@ function createWindow(): void {
   const mainWindow = new BrowserWindow({
     width: 1100,
     minWidth: 600,
-    minHeight: 400,
+    minHeight: 500,
     height: 800,
     show: false,
     fullscreen: false,

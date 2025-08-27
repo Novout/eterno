@@ -30,6 +30,9 @@ export interface OptionsState {
     noticesInHomePage: boolean
     noticesInHomePageLink: string
   }
+  defines: {
+    saveLocalData: boolean
+  }
 }
 
 export interface ProfileState {

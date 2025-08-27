@@ -9,6 +9,9 @@ export const useOptionsStore = defineStore('options', {
         language: 'English',
         noticesInHomePage: false,
         noticesInHomePageLink: 'https://news.google.com'
+      },
+      defines: {
+        saveLocalData: true
       }
     } as OptionsState
   }
