@@ -104,11 +104,13 @@ app.whenReady().then(() => {
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)
 
-    const { autoUpdater } = electronUpdater
+    if(!is.dev) {
+      const { autoUpdater } = electronUpdater
 
-    setTimeout(() => {
-      autoUpdater.checkForUpdatesAndNotify()
-    }, 3000)
+      setTimeout(() => {
+        autoUpdater.checkForUpdatesAndNotify()
+      }, 3000)
+    }
   })
 
   const store = new Store()
