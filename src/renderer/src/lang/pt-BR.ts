@@ -5,8 +5,20 @@ export default {
       title: 'Configuração',
       preferences: {
         title: 'Preferencias',
-        language: 'Linguagem',
-        searchProvider: 'Provedor de Pesquisa'
+        language: {
+          title: 'Linguagem',
+          description: 'Escolha a linguagem do navegador.'
+        },
+        searchProvider: {
+          title: 'Provedor de Pesquisa',
+          description:
+            'Escolha o provedor de pesquisa. Todas as suas navegações pela barra de pesquisa utilizarão esse provedor caso não seja um link ou um arquivo.'
+        },
+        noticesInHomePage: {
+          title: 'Notícias na pagina principal',
+          description:
+            'Habilitar os carregamentos de notícias do microsoft bing no início de uma nova aba.'
+        }
       }
     }
   },

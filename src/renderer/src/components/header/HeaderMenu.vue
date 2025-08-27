@@ -31,7 +31,7 @@
           />
         </div>
         <div class="flex raleway w-full mt-20">
-          <div class="flex text-white flex-col gap-2 w-20%">
+          <div class="flex text-white flex-col gap-2 w-20% pr-10">
             <div
               @click="showConfigurationItems = 0"
               class="flex items-center gap-2 cursor-pointer hover:bg-primary transition-colors"
@@ -40,9 +40,14 @@
               <p>{{ t('menu.configuration.preferences.title') }}</p>
             </div>
           </div>
-          <div v-if="showConfigurationItems === 0" class="flex gap-2 flex-col w-full">
+          <div v-if="showConfigurationItems === 0" class="flex gap-8 flex-col w-full">
             <div class="flex justify-between w-100 gap-2 items-center text-white">
-              <p>{{ t('menu.configuration.preferences.language') }}</p>
+              <div class="flex flex-col gap-1 w-full">
+                <h2 class="text-white">{{ t('menu.configuration.preferences.language.title') }}</h2>
+                <p class="text-gray text-xs">
+                  {{ t('menu.configuration.preferences.language.description') }}
+                </p>
+              </div>
               <div class="bg-gray w-60">
                 <v-select
                   class="text-black"
@@ -52,13 +57,33 @@
               </div>
             </div>
             <div class="flex justify-between w-100 gap-2 items-center text-white">
-              <p>{{ t('menu.configuration.preferences.searchProvider') }}</p>
+              <div class="flex flex-col gap-1 w-full">
+                <h2 class="text-white">
+                  {{ t('menu.configuration.preferences.searchProvider.title') }}
+                </h2>
+                <p class="text-gray text-xs">
+                  {{ t('menu.configuration.preferences.searchProvider.description') }}
+                </p>
+              </div>
               <div class="bg-gray w-60">
                 <v-select
                   class="text-black"
                   v-model="OPTIONS.preferences.searchProvider"
                   :options="['google', 'duckduckgo', 'bing']"
                 />
+              </div>
+            </div>
+            <div class="flex justify-between w-100 gap-2 items-center text-white">
+              <div class="flex flex-col gap-1 w-full">
+                <h2 class="text-white text-base">
+                  {{ t('menu.configuration.preferences.noticesInHomePage.title') }}
+                </h2>
+                <p class="text-gray text-xs">
+                  {{ t('menu.configuration.preferences.noticesInHomePage.description') }}
+                </p>
+              </div>
+              <div class="w-60">
+                <MaterialButton v-model="OPTIONS.preferences.noticesInHomePage" />
               </div>
             </div>
           </div>

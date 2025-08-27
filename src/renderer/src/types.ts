@@ -27,6 +27,7 @@ export interface OptionsState {
   preferences: {
     searchProvider: 'google' | 'bing' | 'duckduckgo' | 'empty'
     language: 'Português do Brasil' | 'English'
+    noticesInHomePage: boolean
   }
 }
 

@@ -5,8 +5,19 @@ export default {
       title: 'Configuration',
       preferences: {
         title: 'Preferences',
-        language: 'Language',
-        searchProvider: 'Search Provider'
+        language: {
+          title: 'Language',
+          description: 'Choose browser language.'
+        },
+        searchProvider: {
+          title: 'Search Provider',
+          description:
+            "Choose the search provider. All your navigation through the search bar will use this provider unless it's a link or a file."
+        },
+        noticesInHomePage: {
+          title: 'Notices in Home Page',
+          description: 'Enable Microsoft Bing news feeds to load at the start of a new tab.'
+        }
       }
     }
   },

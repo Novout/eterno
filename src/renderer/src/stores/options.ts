@@ -6,7 +6,8 @@ export const useOptionsStore = defineStore('options', {
     return {
       preferences: {
         searchProvider: 'google',
-        language: 'English'
+        language: 'English',
+        noticesInHomePage: false
       }
     } as OptionsState
   }
