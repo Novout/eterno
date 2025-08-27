@@ -24,7 +24,7 @@
         </template>
       </draggable>
       <div class="min-w-10 flex items-center justify-center">
-        <IconAdd @click="onAddPage" class="h-5 w-5 text-white cursor-pointer" />
+        <IconAdd @click="onAddPage(undefined)" class="h-5 w-5 text-white cursor-pointer" />
       </div>
     </div>
     <div class="flex w-full items-center gap-2 p-2">
