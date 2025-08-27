@@ -46,6 +46,10 @@ onMounted(() => {
     CONTROLLER.save()
   }, 1000 * 3)
 
+  window.api.onOpenNewView((url) => {
+    pubsub.to('load-view-from-target-link', url)
+  })
+
   window.api.onDownloadItemStart((data) => {
     pubsub.to('download-started', '')
 

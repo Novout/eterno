@@ -29,9 +29,19 @@ function createWindow(): void {
     mainWindow.show()
   })
 
-  mainWindow.webContents.setWindowOpenHandler((details) => {
-    shell.openExternal(details.url)
+  mainWindow.webContents.setWindowOpenHandler(() => {
     return { action: 'deny' }
+  })
+
+  // for navigate inside <webview> in _target links
+  app.on('web-contents-created', (_, contents) => {
+    if (contents.getType() === 'webview') {
+      contents.setWindowOpenHandler(({ url }) => {
+        mainWindow.webContents.send('open-new-view', url)
+
+        return { action: 'deny' }
+      })
+    }
   })
 
   // HMR for renderer base on electron-vite cli.

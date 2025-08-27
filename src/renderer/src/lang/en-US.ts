@@ -30,7 +30,7 @@ export default {
   toast: {
     errorInInitializeData:
       'An error occurred while loading your browser local data. Please consider restarting your browser.',
-    successInDowload: 'The file was downloaded successfully!',
+    successInDownload: 'The file was downloaded successfully!',
     cancelInDownload: 'Download has been canceled!',
     errorInOpenFolder: 'Error in Open Folder!',
     warningInDuplicateDownload:

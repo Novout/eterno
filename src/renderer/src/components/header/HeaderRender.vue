@@ -119,6 +119,12 @@ pubsub.on('load-view-from-start-browser', () => {
   onSearch(url)
 })
 
+pubsub.on('load-view-from-target-link', (url: any) => {
+  onAddPage(url)
+
+  onSearch(url, true)
+})
+
 pubsub.on('add-first-page', () => {
   onAddPage()
 })
@@ -201,12 +207,12 @@ const onDragChange = ({ moved }) => {
   }
 }
 
-const onSearch = (url?: string) => {
+const onSearch = (url?: string, blank?: boolean) => {
   showSuggest.value = false
 
   const target = url ?? NAVIGATOR.actuallyLink.url ?? ''
 
-  onLoadURL(target)
+  onLoadURL(target, blank)
 }
 
 const onReloadPage = () => {
@@ -230,7 +236,7 @@ const onSetState = (back: boolean) => {
   }, 200)
 }
 
-const onAddPage = () => {
+const onAddPage = (search?: string) => {
   NAVIGATOR.views.push({
     icon: '',
     title: t('views.default.title'),
@@ -241,7 +247,7 @@ const onAddPage = () => {
     id: uuidv4()
   })
 
-  NAVIGATOR.views[NAVIGATOR.activeTab].search = NAVIGATOR.actuallyLink.url
+  NAVIGATOR.views[NAVIGATOR.activeTab].search = search || NAVIGATOR.actuallyLink.url
   NAVIGATOR.lastTab = NAVIGATOR.activeTab
   NAVIGATOR.actuallyLink.url = ''
   NAVIGATOR.activeTab = NAVIGATOR.views.length - 1
@@ -251,7 +257,7 @@ const onAddPage = () => {
   input.value?.focus()
 }
 
-const onLoadURL = (target?: string) => {
+const onLoadURL = (target?: string, blank?: boolean) => {
   if (!target) return
 
   let view = NAVIGATOR.views[NAVIGATOR.activeTab]
@@ -278,6 +284,12 @@ const onLoadURL = (target?: string) => {
           // TODO: Reload page
         }
       })
+
+      if (blank) {
+        NAVIGATOR.views[getActuallyIndex()].title =
+          render?.getTitle() || NAVIGATOR.views[getActuallyIndex() - 1].title
+        NAVIGATOR.views[getActuallyIndex()].loadedFavicon = true
+      }
     }, 200)
 
     NAVIGATOR.views[getActuallyIndex()].loaded = true
@@ -341,7 +353,7 @@ const onLoadURL = (target?: string) => {
   NAVIGATOR.stateLink.loadedURL = 'webview'
 }
 
-const onRefreshURL = (_id: string, url: string) => {
+const onRefreshURL = (_id: string, url: string, forceUrl?: boolean) => {
   const tab = NAVIGATOR.views.find(({ id }) => id === _id)
 
   if (tab) {
@@ -354,7 +366,7 @@ const onRefreshURL = (_id: string, url: string) => {
       NAVIGATOR.views[index].title = title
       NAVIGATOR.views[index].icon = searchProvider.getFavicon(url)
     } catch (e) {}
-    NAVIGATOR.actuallyLink.url = url
+    if (!forceUrl) NAVIGATOR.actuallyLink.url = url
   }
 }
 

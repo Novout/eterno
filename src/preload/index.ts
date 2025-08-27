@@ -19,6 +19,9 @@ const api = {
     }) => void
   ) => {
     ipcRenderer.on('download-item-updated', (_, data) => cb(data))
+  },
+  onOpenNewView: (cb: (url: string) => void) => {
+    ipcRenderer.on('open-new-view', (_, url) => cb(url))
   }
 }
 

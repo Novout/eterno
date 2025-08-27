@@ -21,6 +21,7 @@ declare global {
           receivedBytes: number
         }) => void
       ): void
+      onOpenNewView(cb: (url: string) => void): void
     }
   }
 }

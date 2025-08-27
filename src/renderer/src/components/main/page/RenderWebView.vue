@@ -11,6 +11,8 @@
     v-for="view in NAVIGATOR.views"
     ref="__render"
     :src="view.url"
+    allowpopups
+    webpreferences="nativeWindowOpen=true"
   />
 </template>
 
