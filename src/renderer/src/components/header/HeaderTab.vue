@@ -6,18 +6,20 @@
     @click="onLoadTab"
     class="flex items-center gap-2 min-h-10 h-full cursor-pointer overflow-x-auto"
   >
-    <div class="flex justify-start items-center gap-2 w-85% h-full cursor-pointer overflow-x-auto">
+    <div class="flex justify-start items-center gap-2 w-85% h-full cursor-pointer">
       <div class="flex items-center pl-4">
         <IconSpinner v-if="!props.tab.loadedFavicon" class="h-5 w-5" />
         <img v-else-if="props.tab.icon" :src="props.tab.icon" alt="icon from target website" />
         <IconViewTab v-else class="w-5 h-5" />
       </div>
-      <IconAudioOn @click="onMutedSound" class="h-6 w-6 cursor-pointer" v-if="audio === 'on'" />
-      <IconAudioMuted
-        @click="onActiveSound"
-        class="h-6 w-6 cursor-pointer"
-        v-else-if="audio === 'muted'"
-      />
+      <div class="h-5 w-5">
+        <IconAudioOn @click="onMutedSound" class="h-5 w-5 cursor-pointer" v-if="audio === 'on'" />
+        <IconAudioMuted
+          @click="onActiveSound"
+          class="h-5 w-5 cursor-pointer"
+          v-else-if="audio === 'muted'"
+        />
+      </div>
       <p
         :class="[views[NAVIGATION.activeTab] === props.tab && views.length > 20 ? 'hidden' : '']"
         class="truncate raleway text-sm"
