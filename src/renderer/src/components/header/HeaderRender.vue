@@ -38,16 +38,52 @@
         v-model="NAVIGATOR.actuallyLink.url"
         autocomplete="true"
       />
-      <IconFavoriteOn
-        @click="onUnfavorite"
-        v-if="HISTORY.favorites.find((item) => item.url === NAVIGATOR.actuallyLink.url)"
-        class="w-6 h-6 text-white cursor-pointer"
-      />
       <IconFavoriteOff
-        v-else
-        @click.prevent.stop="onFavorite"
+        @click.prevent.stop="onModalFavorite"
         class="w-6 h-6 text-white cursor-pointer"
       />
+      <teleport to="body">
+        <div
+          v-if="showFavorites"
+          class="flex raleway text-white bg-secondary rounded-lg shadow-lg flex-col gap-3 absolute top-20 right-5 w-60 p-2"
+        >
+          <div class="flex items-center justify-between w-full">
+            <h2 class="raleway-bold text-base text-white">Adicionar Favorito</h2>
+            <div @click="showFavorites = false" class="w-6 h-6 cursor-pointer">
+              <IconTabClose class="w-6 h-6 text-gray hover:text-white transition-colors" />
+            </div>
+          </div>
+          <div class="w-full flex gap-2 justify-between">
+            <p class="text-sm">Nome</p>
+            <input
+              v-model="favoritesItem.title"
+              class="focus:border-white text-white focus:border-style-solid border-none rounded-sm border-1 bg-primary w-full"
+              type="text"
+              autocomplete="true"
+            />
+          </div>
+          <div v-if="folders.length > 0" class="w-full items-center justify-between flex gap-2">
+            <p class="text-sm pr-1.5">Pasta</p>
+            <MaterialList
+              class="text-black w-full bg-primary"
+              v-model="favoritesItem.folderListName"
+              :list="folders.map((folder) => folder.title)"
+            />
+          </div>
+          <div class="w-full flex gap-2 py-4 opacity-40 hover:opacity-100">
+            <p class="text-sm">Nova Pasta</p>
+            <input
+              v-model="favoritesItem.folderName"
+              class="focus:border-white px-2 text-white focus:border-style-solid border-none rounded-sm border-1 bg-primary"
+              type="text"
+              autocomplete="true"
+            />
+          </div>
+          <div class="w-full flex items-center justify-end">
+            <button @click="onFavorite" class="p-2 rounded-lg cursor-pointer">Concluir</button>
+          </div>
+        </div>
+      </teleport>
       <IconProfileDownload
         @click.prevent.stop="onToggleDownloads"
         class="w-6 h-6 text-white cursor-pointer"
@@ -73,7 +109,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { HeaderTabItem } from '@/types'
 import { useNavigatorStore } from '@/stores/navigator'
 import { WebviewTag } from 'electron/renderer'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import { usePubsub } from 'vue-pubsub'
 import { useI18n } from 'vue-i18n'
 import { useEventListener } from '@vueuse/core'
@@ -98,6 +134,16 @@ const showSuggest = ref<boolean>(false)
 const showProfile = ref<boolean>(false)
 const showMenu = ref<boolean>(false)
 const showDownloads = ref<boolean>(false)
+const showFavorites = ref<boolean>(false)
+
+// @ts-ignore
+const folders = computed(() => HISTORY.favorites.filter((item) => item.items))
+const favoritesItem = reactive({
+  title: '',
+  url: '',
+  folderName: '',
+  folderListName: ''
+})
 
 const getRender = (id?: number) => {
   return document.querySelector<WebviewTag>(
@@ -183,24 +229,76 @@ const onToggleDownloads = () => {
   showMenu.value = false
 }
 
-const onUnfavorite = () => {
-  HISTORY.favorites = HISTORY.favorites.filter(
-    (item) => item.url && item.url !== NAVIGATOR.actuallyLink.url
-  )
+const onModalFavorite = () => {
+  const view = NAVIGATOR.views[NAVIGATOR.activeTab]
+
+  if (!view.loaded) return
+
+  showFavorites.value = true
+
+  const title = view.title
+  const url = view.url
+
+  favoritesItem.folderName = ''
+  favoritesItem.folderListName = ''
+  favoritesItem.title = title
+  favoritesItem.url = url
 }
 
 const onFavorite = () => {
-  const url = NAVIGATOR.actuallyLink.url
+  const url = favoritesItem.url
 
-  try {
+  showFavorites.value = false
+
+  const title = NAVIGATOR.views[NAVIGATOR.activeTab].title
+
+  if (favoritesItem.folderName !== '') {
     HISTORY.favorites.push({
-      title: getRender()?.getTitle() || NAVIGATOR.views[NAVIGATOR.activeTab].title,
+      title: favoritesItem.folderName,
+      items: [
+        {
+          title,
+          icon: searchProvider.getFavicon(url),
+          url,
+          date: ''
+        }
+      ]
+    })
+
+    return
+  }
+
+  const folder = folders.value.find((item) => item.title === favoritesItem.folderListName)
+
+  if (folder) {
+    const index = folders.value.indexOf(folder)
+    const obj = {
+      title,
       icon: searchProvider.getFavicon(url),
       url,
-      date: '',
-      folder: []
-    })
-  } catch (e) {}
+      date: ''
+    }
+
+    // @ts-ignore
+    if (!HISTORY.favorites[index].items) {
+      HISTORY.favorites[index] = {
+        ...HISTORY.favorites[index],
+        items: []
+      }
+    }
+
+    // @ts-ignore
+    HISTORY.favorites[index].items.push(obj)
+
+    return
+  }
+
+  HISTORY.favorites.push({
+    title,
+    icon: searchProvider.getFavicon(url),
+    url,
+    date: ''
+  })
 }
 
 const onDragChange = ({ moved }) => {
@@ -339,8 +437,7 @@ const onLoadURL = (target?: string, blank?: boolean) => {
             title: activeTitle,
             url: activeUrl,
             date: date.getCommonDate(),
-            icon: searchProvider.getFavicon(url),
-            folder: []
+            icon: searchProvider.getFavicon(url)
           })
         }
 

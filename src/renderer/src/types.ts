@@ -69,10 +69,14 @@ export interface HistorySearchItem {
   url: string
   date: string
   icon: string
-  folder: HistorySearchItem[]
 }
 
-export type HistoryFavoriteItem = HistorySearchItem
+export interface HistoryFolderItem {
+  title: string
+  items: HistorySearchItem[]
+}
+
+export type HistoryFavoriteItem = HistorySearchItem | HistoryFolderItem
 
 export interface HistoryState {
   search: HistorySearchItem[]
