@@ -36,9 +36,6 @@ onMounted(() => {
         CONTROLLER.init(values as Data)
       else {
         pubsub.to('add-first-page', '')
-
-        // for deploy build
-        data.remove('main').catch(() => {})
       }
     })
     .catch(() => {

@@ -28,6 +28,11 @@ export default {
         saveLocalData: {
           title: 'Salvar dados localmente',
           description: 'Guardar seus dados de navegação e inicializá-los quando abrir o browser.'
+        },
+        deleteLocalData: {
+          title: 'Deletar dados locais',
+          description: 'Delete todos os dados salvos do navegador no seu computador.',
+          delete: 'Excluir'
         }
       }
     }
@@ -56,6 +61,7 @@ export default {
     cancelInDownload: 'O download foi cancelado!',
     errorInOpenFolder: 'Erro ao abrir o arquivo!',
     warningInDuplicateDownload:
-      'O arquivo escolhido ja está sendo baixado. A operação foi cancelada.'
+      'O arquivo escolhido ja está sendo baixado. A operação foi cancelada.',
+    successInDeleteData: 'Os dados foram deletados com sucesso!'
   }
 }

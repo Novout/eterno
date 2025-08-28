@@ -28,6 +28,11 @@ export default {
         saveLocalData: {
           title: 'Save local data',
           description: 'Save your browsing data and initialize it when you open the browser.'
+        },
+        deleteLocalData: {
+          title: 'Delete local data',
+          description: 'Delete all browser saved data on your computer.',
+          delete: 'Delete'
         }
       }
     }
@@ -56,6 +61,7 @@ export default {
     cancelInDownload: 'Download has been canceled!',
     errorInOpenFolder: 'Error in Open Folder!',
     warningInDuplicateDownload:
-      'The selected file is already being downloaded. The operation has been canceled.'
+      'The selected file is already being downloaded. The operation has been canceled.',
+    successInDeleteData: 'Data deleted successfully!'
   }
 }

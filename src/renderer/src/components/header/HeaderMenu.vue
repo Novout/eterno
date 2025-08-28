@@ -119,6 +119,24 @@
                 <MaterialButton v-model="OPTIONS.defines.saveLocalData" />
               </div>
             </div>
+            <div class="flex justify-between w-130 gap-2 items-center text-white">
+              <div class="flex flex-col gap-1 w-full">
+                <h2 class="text-white">
+                  {{ t('menu.configuration.defines.deleteLocalData.title') }}
+                </h2>
+                <p class="text-gray text-xs">
+                  {{ t('menu.configuration.defines.deleteLocalData.description') }}
+                </p>
+              </div>
+              <div>
+                <button
+                  class="p-3 bg-primary hover:bg-tertiary transition-colors text-white cursor-pointer rounded-lg border-none"
+                  @click="onDeleteData"
+                >
+                  {{ t('menu.configuration.defines.deleteLocalData.delete') }}
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -150,12 +168,16 @@ import { useHistoryStore } from '@/stores/history'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { usePubsub } from 'vue-pubsub'
+import { useData } from '@/use/data'
+import { useToast } from 'vue-toastification'
 
 const HISTORY = useHistoryStore()
 const OPTIONS = useOptionsStore()
 
 const { t } = useI18n()
 const pubsub = usePubsub()
+const data = useData()
+const toast = useToast()
 
 const showConfiguration = ref<boolean>(false)
 const showConfigurationItems = ref<number>(0)
@@ -163,6 +185,15 @@ const showHistoric = ref<boolean>(false)
 const showHistoricHoverIndex = ref<number>(-1)
 
 const emit = defineEmits(['close-menu'])
+
+const onDeleteData = () => {
+  data
+    .remove('main')
+    .then(() => {
+      toast.success(t('toast.successInDeleteData'))
+    })
+    .catch(() => {})
+}
 
 const onClose = () => {
   showConfiguration.value = false
