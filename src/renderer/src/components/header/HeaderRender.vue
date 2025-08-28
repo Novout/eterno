@@ -151,26 +151,32 @@ const getRender = (id?: number) => {
   )
 }
 
+const debounceOnLoad = (cb: () => void, timer = 200) => {
+  setTimeout(() => {
+    cb()
+  }, timer)
+}
+
 pubsub.on('load-view-from-url', (url: any) => {
-  onSearch(url)
+  debounceOnLoad(() => onSearch(url))
 })
 
 pubsub.on('load-view-from-historic', (url: any) => {
   onAddPage()
 
-  onSearch(url)
+  debounceOnLoad(() => onSearch(url))
 })
 
 pubsub.on('load-view-from-start-browser', () => {
   const url = NAVIGATOR.views[NAVIGATOR.activeTab].url
 
-  onSearch(url)
+  debounceOnLoad(() => onSearch(url))
 })
 
 pubsub.on('load-view-from-target-link', (url: any) => {
   onAddPage(url)
 
-  onSearch(url, true)
+  debounceOnLoad(() => onSearch(url))
 })
 
 pubsub.on('add-first-page', () => {
@@ -317,12 +323,12 @@ const onDragChange = ({ moved }) => {
   }
 }
 
-const onSearch = (url?: string, blank?: boolean) => {
+const onSearch = (url?: string) => {
   showSuggest.value = false
 
   const target = url ?? NAVIGATOR.actuallyLink.url ?? ''
 
-  onLoadURL(target, blank)
+  onLoadURL(target)
 }
 
 const onReloadPage = () => {
@@ -376,7 +382,7 @@ const onAddPage = (search?: string) => {
   input.value?.focus()
 }
 
-const onLoadURL = (target?: string, blank?: boolean) => {
+const onLoadURL = (target?: string) => {
   if (!target) return
 
   let view = NAVIGATOR.views[NAVIGATOR.activeTab]
@@ -403,12 +409,6 @@ const onLoadURL = (target?: string, blank?: boolean) => {
           // TODO: Reload page
         }
       })
-
-      if (blank) {
-        NAVIGATOR.views[getActuallyIndex()].title =
-          render?.getTitle() || NAVIGATOR.views[getActuallyIndex() - 1].title
-        NAVIGATOR.views[getActuallyIndex()].loadedFavicon = true
-      }
     }, 200)
 
     NAVIGATOR.views[getActuallyIndex()].loaded = true
