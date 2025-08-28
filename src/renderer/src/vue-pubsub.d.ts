@@ -11,5 +11,6 @@ declare module 'vue-pubsub' {
     'view-forward-in-view': null
     'download-started': null
     'download-finished': null
+    'render-hide-configuration': null
   }
 }

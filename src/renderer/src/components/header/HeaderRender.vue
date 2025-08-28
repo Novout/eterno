@@ -157,6 +157,10 @@ const debounceOnLoad = (cb: () => void, timer = 200) => {
   }, timer)
 }
 
+pubsub.on('render-hide-configuration', () => {
+  showMenu.value = false
+})
+
 pubsub.on('load-view-from-url', (url: any) => {
   debounceOnLoad(() => onSearch(url))
 })

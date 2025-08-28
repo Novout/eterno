@@ -26,7 +26,7 @@
         <div class="flex w-full items-center justify-between px-10">
           <h1 class="text-lg text-white poppins">{{ t('menu.configuration.title') }}</h1>
           <IconTabClose
-            @click="showConfiguration = false"
+            @click="onClose"
             class="w-7 h-7 text-gray hover:text-white transition-colors cursor-pointer"
           />
         </div>
@@ -163,6 +163,12 @@ const showHistoric = ref<boolean>(false)
 const showHistoricHoverIndex = ref<number>(-1)
 
 const emit = defineEmits(['close-menu'])
+
+const onClose = () => {
+  showConfiguration.value = false
+
+  pubsub.to('render-hide-configuration', '')
+}
 
 const onHistoricItemMouseOver = (index: number) => {
   showHistoricHoverIndex.value = index
