@@ -84,3 +84,10 @@ export interface HistoryState {
   downloads: HistoryDownloads[]
   downloadsInProgress: HistoryDownloadsProgress[]
 }
+
+export interface Data {
+  HISTORY: HistoryState
+  NAVIGATOR: NavigatorState
+  OPTIONS: OptionsState
+  PROFILE: ProfileState
+}

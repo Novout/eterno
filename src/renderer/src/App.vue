@@ -14,6 +14,7 @@ import { useHistoryStore } from './stores/history'
 import { useUtils } from './use/utils'
 import { useDate } from './use/date'
 import { useOptionsStore } from './stores/options'
+import { Data } from './types'
 
 const CONTROLLER = useController()
 const HISTORY = useHistoryStore()
@@ -32,7 +33,7 @@ onMounted(() => {
     .get('main')
     .then((values) => {
       if (!env.isDev() && values && typeof values !== 'string' && OPTIONS.defines.saveLocalData)
-        CONTROLLER.init(values)
+        CONTROLLER.init(values as Data)
       else {
         pubsub.to('add-first-page', '')
 
