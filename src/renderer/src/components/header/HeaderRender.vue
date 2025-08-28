@@ -252,7 +252,10 @@ const onFavorite = () => {
 
   const title = NAVIGATOR.views[NAVIGATOR.activeTab].title
 
-  if (favoritesItem.folderName !== '') {
+  if (
+    favoritesItem.folderName !== '' &&
+    !HISTORY.favorites.find((item) => item.title === favoritesItem.folderName)
+  ) {
     HISTORY.favorites.push({
       title: favoritesItem.folderName,
       items: [
@@ -260,7 +263,7 @@ const onFavorite = () => {
           title,
           icon: searchProvider.getFavicon(url),
           url,
-          date: ''
+          date: date.getCommonDate()
         }
       ]
     })
@@ -271,12 +274,17 @@ const onFavorite = () => {
   const folder = folders.value.find((item) => item.title === favoritesItem.folderListName)
 
   if (folder) {
+    const folderIndex = HISTORY.favorites.indexOf(folder)
+
+    // @ts-ignore
+    if (HISTORY.favorites[folderIndex].items.find((item) => item.title === url)) return
+
     const index = folders.value.indexOf(folder)
     const obj = {
       title,
       icon: searchProvider.getFavicon(url),
       url,
-      date: ''
+      date: date.getCommonDate()
     }
 
     // @ts-ignore
@@ -293,11 +301,13 @@ const onFavorite = () => {
     return
   }
 
+  if (HISTORY.favorites.find((item) => item.title === title)) return
+
   HISTORY.favorites.push({
     title,
     icon: searchProvider.getFavicon(url),
     url,
-    date: ''
+    date: date.getCommonDate()
   })
 }
 
