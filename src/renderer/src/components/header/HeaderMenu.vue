@@ -88,6 +88,22 @@
                 <MaterialButton v-model="OPTIONS.preferences.noticesInHomePage" />
               </div>
             </div>
+            <div
+              v-if="OPTIONS.preferences.noticesInHomePage"
+              class="flex justify-between w-100 gap-2 items-center text-white"
+            >
+              <div class="flex flex-col gap-1 w-full">
+                <h2 class="text-white text-base">
+                  {{ t('menu.configuration.preferences.noticesInHomePage.link.title') }}
+                </h2>
+                <p class="text-gray text-xs">
+                  {{ t('menu.configuration.preferences.noticesInHomePage.link.description') }}
+                </p>
+              </div>
+              <div class="w-60">
+                <MaterialInputText v-model="OPTIONS.preferences.noticesInHomePageLink" />
+              </div>
+            </div>
           </div>
           <div v-if="showConfigurationItems === 1" class="flex gap-8 flex-col w-full">
             <div class="flex justify-between w-130 gap-2 items-center text-white">

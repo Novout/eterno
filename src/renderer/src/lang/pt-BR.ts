@@ -16,11 +16,10 @@ export default {
         },
         noticesInHomePage: {
           title: 'Notícias na pagina principal',
-          description:
-            'Habilitar os carregamentos de notícias do Google no início de uma nova aba.',
+          description: 'Habilitar os carregamentos de notícias no início de uma nova aba.',
           link: {
-            title: '',
-            description: ''
+            title: 'Link da página principal',
+            description: 'Troque o link da página principal.'
           }
         }
       },
