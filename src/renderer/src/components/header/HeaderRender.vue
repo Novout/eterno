@@ -80,7 +80,7 @@
             />
           </div>
           <div class="w-full flex items-center justify-end">
-            <button @click="onFavorite" class="p-2 rounded-lg cursor-pointer">Concluir</button>
+            <button @click="onFavorite" class="p-2 rounded-lg text-white bg-primary hover:bg-tertiary transition-colors border-none shadow-xl cursor-pointer">Concluir</button>
           </div>
         </div>
       </teleport>
