@@ -8,7 +8,6 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    copy: typeof import('./src/components/icons/IconWindowMaximize copy.vue')['default']
     DefaultPage: typeof import('./src/components/main/page/DefaultPage.vue')['default']
     HeaderDownloads: typeof import('./src/components/header/HeaderDownloads.vue')['default']
     HeaderDownloadsExtIcon: typeof import('./src/components/header/HeaderDownloadsExtIcon.vue')['default']
@@ -47,7 +46,6 @@ declare module 'vue' {
     IconWindowMaximize: typeof import('./src/components/icons/IconWindowMaximize.vue')['default']
     IconWindowMinimize: typeof import('./src/components/icons/IconWindowMinimize.vue')['default']
     IconWindowUnmaximize: typeof import('./src/components/icons/IconWindowUnmaximize.vue')['default']
-    IconWindowUnmazimize: typeof import('./src/components/icons/IconWindowUnmazimize.vue')['default']
     MaterialButton: typeof import('./src/components/material/MaterialButton.vue')['default']
     MaterialInputText: typeof import('./src/components/material/MaterialInputText.vue')['default']
     MaterialList: typeof import('./src/components/material/MaterialList.vue')['default']
