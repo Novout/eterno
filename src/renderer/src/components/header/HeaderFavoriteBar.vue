@@ -28,6 +28,7 @@
                         : 'max-w-6'
           ]"
           @click="pubsub.to('load-view-from-url', element.url)"
+          @contextmenu.prevent.stop="onRemove(element)"
           class="flex cursor-pointer gap-2 px-2 transition-colors hover:bg-secondary"
         >
           <div
@@ -64,9 +65,10 @@
                 <div
                   class="flex gap-2 p-2 w-full items-center cursor-pointer hover:bg-secondary transition-colors"
                   @click="onOpenFavorite(item.url)"
+                  @contextmenu.prevent.stop="onRemoveInFolder(item, folder)"
                 >
                   <img v-if="item.icon" class="w-6 h-6" :src="item.icon" alt="site icon" />
-                  <h2 class="text-base text-white truncate">{{ item.title }}</h2>
+                  <h2 class="text-sm text-white truncate">{{ item.title }}</h2>
                 </div>
               </div>
             </div>
@@ -82,7 +84,7 @@ import { usePubsub } from 'vue-pubsub'
 import draggable from 'vuedraggable'
 import { useHistoryStore } from '@/stores/history'
 import { ref } from 'vue'
-import { HistoryFolderItem } from '@/types'
+import { HistoryFavoriteItem, HistoryFolderItem, HistorySearchItem } from '@/types'
 import { useWindowSize } from '@vueuse/core'
 
 const HISTORY = useHistoryStore()
@@ -93,27 +95,33 @@ const { width, height } = useWindowSize()
 const showFolder = ref<boolean>(false)
 const folder = ref<HistoryFolderItem | undefined>(undefined)
 
-// TODO: resolve @click.rigth problem
-/*
-const onRemoveFolderItem = (search: HistorySearchItem, folder: HistoryFolderItem) => {
-  const target = HISTORY.favorites.find((item) => item.title === folder.title)
-
-  if (target) {
-    const index = HISTORY.favorites.indexOf(target)
-
-    // @ts-ignore
-    HISTORY.favorites[index].items =
-      // @ts-ignore
-      HISTORY.favorites[index].items.filter((item) => item.title !== search.title) || []
-  }
-}
-
 const onRemove = (favorite: HistoryFavoriteItem) => {
-  showFolder.value = false
-
   const index = HISTORY.favorites.indexOf(favorite)
   // @ts-ignore
   if (favorite?.items && index) {
+    // @ts-ignore
+    if (HISTORY.favorites[index].items.length === 0) {
+      showFolder.value = false
+
+      // @ts-ignore
+      HISTORY.favorites =
+        // @ts-ignore
+        HISTORY.favorites.filter((item) => item.title !== favorite.title) || []
+    }
+
+    return
+  }
+
+  // @ts-ignore
+  HISTORY.favorites =
+    // @ts-ignore
+    HISTORY.favorites.filter((item) => item.title !== favorite.title) || []
+}
+
+const onRemoveInFolder = (favorite: HistorySearchItem, folder: HistoryFolderItem) => {
+  const index = HISTORY.favorites.indexOf(folder)
+
+  if (folder.items) {
     // @ts-ignore
     HISTORY.favorites[index].items =
       // @ts-ignore
@@ -122,7 +130,6 @@ const onRemove = (favorite: HistoryFavoriteItem) => {
     return
   }
 }
-*/
 
 const onClose = () => {
   showFolder.value = false
