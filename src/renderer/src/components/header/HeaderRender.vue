@@ -1,30 +1,50 @@
 <template>
   <header class="flex flex-col justify-start items-center w-full h-30 bg-primary">
-    <div class="flex items-center w-full bg-tertiary h-10 p-0">
-      <draggable
-        class="list-group flex p-0 max-w-96%"
-        item-key="order"
-        tag="transition-group"
-        :component-data="{ tag: 'ul', name: 'flip-list', type: 'transition' }"
-        v-model="NAVIGATOR.views"
-        @start=""
-        @change="onDragChange"
-      >
-        <template #item="{ element }">
-          <HeaderTab
-            @close="onCloseTab"
-            @load="onLoadTab"
-            :class="[
-              NAVIGATOR.views[NAVIGATOR.activeTab] !== element
-                ? 'bg-secondary hover:bg-tab-focus text-white'
-                : 'gradient text-black'
-            ]"
-            :tab="element"
-          />
-        </template>
-      </draggable>
-      <div class="min-w-10 flex items-center justify-center">
-        <IconAdd @click="onAddPage(undefined)" class="h-5 w-5 text-white cursor-pointer" />
+    <div class="flex drag items-center w-full justify-between">
+      <div class="flex items-center w-full bg-tertiary h-10 p-0">
+        <draggable
+          class="list-group flex p-0 max-w-90%"
+          item-key="order"
+          tag="transition-group"
+          :component-data="{ tag: 'ul', name: 'flip-list', type: 'transition' }"
+          v-model="NAVIGATOR.views"
+          @start=""
+          @change="onDragChange"
+        >
+          <template #item="{ element }">
+            <HeaderTab
+              @close="onCloseTab"
+              @load="onLoadTab"
+              class="nodrag"
+              :class="[
+                NAVIGATOR.views[NAVIGATOR.activeTab] !== element
+                  ? 'bg-secondary hover:bg-tab-focus text-white'
+                  : 'gradient text-black'
+              ]"
+              :tab="element"
+            />
+          </template>
+        </draggable>
+        <div class="min-w-10 nodrag flex items-center justify-center">
+          <IconAdd @click="onAddPage(undefined)" class="h-5 w-5 text-white cursor-pointer" />
+        </div>
+      </div>
+      <div class="flex nodrag items-center gap-5 px-5">
+        <IconWindowMinimize
+          @click="window.minimize()"
+          class="w-5 mt-3 h-5 text-white cursor-pointer"
+        />
+        <IconWindowMaximize
+          @click="onWindowSize"
+          v-if="isMaximized"
+          class="w-5 h-5 text-white cursor-pointer"
+        />
+        <IconWindowUnmaximize
+          @click="onWindowSize"
+          v-else
+          class="w-4 h-4 text-white cursor-pointer"
+        />
+        <IconWindowClose @click="onWindowClose" class="w-6 h-6 text-white cursor-pointer" />
       </div>
     </div>
     <div class="flex w-full items-center gap-2 p-2">
@@ -123,15 +143,19 @@ import { useSearchProvider } from '@/use/searchProvider'
 import { useHistoryStore } from '@/stores/history'
 import { useDate } from '@/use/date'
 import { useOptionsStore } from '@/stores/options'
+import { useWindow } from '@/use/window'
+import { useController } from '@/use/controller'
 
 const pubsub = usePubsub()
 const { t } = useI18n()
 const date = useDate()
 const searchProvider = useSearchProvider()
+const window = useWindow()
 
 const NAVIGATOR = useNavigatorStore()
 const HISTORY = useHistoryStore()
 const OPTIONS = useOptionsStore()
+const CONTROLLER = useController()
 
 const input = ref<HTMLInputElement | null>(null)
 
@@ -140,6 +164,7 @@ const showProfile = ref<boolean>(false)
 const showMenu = ref<boolean>(false)
 const showDownloads = ref<boolean>(false)
 const showFavorites = ref<boolean>(false)
+const isMaximized = ref<boolean>(false)
 
 // @ts-ignore
 const folders = computed(() => HISTORY.favorites.filter((item) => item.items))
@@ -225,6 +250,18 @@ onMounted(() => {
     showSuggest.value = true
   })
 })
+
+const onWindowClose = () => {
+  if (OPTIONS.defines.saveLocalData) CONTROLLER.save()
+
+  window.close()
+}
+
+const onWindowSize = () => {
+  window.size().then(() => {
+    isMaximized.value = !isMaximized.value
+  })
+}
 
 const onToggleMenu = () => {
   showMenu.value = !showMenu.value

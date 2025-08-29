@@ -79,3 +79,12 @@
   background: #d5d8e8;
   background: linear-gradient(148deg, rgba(213, 216, 232, 1) 0%, rgba(255, 230, 230, 1) 100%);
 }
+
+.drag {
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+}
+
+.nodrag {
+  -webkit-app-region: no-drag;
+}

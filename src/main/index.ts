@@ -15,6 +15,9 @@ function createWindow(): void {
     show: false,
     fullscreen: false,
     autoHideMenuBar: true,
+    titleBarStyle: 'hidden',
+    maximizable: true,
+    minimizable: true,
     icon,
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
@@ -49,6 +52,18 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html')).catch(() => {})
   }
+
+  ipcMain.handle('window-minimize', (_) => {
+    mainWindow.minimize()
+  })
+
+  ipcMain.handle('window-size', (_) => {
+    mainWindow.isMaximized() ? mainWindow.unmaximize() : mainWindow.maximize()
+  })
+
+  ipcMain.handle('window-close', (_) => {
+    mainWindow.close()
+  })
 
   let downloads: DownloadItem[] = []
 
