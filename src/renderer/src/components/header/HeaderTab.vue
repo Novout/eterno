@@ -4,9 +4,11 @@
       width: `${width / 4}px`
     }"
     @click="onLoadTab"
-    class="flex items-center gap-2 min-h-10 h-full cursor-pointer overflow-x-auto"
+    class="flex items-center justify-between gap-2 min-h-10 h-full cursor-pointer overflow-x-auto"
   >
-    <div class="flex justify-start items-center gap-2 w-85% h-full cursor-pointer">
+    <div
+      class="flex overflow-x-hidden justify-start items-center gap-2 w-85% h-full cursor-pointer"
+    >
       <div class="flex items-center pl-4">
         <IconSpinner v-if="!props.tab.loadedFavicon" class="h-5 w-5" />
         <img v-else-if="props.tab.icon" :src="props.tab.icon" alt="icon from target website" />
@@ -27,14 +29,9 @@
         {{ props.tab.title }}
       </p>
     </div>
-    <IconTabClose
-      v-if="NAVIGATION.views.length !== 1"
-      @click="onCloseTab"
-      :class="[
-        views[NAVIGATION.activeTab] === props.tab && views.length > 20 ? 'absolute' : 'flex'
-      ]"
-      class="h-5 w-5 cursor-pointer"
-    />
+    <div>
+      <IconTabClose v-if="NAVIGATION.views.length !== 1" @click="onCloseTab" class="h-5 w-5" />
+    </div>
   </div>
 </template>
 
