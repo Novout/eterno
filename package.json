@@ -4,6 +4,7 @@
   "description": "A lightweight browser.",
   "main": "./out/main/index.js",
   "author": "Giovane Cardoso",
+  "repository": "https://github.com/eterno-browser/eterno",
   "homepage": "https://github.com/eterno-browser/eterno",
   "scripts": {
     "format": "prettier --write .",
