@@ -40,9 +40,10 @@ import { useNavigatorStore } from '@/stores/navigator'
 import { HeaderTabItem } from '@/types'
 import { WebviewTag } from 'electron/renderer'
 import { computed, onMounted, ref } from 'vue'
-import { useWindowSize } from '@vueuse/core'
+import { useMagicKeys, useWindowSize, whenever } from '@vueuse/core'
 
 const { width } = useWindowSize()
+const { f12 } = useMagicKeys()
 
 const NAVIGATION = useNavigatorStore()
 
@@ -66,6 +67,12 @@ const onCloseTab = () => {
 
 onMounted(() => {
   const reader = getReader()
+
+  whenever(f12, () => {
+    const isActive = NAVIGATION.views[NAVIGATION.activeTab] === props.tab
+
+    if (props.tab.loaded && isActive) reader?.openDevTools()
+  })
 
   reader?.addEventListener('dom-ready', () => {
     setInterval(() => {
