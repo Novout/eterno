@@ -29,7 +29,7 @@
         {{ props.tab.title }}
       </p>
     </div>
-    <div>
+    <div class="pr-2">
       <IconTabClose v-if="NAVIGATION.views.length !== 1" @click="onCloseTab" class="h-5 w-5" />
     </div>
   </div>
