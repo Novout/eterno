@@ -43,6 +43,6 @@ appImage:
 npmRebuild: false
 publish:
   provider: generic
-  url: https://github.com/eterno-browser/eterno
+  url: https://github.com/Novout/eterno
 electronDownload:
   mirror: https://npmmirror.com/mirrors/electron/

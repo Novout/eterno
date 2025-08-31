@@ -19,7 +19,7 @@ Eterno Browser
   <a href="https://github.com/Novout/eterno"><img src="https://img.shields.io/github/package-json/v/Novout/eterno?style=for-the-badge&color=DAE8F3&label="></a>
 <p>
 
-> For alpha builds, [click here](https://github.com/eterno-browser/eterno/releases)
+> For alpha builds, [click here](https://github.com/Novout/eterno/releases)
 
 <h1 align="center">
 UNDER CONSTRUCTION!!!!!!!!!!!!!!
