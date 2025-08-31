@@ -15,8 +15,8 @@ Eterno Browser
 <h4>
 
 <p align="center">
-  <a href="https://github.com/eterno-browser/eterno"><img src="https://img.shields.io/github/license/eterno-browser/eterno?style=for-the-badge&color=DAE8F3&label="></a>
-  <a href="https://github.com/eterno-browser/eterno"><img src="https://img.shields.io/github/package-json/v/eterno-browser/eterno?style=for-the-badge&color=DAE8F3&label="></a>
+  <a href="https://github.com/Novout/eterno"><img src="https://img.shields.io/github/license/Novout/eterno?style=for-the-badge&color=DAE8F3&label="></a>
+  <a href="https://github.com/Novout/eterno"><img src="https://img.shields.io/github/package-json/v/Novout/eterno?style=for-the-badge&color=DAE8F3&label="></a>
 <p>
 
 > For alpha builds, [click here](https://github.com/eterno-browser/eterno/releases)

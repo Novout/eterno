@@ -4,8 +4,8 @@
   "description": "A lightweight browser.",
   "main": "./out/main/index.js",
   "author": "Giovane Cardoso",
-  "repository": "https://github.com/eterno-browser/eterno",
-  "homepage": "https://github.com/eterno-browser/eterno",
+  "repository": "https://github.com/Novout/eterno",
+  "homepage": "https://github.com/Novout/eterno",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint --cache .",
