@@ -31,6 +31,12 @@ jobs:
           node-version: 24
           cache: 'pnpm'
 
+      - name: 'Env file'
+        run: |
+          touch .env
+          echo VITE_SENTRY_URL=${{ env.VITE_SENTRY_URL }} >> .env
+          cat .env
+
       - name: Install Dependencies
         run: pnpm install
 

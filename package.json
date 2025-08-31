@@ -29,6 +29,7 @@
     "@electron-toolkit/preload": "^3.0.2",
     "@electron-toolkit/utils": "^4.0.0",
     "@headlessui/vue": "^1.7.23",
+    "@sentry/vue": "^10.8.0",
     "@vueuse/core": "^13.7.0",
     "date-fns": "^4.1.0",
     "destr": "^2.0.5",

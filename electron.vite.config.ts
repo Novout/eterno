@@ -30,7 +30,7 @@ export default defineConfig({
       }
     },
     optimizeDeps: {
-      include: ['uuid', 'date-fns', 'vuedraggable']
+      include: ['uuid', 'date-fns', 'vuedraggable', '@headlessui/vue']
     },
     plugins: [
       vue({
