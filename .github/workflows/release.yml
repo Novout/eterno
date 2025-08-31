@@ -19,14 +19,14 @@ jobs:
         os: [macos-latest, windows-latest]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493 # v5.0.0
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@f2b2b233b538f500472c7274c7012f57857d8ce0 # v4.1.0
         with:
           version: 10
 
       - name: Install Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@d7a11313b581b306c961b506cfc8971208bb03f6 # v4.4.0
         with:
           node-version: 24
           cache: 'pnpm'
@@ -56,7 +56,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@fbadcc90e88ecface60a0a0d123795b784ceb239 # v2.3.2
         with:
           draft: true
           files: |
